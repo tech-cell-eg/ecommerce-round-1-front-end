@@ -1,0 +1,48 @@
+{
+  "ss:Console Log": {
+    "description": "Log",
+    "prefix": ["con", "log"],
+    "body": ["console.log($1);"]
+  },
+  "ss:Create": {
+    "description": "New Contract",
+    "prefix": "ss-new",
+    "body": [
+      "// SPDX-License-Identifier: MIT",
+      "pragma solidity ^0.8.9;\n",
+      "contract ${1:Name} {",
+      "\tconstructor($2) {",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ]
+  },
+  "ss:function": {
+    "description": "New Function",
+    "prefix": "ss-function",
+    "body": [
+      "function ${1:Name}($2) ${3:visibility} returns ($4) {",
+      "\t$0",
+      "}",
+    ]
+  },
+  "ss:function external": {
+    "description": "Function Extrenal",
+    "prefix": "ss-function-external",
+    "body": [
+      "function ${1:Name}($2) external returns ($3) {",
+      "\t$0",
+      "}",
+    ]
+  },
+  "ss:function internal": {
+    "description": "Function Internal",
+    "prefix": "ss-function-internal",
+    "body": [
+      "function ${1:Name}($2) internal returns ($3) {",
+      "\t$0",
+      "}",
+    ]
+  },
+ 
+}

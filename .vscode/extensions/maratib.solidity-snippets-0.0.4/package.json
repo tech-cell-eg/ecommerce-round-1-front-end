@@ -1,0 +1,51 @@
+{
+	"name": "solidity-snippets",
+	"displayName": "solidity-snippets",
+	"description": "Solidity Snippets",
+	"keywords": [
+		"solidity snippets",
+		"solidity",
+		"snippets",
+		"smart contract",
+		"smart contracts"
+	],
+	"version": "0.0.4",
+	"icon": "images/xpro-snippets.png",
+	"author": {
+		"name": "Maratib Ali Khan",
+		"email": "maratib@gmail.com",
+		"url": "https://maratib.github.io"
+	},
+	"publisher": "maratib",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maratib/solidity-snippets"
+	},
+	"engines": {
+		"vscode": "^1.63.0"
+	},
+	"categories": [
+		"Snippets"
+	],
+	"contributes": {
+		"snippets": [
+			{
+				"language": "solidity",
+				"path": "./snippets/sol.code-snippets"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "05853ecf-e1b8-41a1-ab79-f82419005ad4",
+		"publisherId": "a3c76b0d-8a18-473c-bc2e-58ee76cbc870",
+		"publisherDisplayName": "Maratib Ali Khan",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1719852630273,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

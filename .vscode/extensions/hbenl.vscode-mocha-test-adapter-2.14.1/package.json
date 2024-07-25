@@ -1,0 +1,452 @@
+{
+	"name": "vscode-mocha-test-adapter",
+	"displayName": "Mocha Test Explorer",
+	"description": "Run your Mocha tests in the Sidebar of Visual Studio Code",
+	"icon": "img/icon.png",
+	"author": "Holger Benl <hbenl@evandor.de>",
+	"publisher": "hbenl",
+	"version": "2.14.1",
+	"license": "MIT",
+	"homepage": "https://github.com/hbenl/vscode-mocha-test-adapter",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hbenl/vscode-mocha-test-adapter.git"
+	},
+	"bugs": {
+		"url": "https://github.com/hbenl/vscode-mocha-test-adapter/issues"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"mocha",
+		"test",
+		"testing"
+	],
+	"main": "out/main.js",
+	"scripts": {
+		"reinstall": "rimraf node_modules package-lock.json && npm install",
+		"clean": "rimraf out .rpt2_cache vscode-mocha-test-adapter-*.vsix",
+		"build-extension": "tsc",
+		"watch-extension": "tsc -w",
+		"build-worker": "rollup -c",
+		"watch-worker": "rollup --watch -c",
+		"build-tests": "cd src/test/workspaces/sourcemap ; tsc",
+		"build": "npm run build-extension && npm run build-worker",
+		"rebuild": "npm run clean && npm run build",
+		"package": "vsce package",
+		"publish": "vsce publish"
+	},
+	"extensionDependencies": [
+		"hbenl.vscode-test-explorer"
+	],
+	"dependencies": {
+		"chokidar": "^3.5.3",
+		"diff": "^5.1.0",
+		"dotenv": "^16.0.1",
+		"escape-string-regexp": "^5.0.0",
+		"glob": "^7.2.3",
+		"minimatch": "^4.2.1",
+		"mocha": "^10.0.0",
+		"source-map-support": "^0.5.21",
+		"split": "^1.0.1",
+		"stack-trace": "0.0.10",
+		"tslib": "^2.4.0",
+		"vscode-test-adapter-api": "^1.9.0",
+		"vscode-test-adapter-remoting-util": "^0.13.0",
+		"vscode-test-adapter-util": "^0.7.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.18.6",
+		"@babel/preset-env": "^7.18.6",
+		"@babel/register": "^7.18.6",
+		"@rollup/plugin-commonjs": "^22.0.1",
+		"@rollup/plugin-node-resolve": "^13.3.0",
+		"@types/diff": "^5.0.2",
+		"@types/glob": "^7.2.0",
+		"@types/minimatch": "^3.0.5",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "^12.20.55",
+		"@types/source-map-support": "^0.5.4",
+		"@types/split": "^1.0.1",
+		"@types/stack-trace": "^0.0.30",
+		"@types/vscode": "~1.47.0",
+		"esm": "^3.2.25",
+		"mocha-prepare": "^0.1.0",
+		"rimraf": "^3.0.2",
+		"rollup": "^2.76.0",
+		"rollup-plugin-typescript2": "^0.32.1",
+		"ts-node": "^10.8.2",
+		"typescript": "^4.7.4",
+		"vsce": "^2.9.2"
+	},
+	"engines": {
+		"vscode": "^1.47.0"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": false,
+			"description": "Mocha Test Explorer will not run in an untrusted workspace because it runs code (the tests) from that workspace"
+		}
+	},
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Mocha Test Explorer",
+			"properties": {
+				"mochaExplorer.files": {
+					"description": "The glob(s) describing the location of your test files (relative to the workspace folder)",
+					"type": [
+						"string",
+						"array"
+					],
+					"items": {
+						"type": "string"
+					},
+					"default": "test/**/*.js",
+					"scope": "resource"
+				},
+				"mochaExplorer.ignore": {
+					"description": "Glob(s) of files to be ignored (relative to the workspace folder)",
+					"type": [
+						"string",
+						"array"
+					],
+					"items": {
+						"type": "string"
+					},
+					"scope": "resource"
+				},
+				"mochaExplorer.watch": {
+					"description": "Watch the specified files, directories or glob patterns",
+					"type": [
+						"string",
+						"array",
+						"object"
+					],
+					"items": {
+						"type": "string"
+					},
+					"properties": {
+						"files": {
+							"description": "Files, directories or glob patterns to be watched for file changes",
+							"type": [
+								"string",
+								"array"
+							],
+							"items": {
+								"type": "string"
+							},
+							"default": "**/*.js"
+						},
+						"ignore": {
+							"description": "Files, directories or glob patterns to be ignored",
+							"type": [
+								"string",
+								"array"
+							],
+							"items": {
+								"type": "string"
+							},
+							"default": "**/node_modules/**"
+						},
+						"debounce": {
+							"description": "The time in milliseconds to wait after a file change before reloading",
+							"type": "number",
+							"default": 200
+						}
+					}
+				},
+				"mochaExplorer.pruneFiles": {
+					"description": "Only load the test files needed for the current test run (the default is to load all configured files)",
+					"type": "boolean",
+					"default": false,
+					"scope": "resource"
+				},
+				"mochaExplorer.env": {
+					"description": "Environment variables to be set when running the tests",
+					"type": "object",
+					"additionalProperties": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"default": {},
+					"scope": "resource"
+				},
+				"mochaExplorer.envPath": {
+					"description": "Path to a dotenv file (relative to the workspace folder) containing environment variables to be set when running the tests",
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null,
+					"scope": "resource"
+				},
+				"mochaExplorer.cwd": {
+					"description": "The working directory where mocha is run (relative to the workspace folder)",
+					"type": "string",
+					"scope": "resource"
+				},
+				"mochaExplorer.ui": {
+					"description": "The mocha ui used by the tests",
+					"type": "string",
+					"default": "bdd",
+					"scope": "resource"
+				},
+				"mochaExplorer.timeout": {
+					"description": "The test-case timeout in milliseconds",
+					"type": "number",
+					"default": 2000,
+					"scope": "resource"
+				},
+				"mochaExplorer.retries": {
+					"description": "The number of times to retry failed tests",
+					"type": "number",
+					"default": 0,
+					"scope": "resource"
+				},
+				"mochaExplorer.require": {
+					"description": "Module(s) that Mocha should require()",
+					"type": [
+						"string",
+						"array"
+					],
+					"items": {
+						"type": "string"
+					},
+					"scope": "resource"
+				},
+				"mochaExplorer.fullTrace": {
+					"description": "Display the full stack trace in the log for test failures. By default Mocha will create a shortened stack trace containing relative file paths.",
+					"type": "boolean",
+					"default": false,
+					"scope": "resource"
+				},
+				"mochaExplorer.delay": {
+					"description": "Enable delayed root suite support",
+					"type": "boolean",
+					"default": false,
+					"scope": "resource"
+				},
+				"mochaExplorer.exit": {
+					"description": "Shutdown the Mocha process (using process.exit()) after the last test has been run",
+					"type": "boolean",
+					"default": false,
+					"scope": "resource"
+				},
+				"mochaExplorer.asyncOnly": {
+					"description": "Require all tests to use a callback (async) or return a Promise",
+					"type": "boolean",
+					"default": false,
+					"scope": "resource"
+				},
+				"mochaExplorer.parallel": {
+					"description": "Run tests in parallel",
+					"type": "boolean",
+					"default": false,
+					"scope": "resource"
+				},
+				"mochaExplorer.jobs": {
+					"description": "Number of concurrent jobs when running tests in parallel",
+					"type": [
+						"number",
+						"null"
+					],
+					"default": null,
+					"scope": "resource"
+				},
+				"mochaExplorer.optsFile": {
+					"description": "The location of the mocha.opts file (relative to the workspace folder). If you set this option, the mocha.opts file will be parsed using a legacy parser and all other mocha configuration files will be ignored. Otherwise, all mocha configuration files will be parsed using mocha's parser.",
+					"type": "string",
+					"default": "test/mocha.opts",
+					"scope": "resource"
+				},
+				"mochaExplorer.configFile": {
+					"description": "The location of the mocha config file (relative to the workspace folder).",
+					"type": [
+						"string",
+						"null"
+					],
+					"default": "default",
+					"scope": "resource"
+				},
+				"mochaExplorer.pkgFile": {
+					"description": "The location of the package.json file (relative to the workspace folder) containing the mocha configuration.",
+					"type": [
+						"string",
+						"null"
+					],
+					"default": "default",
+					"scope": "resource"
+				},
+				"mochaExplorer.nodePath": {
+					"description": "The path to the node executable to use. By default it will attempt to find it on your PATH, if it can't find it or if this option is set to `null`, it will use the one shipped with VS Code",
+					"type": [
+						"string",
+						"null"
+					],
+					"default": "default",
+					"scope": "resource"
+				},
+				"mochaExplorer.nodeArgv": {
+					"description": "The arguments to the node executable to use",
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"scope": "resource"
+				},
+				"mochaExplorer.mochaPath": {
+					"description": "The path to the mocha package to use (relative to the workspace folder). By default (or if this option is set to `null`) it uses a bundled version of mocha, to use the one installed in your project's node_modules folder, set this option to \"node_modules/mocha\"",
+					"type": [
+						"string",
+						"null"
+					],
+					"default": "default",
+					"scope": "resource"
+				},
+				"mochaExplorer.monkeyPatch": {
+					"description": "Apply a monkey patch to Mocha's `bdd`, `tdd` and `qunit` interfaces to get more accurate line numbers for the tests and suites",
+					"type": "boolean",
+					"default": true,
+					"scope": "resource"
+				},
+				"mochaExplorer.multiFileSuites": {
+					"description": "Ignore Mocha's idea of which file a test is located in. This is necessary for the worker to find the correct test and error locations when a suite includes tests from other files.",
+					"type": "boolean",
+					"default": false,
+					"scope": "resource"
+				},
+				"mochaExplorer.debuggerPort": {
+					"description": "The port to use for debugging sessions",
+					"type": "number",
+					"default": 9229,
+					"scope": "resource"
+				},
+				"mochaExplorer.debuggerConfig": {
+					"description": "The name of a launch configuration to use for debugging sessions",
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null,
+					"scope": "resource"
+				},
+				"mochaExplorer.esmLoader": {
+					"description": "Use Mocha's experimental ESM module loader if it is available",
+					"type": "boolean",
+					"default": true,
+					"scope": "resource"
+				},
+				"mochaExplorer.globImplementation": {
+					"description": "The glob implementation to use. `\"glob\"` (the default) is more compatible, `\"vscode\"` (the old default) may be faster.",
+					"enum": [
+						"glob",
+						"vscode"
+					],
+					"default": "glob",
+					"scope": "resource"
+				},
+				"mochaExplorer.launcherScript": {
+					"description": "The path of a launcher script (relative to the workspace folder) used for running the tests remotely",
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null,
+					"scope": "resource"
+				},
+				"mochaExplorer.ipcRole": {
+					"description": "Use a TCP connection instead of Node's IPC mechanism for talking to worker processes. This is only needed with some launcher scripts.",
+					"type": [
+						"string",
+						"null"
+					],
+					"enum": [
+						"client",
+						"server"
+					],
+					"default": null,
+					"scope": "resource"
+				},
+				"mochaExplorer.ipcPort": {
+					"description": "The TCP port that worker processes use to send their results to VS Code if `mochaExplorer.ipcRole` is set",
+					"type": [
+						"number"
+					],
+					"default": 9449,
+					"scope": "resource"
+				},
+				"mochaExplorer.ipcHost": {
+					"description": "The TCP host used for communication with worker processes. If `mochaExplorer.ipcRole` is set to `client`, this is the address that Mocha Explorer tries to connect to, if it is set to `server`, this is the address on which Mocha Explorer will listen for a connection.",
+					"type": [
+						"string",
+						"null"
+					],
+					"default": "localhost",
+					"scope": "resource"
+				},
+				"mochaExplorer.ipcTimeout": {
+					"description": "The timeout in milliseconds for establishing a TCP connection to a worker process if `mochaExplorer.ipcRole` is set",
+					"type": [
+						"number"
+					],
+					"default": 5000,
+					"scope": "resource"
+				},
+				"mochaExplorer.autoload": {
+					"description": "Automatically (re)load the tests when source files or relevant settings are changed and/or when VS Code is started",
+					"type": [
+						"boolean",
+						"string"
+					],
+					"enum": [
+						true,
+						false,
+						"onStart"
+					],
+					"default": true,
+					"scope": "resource"
+				},
+				"mochaExplorer.logpanel": {
+					"description": "Write diagnostic logs to an output panel",
+					"type": "boolean",
+					"scope": "resource"
+				},
+				"mochaExplorer.logfile": {
+					"description": "Write diagnostic logs to the given file",
+					"type": "string",
+					"scope": "resource"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "mocha-explorer.enable",
+				"title": "Mocha Test Explorer: Enable for a workspace folder"
+			},
+			{
+				"command": "mocha-explorer.disable",
+				"title": "Mocha Test Explorer: Disable for a workspace folder"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "16c44458-f8a5-434f-9d65-b658dea51b0f",
+		"publisherId": "3356f11a-6798-4f03-a93f-3d929b7fca7c",
+		"publisherDisplayName": "Holger Benl",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1719852630284,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

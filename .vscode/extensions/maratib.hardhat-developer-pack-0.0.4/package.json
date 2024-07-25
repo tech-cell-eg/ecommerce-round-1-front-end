@@ -1,0 +1,52 @@
+{
+	"name": "hardhat-developer-pack",
+	"displayName": "Hardhat Developer Pack",
+	"description": "",
+	"version": "0.0.4",
+	"keywords": [
+		"hardhat",
+		"contract test",
+		"solidity snippets",
+		"solidity",
+		"snippets",
+		"smart contract",
+		"smart contracts",
+		"blockchain"
+	],
+	"icon": "images/xpro-snippets.png",
+	"author": {
+		"name": "Maratib Ali Khan",
+		"email": "maratib@gmail.com",
+		"url": "https://maratib.github.io"
+	},
+	"publisher": "maratib",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maratib/hardhat-developer-pack"
+	},
+	"engines": {
+		"vscode": "^1.70.0"
+	},
+	"categories": [
+		"Extension Packs"
+	],
+	"extensionPack": [
+		"maratib.solidity-snippets",
+		"maratib.hardhat-test-snippets",
+		"NomicFoundation.hardhat-solidity",
+		"hbenl.vscode-mocha-test-adapter"
+	],
+	"__metadata": {
+		"id": "abea4966-6d7d-411a-bae4-32939e90042c",
+		"publisherId": "a3c76b0d-8a18-473c-bc2e-58ee76cbc870",
+		"publisherDisplayName": "Maratib Ali Khan",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1719852628690,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery"
+	}
+}

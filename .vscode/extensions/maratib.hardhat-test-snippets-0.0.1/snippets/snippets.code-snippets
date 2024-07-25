@@ -1,0 +1,74 @@
+{
+  "ts:new Test File": {
+    "description": "New Test File",
+    "prefix": "ts-newTest",
+    "body": [
+      "import { loadFixture, } from \"@nomicfoundation/hardhat-toolbox/network-helpers\";",
+      "import { expect } from \"chai\";",
+      "import { ethers } from \"hardhat\";",
+      "",
+      "describe(\"TestName\", function () {",
+        "\tasync function initFixture() {",
+        "\t",
+        "\t\tconst ONE_GWEI = 1_000_000_000;",
+        "\t\tconst lockedAmount = ONE_GWEI;",
+        "\t\t",
+        "\t\t// Contracts are deployed using the first signer/account by default",
+        "\t\tconst [owner, otherAccount] = await ethers.getSigners();",
+        "\t\t",
+        "\t\tconst Contract = await ethers.getContractFactory(\"Contract\");",
+        "\t\tconst contract = await Contract.deploy();",
+        "\t\t// const contract = await Contract.deploy(someParam, { value: someValue }); //in case passing value to constructor",
+        "\t\t",
+        "\t\treturn { contract, lockedAmount, owner, otherAccount };",
+      "\t}",
+      ""
+      "\tdescribe(\"Deployment\", function () {"
+      "\t\tit(\"Should set some thing\", async function () {"
+      "\t\t\tconst { contract, lockedAmount } = await loadFixture(initFixture);"
+      "\t\t\t",
+      "\t\t\t// expect(await contract.unlockTime()).to.equal(lockedAmount);"
+      "\t\t});"
+      "\t\t});"
+    "});"
+    ]
+  },
+  "ts:Describe-load": {
+    "description": "New Describe with loadFixture",
+    "prefix": "ts-describe-load",
+    "body": [
+      "describe(\"${1:Name}\", () => {",
+      "\tasync function initFixture() {",
+      "\t\t$0",
+      "\t\tconst someObj = null",
+      "\t\treturn {someObj}",
+      "\t}",
+      "});",
+    ]
+  },
+  "ts:Describe": {
+    "description": "New Describe",
+    "prefix": "ts-describe",
+    "body": [
+      "describe(\"${1:Name}\", () => {",
+      "\t$0",
+      "});",
+    ]
+  },
+  "ts:It": {
+    "description": "New It",
+    "prefix": "ts-it",
+    "body": [
+      "it(\"${1:Name}\", async () => {",
+      "\t$0",
+      "});",
+    ]
+  },
+  "ts:loadFixture": {
+    "description": "LoadFixture",
+    "prefix": "ts-loadFixture",
+    "body": [
+      "const { $0 } = await loadFixture(initFixture)",
+    ]
+  },
+}
