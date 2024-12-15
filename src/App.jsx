@@ -1,6 +1,6 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Layout from './Component/Layout'
+import Layout from './components/Layout'
 import Login from './Auth/Login/Login'
 
 export default function App() {
