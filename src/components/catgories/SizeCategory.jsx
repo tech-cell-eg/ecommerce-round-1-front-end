@@ -1,7 +1,35 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function SizeCategory() {
   const [sizeIsOpen, setSizeIsOpen] = useState(false);
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleSizeChange = (size) => {
+    setSelectedSizes((prevSizes) => {
+      const newSizes = prevSizes.includes(size)
+        ? prevSizes.filter((s) => s !== size) // Deselect the size
+        : [...prevSizes, size]; // Select the size
+
+      // Create a new URLSearchParams object to preserve existing params
+      const newSearchParams = new URLSearchParams(searchParams);
+
+      // Remove the previous size parameter if it exists
+      newSearchParams.delete("size");
+
+      // Append all selected sizes
+      newSizes.forEach((selectedSize) => {
+        newSearchParams.append("size", selectedSize);
+      });
+
+      // Update the URL with the new search params
+      setSearchParams(newSearchParams);
+
+      return newSizes;
+    });
+  };
+
   return (
     <div>
       <h2 className="text-lg font-semibold flex justify-between items-center">
@@ -10,7 +38,6 @@ function SizeCategory() {
           className="text-gray-500 hover:text-black"
           onClick={() => setSizeIsOpen((sizeIsOpen) => !sizeIsOpen)}
         >
-          {/* Icon for collapse (for future interactivity) */}
           {sizeIsOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,65 +67,24 @@ function SizeCategory() {
           )}
         </button>
       </h2>
-      {sizeIsOpen ? (
+
+      {sizeIsOpen && (
         <ul className="mt-2 space-y-1">
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>S</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>M</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>L</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>XL</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>XXL</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>XXXL</span>
-            </label>
-          </li>
-          {/* Add more sizes as needed */}
+          {["S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
+            <li key={size}>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedSizes.includes(size)}
+                  onChange={() => handleSizeChange(size)}
+                  className="w-4 h-4 border-gray-300 rounded"
+                />
+                <span>{size}</span>
+              </label>
+            </li>
+          ))}
         </ul>
-      ) : null}
+      )}
     </div>
   );
 }

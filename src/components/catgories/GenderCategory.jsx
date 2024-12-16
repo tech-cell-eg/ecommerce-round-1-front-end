@@ -1,16 +1,65 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function GenderCategory() {
   const [categoryIsOpen, setCategoryIsOpen] = useState(false);
+  const [selectedGenders, setSelectedGenders] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // const handleGenderChange = (gender) => {
+  //   setSelectedGenders((prevGenders) => {
+  //     const newGenders = prevGenders.includes(gender)
+  //       ? prevGenders.filter((g) => g !== gender) // Deselect the gender
+  //       : [...prevGenders, gender]; // Select the gender
+
+  //     // Update the URL with the new set of genders
+  //     const newSearchParams = new URLSearchParams();
+
+  //     // Append each selected gender to the URL
+  //     newGenders.forEach((gender) => newSearchParams.append("gender", gender));
+
+  //     // Set the updated query string
+  //     setSearchParams({
+  //       ...Object.fromEntries(searchParams.entries()), // Keep existing search params
+  //       gender: newGenders, // Update the gender filter
+  //     });
+
+  //     return newGenders;
+  //   });
+  // };
+
+  const handleGenderChange = (gender) => {
+    setSelectedGenders((prevGenders) => {
+      const newGenders = prevGenders.includes(gender)
+        ? prevGenders.filter((g) => g !== gender) // Deselect the gender
+        : [...prevGenders, gender]; // Select the gender
+
+      // Create a new URLSearchParams object to preserve existing params
+      const newSearchParams = new URLSearchParams(searchParams);
+
+      // Remove the previous gender parameter if it exists
+      newSearchParams.delete("gender");
+
+      // Append all selected genders
+      newGenders.forEach((selectedGender) => {
+        newSearchParams.append("gender", selectedGender);
+      });
+
+      // Update the URL with the new search params
+      setSearchParams(newSearchParams);
+
+      return newGenders;
+    });
+  };
+
   return (
     <div className="mb-6">
-      <h2 className="text-lg font-semibold  flex justify-between items-center">
-        Product Categories
+      <h2 className="text-lg font-semibold flex justify-between items-center">
+        Filter by Gender
         <button
           className="text-gray-500 hover:text-black"
           onClick={() => setCategoryIsOpen((categoryIsOpen) => !categoryIsOpen)}
         >
-          {/* Icon for collapse (for future interactivity) */}
           {categoryIsOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,92 +89,23 @@ function GenderCategory() {
           )}
         </button>
       </h2>
-      {categoryIsOpen ? (
+      {categoryIsOpen && (
         <ul className="mt-2 space-y-1">
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Men</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Women</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Kids</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Bags</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Belts</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Wallets</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Watches</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Accessories</span>
-            </label>
-          </li>
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span>Winter Wears</span>
-            </label>
-          </li>
-          {/* Add more categories as needed */}
+          {["Men", "Women", "Kids"].map((category) => (
+            <li key={category}>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 border-gray-300 rounded"
+                  checked={selectedGenders.includes(category)}
+                  onChange={() => handleGenderChange(category)}
+                />
+                <span>{category}</span>
+              </label>
+            </li>
+          ))}
         </ul>
-      ) : null}
+      )}
     </div>
   );
 }

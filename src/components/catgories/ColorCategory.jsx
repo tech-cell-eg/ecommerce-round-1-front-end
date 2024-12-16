@@ -1,7 +1,35 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function ColorCategory() {
   const [colorIsOpen, setColorIsOpen] = useState(false);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleColorChange = (color) => {
+    setSelectedColors((prevColors) => {
+      const newColors = prevColors.includes(color)
+        ? prevColors.filter((c) => c !== color) // Deselect the color
+        : [...prevColors, color]; // Select the color
+
+      // Create a new URLSearchParams object to preserve existing params
+      const newSearchParams = new URLSearchParams(searchParams);
+
+      // Remove the previous color parameter if it exists
+      newSearchParams.delete("color");
+
+      // Append all selected colors
+      newColors.forEach((selectedColor) => {
+        newSearchParams.append("color", selectedColor);
+      });
+
+      // Update the URL with the new search params
+      setSearchParams(newSearchParams);
+
+      return newColors;
+    });
+  };
+
   return (
     <div className="mb-6">
       <h2 className="text-lg font-semibold flex justify-between items-center">
@@ -10,7 +38,6 @@ function ColorCategory() {
           className="text-gray-500 hover:text-black"
           onClick={() => setColorIsOpen((colorIsOpen) => !colorIsOpen)}
         >
-          {/* Icon for collapse (for future interactivity) */}
           {colorIsOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,66 +67,36 @@ function ColorCategory() {
           )}
         </button>
       </h2>
-      {colorIsOpen ? (
+      {colorIsOpen && (
         <ul className="mt-2 space-y-1">
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span className="w-4 h-4 bg-red-500 rounded-full"></span>
-              <span>Red</span>
-            </label>
-          </li>
-
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span className="w-4 h-4 bg-blue-500 rounded-full"></span>
-              <span>Blue</span>
-            </label>
-          </li>
-
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span className="w-4 h-4 bg-orange-500 rounded-full"></span>
-              <span>Orange</span>
-            </label>
-          </li>
-
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span className="w-4 h-4 bg-black rounded-full"></span>
-              <span>Black</span>
-            </label>
-          </li>
-
-          <li>
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border-gray-300 rounded"
-              />
-              <span className="w-4 h-4 bg-green-500 rounded-full"></span>
-              <span>Green</span>
-            </label>
-          </li>
-
-          {/* Add more colors as needed */}
+          {["red", "blue", "orange", "black", "green"].map((color) => (
+            <li key={color}>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 border-gray-300 rounded"
+                  checked={selectedColors.includes(color)}
+                  onChange={() => handleColorChange(color)}
+                />
+                <span
+                  className={`w-4 h-4 rounded-full ${
+                    color === "red"
+                      ? "bg-red-500"
+                      : color === "blue"
+                      ? "bg-blue-500"
+                      : color === "orange"
+                      ? "bg-orange-500"
+                      : color === "black"
+                      ? "bg-black"
+                      : "bg-green-500"
+                  }`}
+                ></span>
+                <span>{color.charAt(0).toUpperCase() + color.slice(1)}</span>
+              </label>
+            </li>
+          ))}
         </ul>
-      ) : null}
+      )}
     </div>
   );
 }

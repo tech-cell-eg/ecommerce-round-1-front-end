@@ -3,8 +3,7 @@ import PriceCategory from "./PriceCategory";
 import ColorCategory from "./ColorCategory";
 import SizeCategory from "./SizeCategory";
 
-function SideBar({ products }) {
-  const filteredProducts = products;
+function SideBar() {
   return (
     <div className=" bg-white p-4 border-r">
       {/* Product Categories */}

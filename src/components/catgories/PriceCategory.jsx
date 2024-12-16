@@ -1,23 +1,42 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function PriceCategory() {
   const [priceIsOpen, setPriceIsOpen] = useState(false);
   const [minPrice, setMinPrice] = useState(0); // Minimum price
   const [maxPrice, setMaxPrice] = useState(2000); // Maximum price
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handlePriceChange = () => {
+    // Update the URL with the new price range
+    const newSearchParams = new URLSearchParams(searchParams);
+
+    // Add or update the price range in the URL
+    newSearchParams.set("minPrice", minPrice);
+    newSearchParams.set("maxPrice", maxPrice);
+
+    // Set the updated query string
+    setSearchParams(newSearchParams);
+  };
 
   const handleMinPriceChange = (e) => {
     const value = Number(e.target.value);
-    if (value <= maxPrice) setMinPrice(value); // Ensure minPrice <= maxPrice
+    if (value <= maxPrice) {
+      setMinPrice(value);
+      handlePriceChange(); // Update search params when min price changes
+    }
   };
 
   const handleMaxPriceChange = (e) => {
     const value = Number(e.target.value);
-    if (value >= minPrice) setMaxPrice(value); // Ensure maxPrice >= minPrice
+    if (value >= minPrice) {
+      setMaxPrice(value);
+      handlePriceChange(); // Update search params when max price changes
+    }
   };
 
   return (
     <div className="mb-6">
-      {/* Title Section */}
       <h2 className="text-lg font-semibold flex justify-between items-center">
         Filter by Price
         <button
@@ -54,27 +73,22 @@ function PriceCategory() {
         </button>
       </h2>
 
-      {/* Price Range Section */}
       {priceIsOpen && (
         <div className="mt-4">
-          {/* Display Current Price Range */}
           <p className="text-sm mb-4">
             Price: <span className="font-medium">${minPrice}</span> -{" "}
             <span className="font-medium">${maxPrice}</span>
           </p>
 
-          {/* Range Sliders */}
           <div className="relative">
-            {/* Minimum Price */}
             <input
               type="range"
               min="0"
               max="2000"
               value={minPrice}
               onChange={handleMinPriceChange}
-              className=" mb-0 w-full appearance-none h-[2px] bg-black [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:rounded-full cursor-pointer"
+              className="mb-0 w-full appearance-none h-[2px] bg-black [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:rounded-full cursor-pointer"
             />
-            {/* Maximum Price */}
             <input
               type="range"
               min="0"
@@ -85,7 +99,6 @@ function PriceCategory() {
             />
           </div>
 
-          {/* Range Limits */}
           <div className="flex justify-between text-sm mt-8 text-gray-700">
             <span>$0</span>
             <span>$2000</span>
