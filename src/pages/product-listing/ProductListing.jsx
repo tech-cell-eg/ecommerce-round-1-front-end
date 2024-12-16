@@ -74,7 +74,6 @@ function ProductListing() {
                 </p>
               </button>
             </div>
-
             <div>
               {/* </div> */}
               <div className="grid grid-cols-3  mx-auto gap-10 mt-4">
