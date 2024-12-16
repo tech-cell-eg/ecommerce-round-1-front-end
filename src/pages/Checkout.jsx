@@ -2,6 +2,7 @@ import { useState } from "react";
 import ProductTable from "../components/checkout/ProductTable";
 import SummaryCard from "../components/checkout/SummaryCard";
 import { products } from "../products.json";
+import Minicart from "../components/MiniCart";
 
 const productsData = products.slice(0, 3);
 const Checkout = () => {
