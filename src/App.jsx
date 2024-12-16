@@ -8,6 +8,7 @@ import ForgetPass from './Auth/ForgetPass/ForgetPass'
 import VerifyOtp from './Auth/VerifyOtp/VerifyOtp'
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
+import ProductListing from './pages/product-listing/ProductListing'
 
 export default function App() {
 const routes = createBrowserRouter([
@@ -18,6 +19,7 @@ const routes = createBrowserRouter([
     {path:"verifyotp",element:<VerifyOtp/>},
     {path:"/about",element:<h1>About</h1>},
     { path: "/checkout", element: <Checkout /> },
+    { path: "/viewproducts", element: <ProductListing /> },
     { path: "*", element: <NotFound /> },
   ]}
 ])
