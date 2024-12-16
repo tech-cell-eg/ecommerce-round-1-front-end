@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IoIosArrowBack } from 'react-icons/io'
 import { Link } from 'react-router-dom'
+import VerifypassSucc from '../../Component/verifypassSucc/VerifypassSucc'
 
 export default function VerifyOtp() {
+  const [viewsuccess, setViewsuccess] = useState(false)
+
+
+  const handleVerifysuccess = () => {
+    setViewsuccess(true)
+  }
+
   return <>
   <section className='grid grid-cols-12 gap-2 h-screen '>
     
@@ -53,11 +61,13 @@ export default function VerifyOtp() {
             </div>
 
             <div className='w-full  '>
-                <button type='submit' className='bg-black text-white py-2 rounded-lg w-full '>verify</button>
+                <button type='submit' className='bg-black text-white py-2 rounded-lg w-full ' onClick={handleVerifysuccess}>verify</button>
+               
+                
             </div>
         </form>
     </div>
   </section>
-  
+    {viewsuccess && <VerifypassSucc />}
   </>
 }
