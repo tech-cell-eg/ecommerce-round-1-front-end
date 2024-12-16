@@ -12,44 +12,11 @@ import products from "../../products.json";
 function ProductListing() {
   const items = products.products;
   console.log(items);
-  //    [
-  //     {
-  //       id: 1,
-  //       title: "Shoes",
-  //       description: "This is a shoes",
-  //       price: 100,
-  //       image: png,
-  //       discount: 10,
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "t-shirt",
-  //       description: "polo t-shirt",
-  //       price: 100,
-  //       image: png,
-  //       discount: 20,
-  //     },
-  //     {
-  //       id: 3,
-  //       title: "watch",
-  //       description: "This is a watch",
-  //       price: 100,
-  //       image: png,
-  //       discount: 0,
-  //     },
-  //     {
-  //       id: 4,
-  //       title: "bag",
-  //       description: "This is a bag",
-  //       price: 100,
-  //       image: png,
-  //       discount: 50,
-  //     },
-  //   ];
+
   return (
     <>
       <section className="container-main">
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4 mt-32">
           <div className="col-span-1"></div>
           <div className="col-span-3">
             <div className="flex justify-between">
@@ -58,12 +25,7 @@ function ProductListing() {
                   <PiSquaresFourLight className="text-2xl" />
                 </div>
                 <div className="flex items-start">
-                  {/* <div className="flex flex-col  ">
-                    <PiDotOutlineLight className="text-[11px]" />
-                    <PiDotOutlineLight className="text-[11px]" />
-                  </div> */}
-                  {/* <PiDotsThreeOutlineVerticalDuotone className="text-md mt-1" />
-                  <HiBars3CenterLeft className="text-2xl" /> */}
+                  
                   <TfiMenuAlt className="text-2xl" />
                 </div>
                 <div>
