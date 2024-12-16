@@ -8,6 +8,7 @@ import MiniCart from "../MiniCart";
 export default function Navbar() {
   const [showNavList, setShowNavList] = useState(true);
   const [showMinicart, setShowMinicart] = useState(false);
+  const [cartItems] = useState([]);
 
   const handelShowNavList = () => {
     setShowNavList(!showNavList);
@@ -24,6 +25,7 @@ export default function Navbar() {
     { name: "Contact", path: "/contact" },
   ];
 
+  const cartItemCount = cartItems.length;
   return (
     <>
       <nav className="py-3">
@@ -67,9 +69,12 @@ export default function Navbar() {
               </Link>
               <div className="relative">
                 <FiInbox className="cursor-pointer" onClick={toggleMinicart} />
+                <span className="absolute bottom-2 left-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                  {cartItemCount > 0 ? cartItemCount : 0}
+                </span>
                 {showMinicart && (
                   <div className="absolute top-10 right-0 z-10">
-                    <MiniCart />
+                    <MiniCart cartItems={cartItems} />
                   </div>
                 )}
               </div>
