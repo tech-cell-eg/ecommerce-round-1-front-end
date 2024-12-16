@@ -1,10 +1,32 @@
+
+import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import * as yup from 'yup'
+
 
 export default function Login() {
-  const [errormsg, setErrormsg] = useState(null)
 
-  
+    const [errorMessage, setErrorMessage] = useState(null);
+
+   
+    const validationSchema = yup.object({
+        email:yup.string().required('email is required').email("write avalid email"),
+        password:yup.string().required('password is required').matches(/^(?=.*[A-Z]).{8,}$/,'Min 8 characters with at least one uppercase letter'),
+       })
+
+    const formik = useFormik({
+        initialValues: { 
+            email: '',
+            password: ''
+             },
+        validationSchema,
+        onSubmit: (values) => {
+        setErrorMessage(errors)
+          console.log(values)
+        },
+    })
+  const [errormsg, setErrormsg] = useState(null)
 
   return <>
   <section className='grid grid-cols-12 gap-2 h-screen '>
@@ -18,20 +40,22 @@ export default function Login() {
        <h1 className='text-2xl max-[280px]:text-lg font-semibold'>Kirst</h1>
        </div>
     </div>
-    <div className='col-span-12 md:col-span-6 py-6'>
-    
-        <form className='flex flex-col justify-center items-start space-y-4 w-[85%] m-auto h-full'>
+
+
+    <div className='col-span-12 md:col-span-5 md:bg-white   bg-gray-100 bg-opacity-80 py-6 max-[766px]:absolute w-full h-full'>
+
+        <form className='flex flex-col justify-center items-start space-y-4 w-[85%] m-auto h-full' onSubmit={formik.handleSubmit}>
         <div className='space-y-1'>
         <h2 className='text-2xl font-bold'>Welcome🖐</h2>
         <p className='text-gray-400 '>Please login here</p>
     </div>
             <div className='flex flex-col w-full space-y-1'>
-                <label htmlFor='email'>Email Address</label>
-                <input type='email' id='email' className='rounded-lg border-2 border-gray-600 py-2 px-2' required/>
+                <label htmlFor='email' className='min-[546px]:flex justify-between items-center '><span>Email Address</span> <span>{formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm'>{formik.errors.email}</div>):('')}</span></label>
+                <input type='email' id='email' className='rounded-lg border-2 bg-transparent border-gray-600 py-2 px-2' name='email' onChange={formik.handleChange} value={formik.values.email} onBlur={formik.handleBlur} required/>
             </div>
             <div className='flex flex-col w-full space-y-1'>
-                <label htmlFor='password'>password </label>
-                <input type='password' id='password' className='rounded-lg border-2 border-gray-600 py-2 px-2' required/>
+                <label htmlFor='password' className='min-[546px]:flex justify-between items-center '><span>Password</span> <span>{formik.errors.password && formik.touched.password ? (<div className='text-red-600 mt-1 font-semibold text-sm '>{formik.errors.password}</div>):('')}</span></label>
+                <input type='password' id='password' className='rounded-lg border-2 bg-transparent border-gray-600 py-2 px-2' name='password' onChange={formik.handleChange} value={formik.values.password} onBlur={formik.handleBlur} required/>
             </div>
      <div className='flex max-[332px]:flex-col justify-between items-center w-full '>
   <div>
