@@ -8,7 +8,7 @@ export default function ForgetPass() {
     
     <div className='col-span-12 md:col-span-6 max-h-screen'>
         
-        <img src='https://s3-alpha-sig.figma.com/img/3818/95e7/243068f4aa1e91ad714c8fc6f108c2f4?Expires=1734912000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=g4tqa6W8Kn8SeqvljfvN-eyI7pp7ObBj3lHUDjpEKIyiXnVIgmI1nXXZPnRHJEiTmUIKDZRz~7LKHorq1IUbq1eRw7cQRceBuaEXPFxL80hPaecUm0bxgu1Gehl51hC6ugB8mbcFf05RXi6zTXCUlT-x5OG0ukZv21wzohOsTVu31aY~mWDIVt-Q2sOt2msOscvzyiDJNdx-sOFC-I6GIx2s645fo15atPycyrEPVjvMMrKWnhSb90nj2oR2EIuF9~KiMXxwkVT1LwdEisAWlVJdA~V2sFlrweHzL-o8syczAAHWUsrLXCXZ11AMz8EAzzP698yfZSojlvYS39~g0g' alt='' className='w-full h-full '/>
+        <img src='https://s3-alpha-sig.figma.com/img/3818/95e7/243068f4aa1e91ad714c8fc6f108c2f4?Expires=1734912000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=g4tqa6W8Kn8SeqvljfvN-eyI7pp7ObBj3lHUDjpEKIyiXnVIgmI1nXXZPnRHJEiTmUIKDZRz~7LKHorq1IUbq1eRw7cQRceBuaEXPFxL80hPaecUm0bxgu1Gehl51hC6ugB8mbcFf05RXi6zTXCUlT-x5OG0ukZv21wzohOsTVu31aY~mWDIVt-Q2sOt2msOscvzyiDJNdx-sOFC-I6GIx2s645fo15atPycyrEPVjvMMrKWnhSb90nj2oR2EIuF9~KiMXxwkVT1LwdEisAWlVJdA~V2sFlrweHzL-o8syczAAHWUsrLXCXZ11AMz8EAzzP698yfZSojlvYS39~g0g' alt='' className='w-full h-full object-cover'/>
     </div>
 
     <div className='col-span-12 md:col-span-5 py-6'>
