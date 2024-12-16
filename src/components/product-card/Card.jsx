@@ -3,7 +3,7 @@ import styles from "./Card.module.css";
 import { CiStar } from "react-icons/ci";
 import { FaExchangeAlt } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
-
+import { Link } from "react-router-dom";
 function Card({ item }) {
   return (
     <div className={styles.card}>
@@ -27,7 +27,9 @@ function Card({ item }) {
         <button className={styles.addToCartButton}>Add to Cart</button>
       </div>
       <div className={styles.cardContent}>
-        <h2 className={styles.cardTitle}>{item.productTitle}</h2>
+        <Link to={`/product/${item.productId}`} className={styles.cardLink} state={{ product: item }}>
+          <h2 className={styles.cardTitle}>{item.productTitle}</h2>
+        </Link>
         <p className={styles.cardDescription}>{item.productDescription}</p>
         {item.discount > 0 ? (
           <p className={styles.cardPrice}>

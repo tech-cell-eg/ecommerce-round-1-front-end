@@ -8,7 +8,8 @@ import VerifyOtp from "./Auth/VerifyOtp/VerifyOtp";
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/product-listing/ProductListing";
-
+import ProductDetails from "./pages/product-details/ProductDetails";
+// import products from "./products.json";
 export default function App() {
   const routes = createBrowserRouter([
     {
@@ -22,6 +23,7 @@ export default function App() {
         { path: "/about", element: <h1>About</h1> },
         { path: "/checkout", element: <Checkout /> },
         { path: "/viewproducts", element: <ProductListing /> },
+        { path: "/product/:productId", element: <ProductDetails /> },
         { path: "*", element: <NotFound /> },
       ],
     },
