@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
-
+import StarRating from "../../components/product-details/StarRating";
 function ProductDetails() {
   const location = useLocation();
   const { product } = location.state || {};
@@ -22,7 +22,7 @@ function ProductDetails() {
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
   return (
-    <div className="container-main grid grid-cols-12 gap-10 p-8">
+    <div className="container-main grid grid-cols-12  p-8 mt-10">
       {/* Product Image Section */}
       <div className="flex flex-col items-center col-span-5 ">
         <img
@@ -43,10 +43,12 @@ function ProductDetails() {
       </div>
 
       {/* Product Details Section */}
-      <div className=" col-span-6 flex flex-col gap-8 justify-between">
+      <div className=" col-span-6 flex flex-col  justify-between py-10">
         <h1 className="text-3xl font-bold mb-2">{product.productTitle}</h1>
         <p className="text-gray-500 mb-4">{product.productDescription}</p>
-
+        <p>
+          <StarRating rating={product.productRate} />
+        </p>
         {/* Price Section */}
         <div className="mb-4">
           {product.discount > 0 ? (
@@ -88,9 +90,11 @@ function ProductDetails() {
                 onClick={() => setSelectedSize(size)}
                 className={`px-4 py-2 border rounded ${
                   selectedSize === size
-                    ? "border-black bg-gray-200"
-                    : "border-gray-300"
-                } hover:bg-gray-100`}
+                    ? "border-black bg-black text-white"
+                    : "border-gray-300 hover:bg-gray-100"
+                } 
+                
+                `}
               >
                 {size}
               </button>
@@ -119,8 +123,7 @@ function ProductDetails() {
             Add to Cart
           </button>
           <button className="rounded-2xl p-3 hover:bg-gray-100 border border-black text-3xl">
-          <CiHeart />
-
+            <CiHeart />
           </button>
         </div>
 
