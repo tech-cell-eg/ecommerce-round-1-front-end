@@ -15,7 +15,7 @@ export default function ForgetPass() {
     
         <form className='flex flex-col justify-center items-start space-y-4 w-[85%] m-auto h-full'>
         <div className='space-y-1'>
-        <Link to={"/"} className='text-lg flex items-center ' ><IoIosArrowBack className='mr-2'/> Back</Link>
+        <Link to={"/login"} className='text-lg flex items-center ' ><IoIosArrowBack className='mr-2'/> Back</Link>
         <h2 className='text-2xl font-bold'>Forgot Password</h2>
         <p className='text-gray-400 text-lg'>Enter your register email address. we will send you a code to reset your password</p>
     </div>
@@ -26,7 +26,7 @@ export default function ForgetPass() {
 
 
             <div className='w-full  '>
-                <button type='submit' className='bg-black text-white py-2 rounded-lg w-full '>Send OTP</button>
+                <button type='submit' className='bg-black text-white py-2 rounded-lg w-full inline-block'>Send OTP</button>
             </div>
         </form>
     </div>

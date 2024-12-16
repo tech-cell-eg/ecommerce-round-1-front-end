@@ -32,7 +32,7 @@ export default function Login() {
     <span className="">Remember me</span>
    </label>
   </div>
-    <Link to={""} className=''>Forgot Password?</Link>
+    <Link to={"/forgetpassword"} className=''>Forgot Password?</Link>
      </div>
 
 

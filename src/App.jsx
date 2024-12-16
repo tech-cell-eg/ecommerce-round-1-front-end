@@ -9,7 +9,7 @@ import VerifyOtp from './Auth/VerifyOtp/VerifyOtp'
 export default function App() {
 const routes = createBrowserRouter([
   {path:"/",element:<Layout/>,children:[
-    {path:"",element:<Login/>},
+    {path:"login",element:<Login/>},
     {path:"register",element:<Register/>},
     {path:"forgetpassword",element:<ForgetPass/>},
     {path:"verifyotp",element:<VerifyOtp/>},
