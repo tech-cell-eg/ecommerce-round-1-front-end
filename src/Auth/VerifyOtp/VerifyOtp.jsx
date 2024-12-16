@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoIosArrowBack } from 'react-icons/io'
 import { Link } from 'react-router-dom'
-import VerifypassSucc from '../../Component/verifypassSucc/VerifypassSucc'
+import VerifypassSucc from '../../components/verifypassSucc/VerifypassSucc'
 
 export default function VerifyOtp() {
   const [viewsuccess, setViewsuccess] = useState(false)
