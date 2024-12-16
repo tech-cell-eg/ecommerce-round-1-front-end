@@ -7,6 +7,7 @@ import DropDownMenu from "../../components/product-listing/DropDownMenu";
 import { HiBars3CenterLeft } from "react-icons/hi2";
 import { PiDotsThreeOutlineVerticalDuotone } from "react-icons/pi";
 import { TfiMenuAlt } from "react-icons/tfi";
+import SideBar from "../../components/catgories/SideBar";
 
 function ProductListing() {
   const items = [
@@ -47,7 +48,9 @@ function ProductListing() {
     <>
       <section className="container-main">
         <div className="grid grid-cols-4 gap-4">
-          <div className="col-span-1"></div>
+          <div className="col-span-1">
+            <SideBar products={items} />
+          </div>
           <div className="col-span-3">
             <div className="flex justify-between">
               <div className="flex gap-4">
@@ -59,10 +62,9 @@ function ProductListing() {
                     <PiDotOutlineLight className="text-[11px]" />
                     <PiDotOutlineLight className="text-[11px]" />
                   </div> */}
-                    {/* <PiDotsThreeOutlineVerticalDuotone className="text-md mt-1" />
+                  {/* <PiDotsThreeOutlineVerticalDuotone className="text-md mt-1" />
                   <HiBars3CenterLeft className="text-2xl" /> */}
-                  <TfiMenuAlt className="text-2xl"/>
-
+                  <TfiMenuAlt className="text-2xl" />
                 </div>
                 <div>
                   <p>showing 1-16 of 72 results</p>
