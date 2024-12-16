@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const Minicart = ({ cartItems = [] }) => {
@@ -9,6 +10,11 @@ const Minicart = ({ cartItems = [] }) => {
       quantity: item.quantity || 1,
     }))
   );
+
+  const navigate = useNavigate();
+  const handleRedirect = (direction) => {
+    navigate(`/${direction}`);
+  };
 
   // Calculate subtotal
   const subtotal = items.reduce(
@@ -24,7 +30,7 @@ const Minicart = ({ cartItems = [] }) => {
   // Handle empty cart
   if (items.length === 0) {
     return (
-      <div className="minicart-dropdown text-white p-4 rounded-lg shadow-lg w-80 text-black flex flex-col items-center">
+      <div className="minicart-dropdown bg-white p-4 rounded-lg shadow-lg w-80 text-black flex flex-col items-center">
         <img
           src="https://media.istockphoto.com/id/861576608/vector/empty-shopping-bag-icon-online-business-vector-icon-template.jpg?s=612x612&w=0&k=20&c=I7MbHHcjhRH4Dy0NVpf4ZN4gn8FVDnwn99YdRW2x5k0="
           alt="Empty cart"
@@ -35,7 +41,12 @@ const Minicart = ({ cartItems = [] }) => {
           Add items to your cart to get started.
         </p>
 
-        <button className="bg-black text-white py-2 rounded-lg w-full">
+        <button
+          className="bg-black text-white py-2 rounded-lg w-full"
+          onClick={() => {
+            handleRedirect("viewproducts");
+          }}
+        >
           Browse Products
         </button>
       </div>
@@ -43,7 +54,7 @@ const Minicart = ({ cartItems = [] }) => {
   }
 
   return (
-    <div className="minicart-dropdown text-white p-4 rounded-lg shadow-lg w-80 text-black">
+    <div className="minicart-dropdown bg-white p-4 rounded-lg shadow-lg w-80 text-black">
       <h3 className="text-xl mb-4">
         You have {items.length} {items.length === 1 ? "item" : "items"} in the
         cart
@@ -84,10 +95,20 @@ const Minicart = ({ cartItems = [] }) => {
         <span>Subtotal: ${subtotal.toFixed(2)}</span>
       </div>
       <div className="flex flex-col space-y-2">
-        <button className="bg-white text-black py-2 rounded-lg border">
+        <button
+          className="bg-white text-black py-2 rounded-lg border"
+          onClick={() => {
+            handleRedirect("checkout");
+          }}
+        >
           View Cart
         </button>
-        <button className="bg-black text-white py-2 rounded-lg">
+        <button
+          className="bg-black text-white py-2 rounded-lg"
+          onClick={() => {
+            handleRedirect("checkout");
+          }}
+        >
           Checkout
         </button>
       </div>
