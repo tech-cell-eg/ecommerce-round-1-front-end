@@ -14,16 +14,16 @@ export default function App() {
       path: "/",
       element: <Layout />,
       children: [
-        { path: "login", element: <Login /> },
-        { path: "register", element: <Register /> },
-        { path: "forgetpassword", element: <ForgetPass /> },
-        { path: "verifyotp", element: <VerifyOtp /> },
-        { path: "/about", element: <h1>About</h1> },
-        { path: "/checkout", element: <Checkout /> },
-        { path: "/viewproducts", element: <ProductListing /> },
-        { path: "*", element: <NotFound /> },
+        { path: "about", element: <h1>About</h1> },
+        { path: "checkout", element: <Checkout /> },
+        { path: "viewproducts", element: <ProductListing /> },
       ],
     },
+    { path: "/login", element: <Login /> },
+    { path: "/register", element: <Register /> },
+    { path: "/forgetpassword", element: <ForgetPass /> },
+    { path: "/verifyotp", element: <VerifyOtp /> },
+    { path: "*", element: <NotFound /> },
   ]);
 
   return (
