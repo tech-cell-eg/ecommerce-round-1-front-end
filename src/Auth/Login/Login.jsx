@@ -1,16 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Login() {
+  const [errormsg, setErrormsg] = useState(null)
+
+  
+
   return <>
   <section className='grid grid-cols-12 gap-2 h-screen '>
     
-    <div className='col-span-12 md:col-span-6 max-h-screen'>
+    <div className='col-span-12 md:col-span-6 lg:col-span-5 max-h-screen relative'>
         
-        <img src='https://s3-alpha-sig.figma.com/img/040c/c45a/2d79166cf646d5a5a0119f93bceae506?Expires=1734912000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=q6hPs9hT36ACfh0LKSowN-SPsO83I5laXdhJcS1pq62GlhevlJSj3RrwQSLb1f8h60qQ2osDQZ5Nc362k5Q-u9p2-QA7QUn8evqh8lfJerEhtEtgu7mKNxaGTF1PQhhwqL~XLpW3rE-dzs3aVe9-9v4pRxCTR2blwBS4fbPe9B07mep7GlUXFDclOYwLWDpg11AuB-F0RN5YegM6dFnDfPc5ZfKj-UbOzORG1xcc7RSR-ebaLBgfL7PEJcVrVlLM2kvkmNPlSPFdBGvOzsm6lqszDs9JLCuokuC-Mxwg0w9wVgW37esrfc4yvt5A1DzSUvYz6AlkJUGh3~ji5Kg19g__' alt='' className='w-full h-full '/>
+        <img src='https://s3-alpha-sig.figma.com/img/040c/c45a/2d79166cf646d5a5a0119f93bceae506?Expires=1734912000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=q6hPs9hT36ACfh0LKSowN-SPsO83I5laXdhJcS1pq62GlhevlJSj3RrwQSLb1f8h60qQ2osDQZ5Nc362k5Q-u9p2-QA7QUn8evqh8lfJerEhtEtgu7mKNxaGTF1PQhhwqL~XLpW3rE-dzs3aVe9-9v4pRxCTR2blwBS4fbPe9B07mep7GlUXFDclOYwLWDpg11AuB-F0RN5YegM6dFnDfPc5ZfKj-UbOzORG1xcc7RSR-ebaLBgfL7PEJcVrVlLM2kvkmNPlSPFdBGvOzsm6lqszDs9JLCuokuC-Mxwg0w9wVgW37esrfc4yvt5A1DzSUvYz6AlkJUGh3~ji5Kg19g__' 
+        alt='' className='w-full h-full '/>
+        <div className='flex items-center  absolute top-8 left-10 max-[280px]:left-6'>
+       <img src='/logo.svg' alt='logo' className='w-8 h-8 max-[280px]:w-6   max-[280px]:h-6 ' />
+       <h1 className='text-2xl max-[280px]:text-lg font-semibold'>Kirst</h1>
+       </div>
     </div>
-
-    <div className='col-span-12 md:col-span-5 py-6'>
+    <div className='col-span-12 md:col-span-6 py-6'>
     
         <form className='flex flex-col justify-center items-start space-y-4 w-[85%] m-auto h-full'>
         <div className='space-y-1'>
