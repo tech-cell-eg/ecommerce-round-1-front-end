@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 function SizeCategory() {
-  const [sizeIsOpen, setSizeIsOpen] = useState(false);
+  const [sizeIsOpen, setSizeIsOpen] = useState(true);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -38,7 +38,7 @@ function SizeCategory() {
           className="text-gray-500 hover:text-black"
           onClick={() => setSizeIsOpen((sizeIsOpen) => !sizeIsOpen)}
         >
-          {sizeIsOpen ? (
+          {!sizeIsOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -71,16 +71,17 @@ function SizeCategory() {
       {sizeIsOpen && (
         <ul className="mt-2 space-y-1">
           {["S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
-            <li key={size}>
+            <li key={size} className="flex justify-between">
               <label className="flex items-center space-x-2">
                 <input
                   type="checkbox"
                   checked={selectedSizes.includes(size)}
                   onChange={() => handleSizeChange(size)}
-                  className="w-4 h-4 border-gray-300 rounded"
+                  className="w-4 h-4 border-gray-700 border-2 rounded checked:bg-black checked:border-black cursor-pointer checked:outline-black"
                 />
                 <span>{size}</span>
               </label>
+              <span>(5)</span>
             </li>
           ))}
         </ul>

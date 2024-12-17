@@ -2,36 +2,30 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 function PriceCategory() {
-  const [priceIsOpen, setPriceIsOpen] = useState(false);
+  const [priceIsOpen, setPriceIsOpen] = useState(true);
   const [minPrice, setMinPrice] = useState(0); // Minimum price
   const [maxPrice, setMaxPrice] = useState(2000); // Maximum price
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handlePriceChange = () => {
-    // Update the URL with the new price range
-    const newSearchParams = new URLSearchParams(searchParams);
-
-    // Add or update the price range in the URL
-    newSearchParams.set("minPrice", minPrice);
-    newSearchParams.set("maxPrice", maxPrice);
-
-    // Set the updated query string
-    setSearchParams(newSearchParams);
-  };
-
   const handleMinPriceChange = (e) => {
     const value = Number(e.target.value);
     if (value <= maxPrice) {
-      setMinPrice(value);
-      handlePriceChange(); // Update search params when min price changes
+      setMinPrice(value); // Update minPrice first
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("minPrice", value); // Immediately update the URL
+      newSearchParams.set("maxPrice", maxPrice); // Keep the maxPrice in the URL
+      setSearchParams(newSearchParams); // Update the search params
     }
   };
 
   const handleMaxPriceChange = (e) => {
     const value = Number(e.target.value);
     if (value >= minPrice) {
-      setMaxPrice(value);
-      handlePriceChange(); // Update search params when max price changes
+      setMaxPrice(value); // Update maxPrice first
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("maxPrice", value); // Immediately update the URL
+      newSearchParams.set("minPrice", minPrice); // Keep the minPrice in the URL
+      setSearchParams(newSearchParams); // Update the search params
     }
   };
 
@@ -43,7 +37,7 @@ function PriceCategory() {
           className="text-gray-500 hover:text-black"
           onClick={() => setPriceIsOpen((prev) => !prev)}
         >
-          {priceIsOpen ? (
+          {!priceIsOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -81,14 +75,16 @@ function PriceCategory() {
           </p>
 
           <div className="relative">
+            <span className="text-sm mb-0">Minimum Price</span>
             <input
               type="range"
               min="0"
               max="2000"
               value={minPrice}
               onChange={handleMinPriceChange}
-              className="mb-0 w-full appearance-none h-[2px] bg-black [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:rounded-full cursor-pointer"
+              className=" mb-2 w-full appearance-none h-[2px] bg-black [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:rounded-full cursor-pointer"
             />
+            <span className="text-sm mb-0">Maximum Price</span>
             <input
               type="range"
               min="0"
@@ -99,10 +95,7 @@ function PriceCategory() {
             />
           </div>
 
-          <div className="flex justify-between text-sm mt-8 text-gray-700">
-            <span>$0</span>
-            <span>$2000</span>
-          </div>
+          <div className="flex justify-between text-sm mt-8 text-gray-700"></div>
         </div>
       )}
     </div>

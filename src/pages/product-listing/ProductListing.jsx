@@ -17,40 +17,44 @@ function ProductListing() {
   const selectedSizes = searchParams.getAll("size"); // Get all selected sizes
   const selectedMinPrice = searchParams.get("minPrice"); //Get selected minimum price
   const selectedMaxPrice = searchParams.get("maxPrice"); //Get selected maximum price
+  const selectedTypes = searchParams.getAll("type");
 
   const items = [
     {
       id: 1,
       title: "Shoes",
       description: "This is a shoes",
-      price: 100,
+      price: 1500,
       image: png,
       discount: 10,
       color: "red",
       size: "S",
       gender: "Men",
+      type: "Belts",
     },
     {
       id: 2,
       title: "t-shirt",
       description: "polo t-shirt",
-      price: 100,
+      price: 1200,
       image: png,
       discount: 20,
       color: "red",
       size: "S",
       gender: "Men",
+      type: "Belts",
     },
     {
       id: 3,
       title: "watch",
       description: "This is a watch",
-      price: 100,
+      price: 500,
       image: png,
       discount: 0,
       color: "blue",
       size: "M",
       gender: "Kids",
+      type: "Wallets",
     },
     {
       id: 4,
@@ -62,6 +66,7 @@ function ProductListing() {
       color: "green",
       size: "M",
       gender: "Women",
+      type: "Wallets",
     },
   ];
 
@@ -88,16 +93,16 @@ function ProductListing() {
       selectedGenders.includes(item.gender)
     );
   }
+  if (selectedTypes.length > 0) {
+    filteredItems = filteredItems.filter((item) =>
+      selectedTypes.includes(item.type)
+    );
+  }
 
   // Filter by price
   if (selectedMinPrice) {
     filteredItems = filteredItems.filter(
-      (item) => item.price >= selectedMinPrice
-    );
-  }
-  if (selectedMaxPrice) {
-    filteredItems = filteredItems.filter(
-      (item) => item.price <= selectedMaxPrice
+      (item) => item.price >= selectedMinPrice && item.price <= selectedMaxPrice
     );
   }
 
