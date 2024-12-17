@@ -58,7 +58,7 @@ const Deals = ({
   return (
     <div className="flex flex-col lg:flex-row m-4 h-[600px]">
       <div className="flex-1 p-8 space-y-4 flex flex-col justify-center text-black">
-        <h2 className="text-3xl font-semibold">Deals of the Month</h2>
+        <h2 className="text-3xl font-bold">Deals of the Month</h2>
         <p className="text-lg">
           It is a long established fact that a reader will be distracted by
           readable content of a page when looking at its layout. The point of
@@ -66,16 +66,16 @@ const Deals = ({
           letters.
         </p>
         <div className="flex gap-6 text-black">
-          <span className="border-2 border-black p-4 text-center rounded-lg">
+          <span className="border-2 border-black p-4 text-center rounded-lg font-semibold ">
             {timeLeft.day}d
           </span>
-          <span className="border-2 border-black p-4 text-center rounded-lg">
+          <span className="border-2 border-black p-4 text-center rounded-lg font-semibold">
             {timeLeft.hour}h
           </span>
-          <span className="border-2 border-black p-4 text-center rounded-lg">
+          <span className="border-2 border-black p-4 text-center rounded-lg font-semibold">
             {timeLeft.min}m
           </span>
-          <span className="border-2 border-black p-4 text-center rounded-lg">
+          <span className="border-2 border-black p-4 text-center rounded-lg font-semibold">
             {timeLeft.sec}s
           </span>
         </div>
