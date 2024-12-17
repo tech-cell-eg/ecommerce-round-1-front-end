@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ProductTable from "../components/checkout/ProductTable";
 import SummaryCard from "../components/checkout/SummaryCard";
-import { products } from "../../public/products.json";
+import { products } from "../products.json";
 
 const productsData = products.slice(0, 3);
 const Checkout = () => {
