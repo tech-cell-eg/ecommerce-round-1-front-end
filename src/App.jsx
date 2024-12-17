@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
 import Login from "./Auth/Login/Login";
@@ -9,7 +8,8 @@ import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/product-listing/ProductListing";
 import ProductDetails from "./pages/product-details/ProductDetails";
-// import products from "./products.json";
+import ErrorElement from "./pages/ErrorElement";
+
 export default function App() {
   const routes = createBrowserRouter([
     {
@@ -25,8 +25,17 @@ export default function App() {
         { path: "/viewproducts", element: <ProductListing /> },
         { path: "/product/:productId", element: <ProductDetails /> },
         { path: "*", element: <NotFound /> },
+        { path: "about", element: <h1>About</h1> },
+        { path: "checkout", element: <Checkout /> },
+        { path: "viewproducts", element: <ProductListing /> },
       ],
+      errorElement: <ErrorElement />,
     },
+    { path: "/login", element: <Login /> },
+    { path: "/register", element: <Register /> },
+    { path: "/forgetpassword", element: <ForgetPass /> },
+    { path: "/verifyotp", element: <VerifyOtp /> },
+    { path: "*", element: <NotFound /> },
   ]);
 
   return (
