@@ -65,7 +65,7 @@ export default function Login() {
 
 
             <div className='w-full  '>
-                <button type='submit' className='bg-black text-white py-2 rounded-lg w-full '>Login</button>
+                <button type='submit' className='bg-black text-white py-2 rounded-lg w-full hover:bg-gray-800 transition-all duration-200 '>Login</button>
             </div>
         </form>
     </div>
