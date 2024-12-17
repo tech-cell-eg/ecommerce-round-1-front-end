@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/product-listing/ProductListing";
 import ProductDetails from "./pages/product-details/ProductDetails";
 import ErrorElement from "./pages/ErrorElement";
+import Home from "./pages/Home";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -25,6 +26,7 @@ export default function App() {
         { path: "/viewproducts", element: <ProductListing /> },
         { path: "/product/:productId", element: <ProductDetails /> },
         { path: "*", element: <NotFound /> },
+        { index: true, element: <Home /> },
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
         { path: "viewproducts", element: <ProductListing /> },
