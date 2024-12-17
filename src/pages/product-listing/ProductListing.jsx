@@ -1,11 +1,7 @@
 import React from "react";
 import Card from "../../components/product-card/Card";
-import png from "../../assets/card.png";
 import { PiSquaresFourLight } from "react-icons/pi";
-import { MdKeyboardArrowDown } from "react-icons/md";
 import DropDownMenu from "../../components/product-listing/DropDownMenu";
-import { HiBars3CenterLeft } from "react-icons/hi2";
-import { PiDotsThreeOutlineVerticalDuotone } from "react-icons/pi";
 import { TfiMenuAlt } from "react-icons/tfi";
 import products from "../../products.json";
 
@@ -25,7 +21,6 @@ function ProductListing() {
                   <PiSquaresFourLight className="text-2xl" />
                 </div>
                 <div className="flex items-start">
-                  
                   <TfiMenuAlt className="text-2xl" />
                 </div>
                 <div>

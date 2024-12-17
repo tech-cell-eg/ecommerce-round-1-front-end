@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import StarRating from "../../components/product-details/StarRating";
 import DetailsTabs from "../../components/product-details/DetailsTabs";
+import RelatedProducts from "../../components/product-details/RelatedProducts";
 function ProductDetails() {
   const location = useLocation();
   const { product } = location.state || {};
@@ -27,7 +28,7 @@ function ProductDetails() {
       <div className="container-main ">
         <div className="grid grid-cols-12  p-8 mt-32">
           {/* Product Image Section */}
-          <div className="flex flex-col items-center col-span-5 ">
+          <div className="flex flex-col items-center xl:col-span-5 col-span-12 ">
             <img
               src={product.productImage}
               alt={product.productTitle}
@@ -46,11 +47,11 @@ function ProductDetails() {
           </div>
 
           {/* Product Details Section */}
-          <div className=" col-span-6 flex flex-col  justify-between py-10">
+          <div className=" xl:col-span-6 col-span-12 flex flex-col  justify-between py-10">
             <h1 className="text-3xl font-bold mb-2">{product.productTitle}</h1>
             <p className="text-gray-500 mb-4">{product.productDescription}</p>
             <p>
-              <StarRating rating={product.productRate} />
+              <StarRating rating={product.productRate} reviews/>
             </p>
             {/* Price Section */}
             <div className="mb-4">
@@ -138,9 +139,11 @@ function ProductDetails() {
           </div>
         </div>
         <div className="border-b">
-        <DetailsTabs description={product.productDescription} />
+          <DetailsTabs description={product.productDescription} />
         </div>
-        <div>asdad</div>
+        <div>
+          <RelatedProducts />
+        </div>
       </div>
     </>
   );

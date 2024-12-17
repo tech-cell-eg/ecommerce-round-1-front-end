@@ -1,6 +1,6 @@
 import React from "react";
 
-const StarRating = ({ rating }) => {
+const StarRating = ({ rating, reviews = false }) => {
   const totalStars = 5; // Total number of stars
   const filledStars = Math.floor(rating); // Number of completely filled stars
   const hasHalfStar = rating % 1 !== 0; // Check if there is a half star
@@ -58,10 +58,16 @@ const StarRating = ({ rating }) => {
         </svg>
       ))}
 
-      {/* Rating Text */}
-      <p className="ms-1 text-sm font-medium text-gray-500">{rating.toFixed(1)}</p>
-      <p className="ms-1 text-sm font-medium text-gray-500">out of</p>
-      <p className="ms-1 text-sm font-medium text-gray-500">5</p>
+      {/* Conditional Rendering for Rating Text */}
+      {reviews && (
+        <>
+          <p className="ms-1 text-sm font-medium text-gray-500">
+            {rating.toFixed(1)}
+          </p>
+          <p className="ms-1 text-sm font-medium text-gray-500">out of</p>
+          <p className="ms-1 text-sm font-medium text-gray-500">5</p>
+        </>
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import Reviews from "./Reviews";
 const DetailsTabs = (description) => {
   const [activeTab, setActiveTab] = useState("description");
 
@@ -51,7 +51,7 @@ const DetailsTabs = (description) => {
         )}
         {activeTab === "reviews" && (
           <div>
-            <p>No reviews yet. Be the first to write one!</p>
+            <Reviews />
           </div>
         )}
       </div>
