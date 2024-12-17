@@ -5,7 +5,8 @@ import DropDownMenu from "../../components/product-listing/DropDownMenu";
 import { TfiMenuAlt } from "react-icons/tfi";
 import SideBar from "../../components/catgories/SideBar";
 import { useSearchParams } from "react-router-dom";
-
+import png from "../../assets/card.png";
+import products from "../../products.json";
 function ProductListing() {
   const [searchParams] = useSearchParams();
   const selectedColors = searchParams.getAll("color"); // Get all selected colors
@@ -15,58 +16,59 @@ function ProductListing() {
   const selectedMaxPrice = searchParams.get("maxPrice"); //Get selected maximum price
   const selectedTypes = searchParams.getAll("type");
 
-  const items = [
-    {
-      id: 1,
-      title: "Shoes",
-      description: "This is a shoes",
-      price: 1500,
-      image: png,
-      discount: 10,
-      color: "red",
-      size: "S",
-      gender: "Men",
-      type: "Belts",
-    },
-    {
-      id: 2,
-      title: "t-shirt",
-      description: "polo t-shirt",
-      price: 1200,
-      image: png,
-      discount: 20,
-      color: "red",
-      size: "S",
-      gender: "Men",
-      type: "Belts",
-    },
-    {
-      id: 3,
-      title: "watch",
-      description: "This is a watch",
-      price: 500,
-      image: png,
-      discount: 0,
-      color: "blue",
-      size: "M",
-      gender: "Kids",
-      type: "Wallets",
-    },
-    {
-      id: 4,
-      title: "bag",
-      description: "This is a bag",
-      price: 100,
-      image: png,
-      discount: 50,
-      color: "green",
-      size: "M",
-      gender: "Women",
-      type: "Wallets",
-    },
-  ];
+  // const items = [
+  //   {
+  //     id: 1,
+  //     title: "Shoes",
+  //     description: "This is a shoes",
+  //     price: 1500,
+  //     image: png,
+  //     discount: 10,
+  //     color: "red",
+  //     size: "S",
+  //     gender: "Men",
+  //     type: "Belts",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "t-shirt",
+  //     description: "polo t-shirt",
+  //     price: 1200,
+  //     image: png,
+  //     discount: 20,
+  //     color: "red",
+  //     size: "S",
+  //     gender: "Men",
+  //     type: "Belts",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "watch",
+  //     description: "This is a watch",
+  //     price: 500,
+  //     image: png,
+  //     discount: 0,
+  //     color: "blue",
+  //     size: "M",
+  //     gender: "Kids",
+  //     type: "Wallets",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "bag",
+  //     description: "This is a bag",
+  //     price: 100,
+  //     image: png,
+  //     discount: 50,
+  //     color: "green",
+  //     size: "M",
+  //     gender: "Women",
+  //     type: "Wallets",
+  //   },
+  // ];
 
   // Filter logic
+    const items  = products.products
   let filteredItems = items;
 
   // Filter by color
@@ -105,7 +107,7 @@ function ProductListing() {
   return (
     <>
       <section className="container-main">
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4 mt-16">
           <div className="col-span-1">
             <SideBar />
           </div>
