@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 function ColorCategory() {
-  const [colorIsOpen, setColorIsOpen] = useState(false);
+  const [colorIsOpen, setColorIsOpen] = useState(true);
   const [selectedColors, setSelectedColors] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -38,7 +38,7 @@ function ColorCategory() {
           className="text-gray-500 hover:text-black"
           onClick={() => setColorIsOpen((colorIsOpen) => !colorIsOpen)}
         >
-          {colorIsOpen ? (
+          {!colorIsOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -70,16 +70,16 @@ function ColorCategory() {
       {colorIsOpen && (
         <ul className="mt-2 space-y-1">
           {["red", "blue", "orange", "black", "green"].map((color) => (
-            <li key={color}>
+            <li key={color} className="flex justify-between">
               <label className="flex items-center space-x-2">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 border-gray-300 rounded"
+                  className="w-4 h-4 border-gray-700 border-2 rounded checked:bg-black checked:border-black cursor-pointer checked:outline-black"
                   checked={selectedColors.includes(color)}
                   onChange={() => handleColorChange(color)}
                 />
                 <span
-                  className={`w-4 h-4 rounded-full ${
+                  className={`w-4 h-4 rounded-md ${
                     color === "red"
                       ? "bg-red-500"
                       : color === "blue"
@@ -93,6 +93,7 @@ function ColorCategory() {
                 ></span>
                 <span>{color.charAt(0).toUpperCase() + color.slice(1)}</span>
               </label>
+              <span>(5)</span>
             </li>
           ))}
         </ul>
