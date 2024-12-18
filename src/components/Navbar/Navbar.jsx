@@ -4,6 +4,9 @@ import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import MiniCart from "../MiniCart";
+import { MegaMenu } from "flowbite-react";
+import { HiChevronDown } from "react-icons/hi";
+import Mega from "./Mega";
 
 export default function Navbar() {
   const [showNavList, setShowNavList] = useState(true);
@@ -27,7 +30,7 @@ export default function Navbar() {
 
   const navlist = [
     { name: "Home", path: "/" },
-    { name: "shop", path: "/shop" },
+    { name: "Shop", path: "/shop" },
     { name: "Our story", path: "/ourstory" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact", path: "/contact" },
@@ -52,16 +55,30 @@ export default function Navbar() {
 
           {/* NAV LIST */}
           {showNavList && (
-            <div className="md:flex items-center justify-start gap-4">
+            <div className="md:flex items-center gap-4">
+
               {navlist.map((item, index) => (
-                <ul key={index}>
+                <ul key={index} className="relative">
                   <li>
-                    <Link
-                      to={item.path}
-                      className="text-lg hover:text-gray-800"
-                    >
-                      {item.name}
-                    </Link>
+                    {item.name === "Shop" ? (
+                      <MegaMenu>
+                        <MegaMenu.DropdownToggle>
+                          Shop
+                          <HiChevronDown className="ml-2" />
+                        </MegaMenu.DropdownToggle>
+                        <MegaMenu.Dropdown>
+                          <Mega />
+                        </MegaMenu.Dropdown>
+                      </MegaMenu>
+                    ) : (
+                      <Link
+                        to={item.path}
+                        className="text-lg hover:text-gray-800"
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+
                   </li>
                 </ul>
               ))}

@@ -1,6 +1,7 @@
 // import { useState, useEffect } from "react";
 // import { fetchAllProducts } from "../api/products/products";
 import BestSeller from "../components/home/BestSeller";
+import CategorySlider from "../components/home/CategorySlider";
 import Deals from "../components/home/Deals";
 
 const Home = () => {
@@ -32,6 +33,7 @@ const Home = () => {
           ))}
         </ul>
       </div> */}
+      <CategorySlider/>
       <BestSeller />
       <Deals
         initialDays={8}
