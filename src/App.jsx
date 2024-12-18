@@ -7,6 +7,7 @@ import VerifyOtp from "./Auth/VerifyOtp/VerifyOtp";
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/product-listing/ProductListing";
+import ProductDetails from "./pages/product-details/ProductDetails";
 import ErrorElement from "./pages/ErrorElement";
 import Home from "./pages/Home";
 
@@ -16,10 +17,19 @@ export default function App() {
       path: "/",
       element: <Layout />,
       children: [
+        { path: "login", element: <Login /> },
+        { path: "register", element: <Register /> },
+        { path: "forgetpassword", element: <ForgetPass /> },
+        { path: "verifyotp", element: <VerifyOtp /> },
+        { path: "/about", element: <h1>About</h1> },
+        { path: "/checkout", element: <Checkout /> },
+        { path: "/shop", element: <ProductListing /> },
+        { path: "/product/:productId", element: <ProductDetails /> },
+        { path: "*", element: <NotFound /> },
         { index: true, element: <Home /> },
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
-        { path: "viewproducts", element: <ProductListing /> },
+        { path: "shop", element: <ProductListing /> },
       ],
       errorElement: <ErrorElement />,
     },

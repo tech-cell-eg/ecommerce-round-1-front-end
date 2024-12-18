@@ -9,16 +9,18 @@ export default function Navbar() {
   const [showNavList, setShowNavList] = useState(true);
   const [showMinicart, setShowMinicart] = useState(false);
   const [cartItems] = useState([]);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
-  const [token,setToken] = useState(true)
-  const handellogout = ()=>{
-          setToken(false)
-    
-  }
+  const [token, setToken] = useState(true);
+  const handellogout = () => {
+    setToken(false);
+  };
 
   const handelShowNavList = () => {
     setShowNavList(!showNavList);
   };
+
   const toggleMinicart = () => {
     setShowMinicart(!showMinicart);
   };
@@ -32,6 +34,7 @@ export default function Navbar() {
   ];
 
   const cartItemCount = cartItems.length;
+
   return (
     <>
       <nav className="py-3">
@@ -48,15 +51,14 @@ export default function Navbar() {
           </div>
 
           {/* NAV LIST */}
-
           {showNavList && (
-            <div className="md:flex items-center justify-start gap-4 ">
+            <div className="md:flex items-center justify-start gap-4">
               {navlist.map((item, index) => (
                 <ul key={index}>
                   <li>
                     <Link
                       to={item.path}
-                      className="text-lg  hover:text-gray-800"
+                      className="text-lg hover:text-gray-800"
                     >
                       {item.name}
                     </Link>
@@ -68,10 +70,32 @@ export default function Navbar() {
 
           {/* ICONS */}
           {showNavList && (
-            <div className="flex items-center gap-4  md:justify-between">
-              <CiSearch className="cursor-pointer" />
+            <div className="flex items-center gap-4 md:justify-between">
+              {!showSearch ? (
+                <CiSearch
+                  className="cursor-pointer"
+                  onClick={() => setShowSearch(true)}
+                />
+              ) : (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                    placeholder="Search..."
+                  />
+                  <button
+                    onClick={() => setShowSearch(false)}
+                    className="px-4 py-2 text-white bg-black rounded-lg "
+                  >
+                    Search
+                  </button>
+                </div>
+              )}
+
               <Link to={""}>
-                <CiHeart className="" />
+                <CiHeart />
               </Link>
               <div className="relative">
                 <FiInbox className="cursor-pointer" onClick={toggleMinicart} />
@@ -85,22 +109,21 @@ export default function Navbar() {
                 )}
               </div>
 
-          {token ? (
-          <button
-        className="bg-black text-white text-center py-2 px-4 rounded-lg"
-        onClick={handellogout}
-           >
-             Logout
-           </button>
-           ) :(
-            <Link
-       to={"/login"}
-       className="bg-black text-white text-center py-2 px-4 rounded-lg"
-     >
-       Login
-     </Link>)}
-
-
+              {token ? (
+                <button
+                  className="bg-black text-white text-center py-2 px-4 rounded-lg"
+                  onClick={handellogout}
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  to={"/login"}
+                  className="bg-black text-white text-center py-2 px-4 rounded-lg"
+                >
+                  Login
+                </Link>
+              )}
             </div>
           )}
         </div>
