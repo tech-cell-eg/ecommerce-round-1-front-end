@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { Link } from "react-router-dom"; // Add the Link component
+import { Link } from "react-router-dom";
 import { categories } from "../../products.json";
 
 const CategorySlider = () => {
@@ -23,8 +23,7 @@ const CategorySlider = () => {
   };
 
   return (
-    <div className="w-full mx-auto mt-10 relative" style={{ width: "90%" }}>
-      {/* Title and Navigation Arrows on the Same Row */}
+    <div className="w-full mx-auto m-10 relative" style={{ width: "90%" }}>
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold text-gray-800 text-left">
           Shop by Categories
