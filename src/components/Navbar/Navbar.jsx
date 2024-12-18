@@ -85,7 +85,6 @@ export default function Navbar() {
           {/* ICONS */}
           {showNavList && (
             <div className="flex items-center gap-4 md:justify-between">
-              <CiSearch className="cursor-pointer" />
               {!showSearch ? (
                 <CiSearch
                   className="cursor-pointer"
