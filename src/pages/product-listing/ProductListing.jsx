@@ -8,6 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import { fetchAllProducts } from "../../api/products/products";
 
 function ProductListing() {
+
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(true); // Sidebar visibility default is open on larger screens
@@ -22,13 +23,22 @@ function ProductListing() {
   useEffect(() => {
     const getProducts = async () => {
       const allProducts = await fetchAllProducts();
+      console.log(allProducts);
+      setProducts(allProducts);
+    };
+
+    getProducts();
+  }, []);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const allProducts = await fetchAllProducts();
       setProducts(allProducts);
     };
     getProducts();
   }, []);
 
   // Filter logic
-  const items = products;
   let filteredItems = items;
 
   if (selectedColors.length > 0) {

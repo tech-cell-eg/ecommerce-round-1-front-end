@@ -11,6 +11,7 @@ import ProductDetails from "./pages/product-details/ProductDetails";
 import ErrorElement from "./pages/ErrorElement";
 import CustomerReview from "./components/customerReview/CustomerReview";
 import Home from "./pages/Home";
+import CustomerTestimonials from "./pages/CustomerTestimonials";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -32,8 +33,10 @@ export default function App() {
         { path: "checkout", element: <Checkout /> },
 
         { path: "viewproducts", element: <ProductListing /> },
-        {path:"customerreview", element: <CustomerReview/>}
+        {path:"customerreview", element: <CustomerReview/>},
         { path: "shop", element: <ProductListing /> },
+        { path: "customerreviews", element: <CustomerTestimonials /> },
+
       ],
       errorElement: <ErrorElement />,
     },
