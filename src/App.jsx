@@ -8,6 +8,7 @@ import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/product-listing/ProductListing";
 import ErrorElement from "./pages/ErrorElement";
+import CustomerReview from "./components/customerReview/CustomerReview";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -18,6 +19,7 @@ export default function App() {
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
         { path: "viewproducts", element: <ProductListing /> },
+        {path:"customerreview", element: <CustomerReview/>}
       ],
       errorElement: <ErrorElement />,
     },
