@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Reviews from "./Reviews";
-const DetailsTabs = ({product}) => {
+import AddingReview from "./AddingReview";
+const DetailsTabs = ({ product }) => {
   const [activeTab, setActiveTab] = useState("description");
   // console.log(product);
   const tabs = [
@@ -51,7 +52,12 @@ const DetailsTabs = ({product}) => {
         )}
         {activeTab === "reviews" && (
           <div>
-            <Reviews />
+            <div>
+              <Reviews />
+            </div>
+            <div>
+              <AddingReview />
+            </div>
           </div>
         )}
       </div>
