@@ -1,18 +1,19 @@
 import React from "react";
-import styles from "./Card.module.css"; // Import CSS module
+import styles from "./Card.module.css";
 import { CiStar } from "react-icons/ci";
 import { FaExchangeAlt } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
-
+import { Link } from "react-router-dom";
 function Card({ item }) {
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        {/* Image */}
-        <img src={item.image} alt={item.title} className={styles.cardImage} />
-
-        {/* Top-right icons */}
-        <div className={`${styles.topIcons} ${styles.hiddenIcons}`}>
+        <img
+          src={item.image}
+          alt={item.name}
+          className={styles.cardImage}
+        />
+        <div className={styles.topIcons}>
           <button className={styles.iconButton}>
             <CiStar />
           </button>
@@ -23,27 +24,23 @@ function Card({ item }) {
             <IoEyeOutline />
           </button>
         </div>
-
-        {/* Add to cart button */}
-        <button
-          className={`${styles.addToCartButton} ${styles.hiddenCart} w-[90%] rounded-md bg-white font-semibold text-lg`}
-        >
-          Add to Cart
-        </button>
+        <button className={styles.addToCartButton}>Add to Cart</button>
       </div>
-
-      {/* Card content */}
       <div className={styles.cardContent}>
-        <h2 className={styles.cardTitle}>{item.title}</h2>
+        <Link to={`/product/${item.id}`} className={styles.cardLink} state={{ product: item }}>
+          <h2 className={styles.cardTitle}>{item.name}</h2>
+        </Link>
         <p className={styles.cardDescription}>{item.description}</p>
-        {item.discount > 0 ? (
+        {/* {item.discount > 0 ? (
           <p className={styles.cardPrice}>
-            ${item.price - item.discount}{" "}
-            <span className={styles.strikeThrough}>${item.price}</span>
+            ${item.productPrice - item.discount}{" "}
+            <span className={styles.strikeThrough}>${item.productPrice}</span>
           </p>
         ) : (
-          <p className={styles.cardPrice}>${item.price}</p>
-        )}
+          <p className={styles.cardPrice}>${item.productPrice}</p>
+        )} */}
+                  <p className={styles.cardPrice}>${item.price}</p>
+
       </div>
     </div>
   );

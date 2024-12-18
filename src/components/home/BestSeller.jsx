@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import Card from "../product-card/Card";
 import { products } from "../../products.json";
-
 const bestSellersData = products.slice(0, 8);
 
 const BestSeller = () => {
   const [products, setProducts] = useState([]);
-
   useEffect(() => {
     const formattedData = bestSellersData.map((product) => ({
       id: product.productId,
@@ -27,7 +25,7 @@ const BestSeller = () => {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((item) => (
+        {bestSellersData.map((item) => (
           <Card key={item.id} item={item} />
         ))}
       </div>

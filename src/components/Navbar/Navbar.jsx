@@ -11,6 +11,9 @@ export default function Navbar() {
   const [showNavList, setShowNavList] = useState(true);
   const [showMinicart, setShowMinicart] = useState(false);
   const [cartItems] = useState([]);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
   const [token, setToken] = useState(true);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
 
@@ -21,6 +24,7 @@ export default function Navbar() {
   const handelShowNavList = () => {
     setShowNavList(!showNavList);
   };
+
   const toggleMinicart = () => {
     setShowMinicart(!showMinicart);
   };
@@ -34,6 +38,7 @@ export default function Navbar() {
   ];
 
   const cartItemCount = cartItems.length;
+
   return (
     <>
       <nav className="py-3 relative">
@@ -81,8 +86,31 @@ export default function Navbar() {
           {showNavList && (
             <div className="flex items-center gap-4 md:justify-between">
               <CiSearch className="cursor-pointer" />
+              {!showSearch ? (
+                <CiSearch
+                  className="cursor-pointer"
+                  onClick={() => setShowSearch(true)}
+                />
+              ) : (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                    placeholder="Search..."
+                  />
+                  <button
+                    onClick={() => setShowSearch(false)}
+                    className="px-4 py-2 text-white bg-black rounded-lg "
+                  >
+                    Search
+                  </button>
+                </div>
+              )}
+
               <Link to={""}>
-                <CiHeart className="" />
+                <CiHeart />
               </Link>
               <div className="relative">
                 <FiInbox className="cursor-pointer" onClick={toggleMinicart} />
