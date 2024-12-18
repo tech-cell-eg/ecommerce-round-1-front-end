@@ -9,8 +9,8 @@ function Card({ item }) {
     <div className={styles.card}>
       <div className={styles.imageContainer}>
         <img
-          src={item.productImage}
-          alt={item.productTitle}
+          src={item.image}
+          alt={item.name}
           className={styles.cardImage}
         />
         <div className={styles.topIcons}>
@@ -27,18 +27,20 @@ function Card({ item }) {
         <button className={styles.addToCartButton}>Add to Cart</button>
       </div>
       <div className={styles.cardContent}>
-        <Link to={`/product/${item.productId}`} className={styles.cardLink} state={{ product: item }}>
-          <h2 className={styles.cardTitle}>{item.productTitle}</h2>
+        <Link to={`/product/${item.id}`} className={styles.cardLink} state={{ product: item }}>
+          <h2 className={styles.cardTitle}>{item.name}</h2>
         </Link>
-        <p className={styles.cardDescription}>{item.productDescription}</p>
-        {item.discount > 0 ? (
+        <p className={styles.cardDescription}>{item.description}</p>
+        {/* {item.discount > 0 ? (
           <p className={styles.cardPrice}>
             ${item.productPrice - item.discount}{" "}
             <span className={styles.strikeThrough}>${item.productPrice}</span>
           </p>
         ) : (
           <p className={styles.cardPrice}>${item.productPrice}</p>
-        )}
+        )} */}
+                  <p className={styles.cardPrice}>${item.price}</p>
+
       </div>
     </div>
   );

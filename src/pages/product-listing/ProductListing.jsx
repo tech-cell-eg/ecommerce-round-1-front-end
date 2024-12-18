@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import Card from "../../components/product-card/Card";
 import { PiSquaresFourLight } from "react-icons/pi";
 import DropDownMenu from "../../components/product-listing/DropDownMenu";
@@ -6,69 +7,26 @@ import { TfiMenuAlt } from "react-icons/tfi";
 import SideBar from "../../components/catgories/SideBar";
 import { useSearchParams } from "react-router-dom";
 import png from "../../assets/card.png";
-import products from "../../products.json";
+// import products from "../../products.json";
+import { fetchAllProducts } from "../../api/products/products";
 function ProductListing() {
   const [searchParams] = useSearchParams();
+  const [products, setProducts] = useState([]);
   const selectedColors = searchParams.getAll("color"); // Get all selected colors
   const selectedGenders = searchParams.getAll("gender"); // Get all selected genders
   const selectedSizes = searchParams.getAll("size"); // Get all selected sizes
   const selectedMinPrice = searchParams.get("minPrice"); //Get selected minimum price
   const selectedMaxPrice = searchParams.get("maxPrice"); //Get selected maximum price
   const selectedTypes = searchParams.getAll("type");
-
-  // const items = [
-  //   {
-  //     id: 1,
-  //     title: "Shoes",
-  //     description: "This is a shoes",
-  //     price: 1500,
-  //     image: png,
-  //     discount: 10,
-  //     color: "red",
-  //     size: "S",
-  //     gender: "Men",
-  //     type: "Belts",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "t-shirt",
-  //     description: "polo t-shirt",
-  //     price: 1200,
-  //     image: png,
-  //     discount: 20,
-  //     color: "red",
-  //     size: "S",
-  //     gender: "Men",
-  //     type: "Belts",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "watch",
-  //     description: "This is a watch",
-  //     price: 500,
-  //     image: png,
-  //     discount: 0,
-  //     color: "blue",
-  //     size: "M",
-  //     gender: "Kids",
-  //     type: "Wallets",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "bag",
-  //     description: "This is a bag",
-  //     price: 100,
-  //     image: png,
-  //     discount: 50,
-  //     color: "green",
-  //     size: "M",
-  //     gender: "Women",
-  //     type: "Wallets",
-  //   },
-  // ];
-
+  useEffect(() => {
+    const getProducts = async () => {
+      const allProducts = await fetchAllProducts();
+      setProducts(allProducts);
+    };
+    getProducts();
+  }, []);
   // Filter logic
-    const items  = products.products
+  const items = products;
   let filteredItems = items;
 
   // Filter by color

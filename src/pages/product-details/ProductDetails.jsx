@@ -51,7 +51,7 @@ function ProductDetails() {
             <h1 className="text-3xl font-bold mb-2">{product.productTitle}</h1>
             <p className="text-gray-500 mb-4">{product.productDescription}</p>
             <p>
-              <StarRating rating={product.productRate} reviews/>
+              <StarRating rating={product.rating} reviews />
             </p>
             {/* Price Section */}
             <div className="mb-4">
@@ -139,7 +139,7 @@ function ProductDetails() {
           </div>
         </div>
         <div className="border-b">
-          <DetailsTabs description={product.productDescription} />
+          <DetailsTabs product={product} />
         </div>
         <div>
           <RelatedProducts />

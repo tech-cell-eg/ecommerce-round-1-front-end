@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Reviews from "./Reviews";
-const DetailsTabs = (description) => {
+const DetailsTabs = ({product}) => {
   const [activeTab, setActiveTab] = useState("description");
-
+  // console.log(product);
   const tabs = [
     { name: "description", label: "Description" },
     { name: "additionalInfo", label: "Additional Information" },
@@ -32,7 +32,7 @@ const DetailsTabs = (description) => {
       <div className="ps-6 py-10 text-gray-700">
         {activeTab === "description" && (
           <div>
-            <p>{description.description}</p>
+            <p>{product.description}</p>
           </div>
         )}
         {activeTab === "additionalInfo" && (
@@ -40,11 +40,11 @@ const DetailsTabs = (description) => {
             <ul className="list-disc pl-5">
               <li className="font-normal">
                 <p className="font-semibold inline-block mr-6">Color</p>{" "}
-                Red,Green,Blue
+                {product.color}
               </li>
               <li className="font-normal">
                 <p className="font-semibold inline-block mr-8">Size</p>{" "}
-                S,M,L,XL,2XL
+                {product.size}
               </li>
             </ul>
           </div>
