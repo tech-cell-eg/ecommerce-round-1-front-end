@@ -10,11 +10,10 @@ export default function Navbar() {
   const [showMinicart, setShowMinicart] = useState(false);
   const [cartItems] = useState([]);
 
-  const [token,setToken] = useState(true)
-  const handellogout = ()=>{
-          setToken(false)
-    
-  }
+  const [token, setToken] = useState(true);
+  const handellogout = () => {
+    setToken(false);
+  };
 
   const handelShowNavList = () => {
     setShowNavList(!showNavList);
@@ -25,10 +24,11 @@ export default function Navbar() {
 
   const navlist = [
     { name: "Home", path: "/" },
-    { name: "shop", path: "/shop" },
+    { name: "shop", path: "/viewproducts" },
     { name: "Our story", path: "/ourstory" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact", path: "/contact" },
+    { name: "Customer Reviews", path: "/customerreviews" },
   ];
 
   const cartItemCount = cartItems.length;
@@ -85,22 +85,21 @@ export default function Navbar() {
                 )}
               </div>
 
-          {token ? (
-          <button
-        className="bg-black text-white text-center py-2 px-4 rounded-lg"
-        onClick={handellogout}
-           >
-             Logout
-           </button>
-           ) :(
-            <Link
-       to={"/login"}
-       className="bg-black text-white text-center py-2 px-4 rounded-lg"
-     >
-       Login
-     </Link>)}
-
-
+              {token ? (
+                <button
+                  className="bg-black text-white text-center py-2 px-4 rounded-lg"
+                  onClick={handellogout}
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  to={"/login"}
+                  className="bg-black text-white text-center py-2 px-4 rounded-lg"
+                >
+                  Login
+                </Link>
+              )}
             </div>
           )}
         </div>

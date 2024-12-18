@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../../components/product-card/Card";
 import png from "../../assets/card.png";
 import { PiSquaresFourLight } from "react-icons/pi";
@@ -9,8 +9,11 @@ import { PiDotsThreeOutlineVerticalDuotone } from "react-icons/pi";
 import { TfiMenuAlt } from "react-icons/tfi";
 import SideBar from "../../components/catgories/SideBar";
 import { useSearchParams } from "react-router-dom";
+import { fetchAllProducts } from "../../api/products/products";
 
 function ProductListing() {
+  const [products, setProducts] = useState([]);
+
   const [searchParams] = useSearchParams();
   const selectedColors = searchParams.getAll("color"); // Get all selected colors
   const selectedGenders = searchParams.getAll("gender"); // Get all selected genders
@@ -18,6 +21,16 @@ function ProductListing() {
   const selectedMinPrice = searchParams.get("minPrice"); //Get selected minimum price
   const selectedMaxPrice = searchParams.get("maxPrice"); //Get selected maximum price
   const selectedTypes = searchParams.getAll("type");
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const allProducts = await fetchAllProducts();
+      console.log(allProducts);
+      setProducts(allProducts);
+    };
+
+    getProducts();
+  }, []);
 
   const items = [
     {
@@ -71,7 +84,7 @@ function ProductListing() {
   ];
 
   // Filter logic
-  let filteredItems = items;
+  let filteredItems = products;
 
   // Filter by color
   if (selectedColors.length > 0) {
