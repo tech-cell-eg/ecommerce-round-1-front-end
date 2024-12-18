@@ -1,21 +1,16 @@
 import { useEffect, useState } from "react";
 import Card from "../product-card/Card";
-import { products } from "../../products.json";
-const bestSellersData = products.slice(0, 8);
+import { fetchAllProducts } from "../../api/products/products";
 
 const BestSeller = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    const formattedData = bestSellersData.map((product) => ({
-      id: product.productId,
-      title: product.productTitle,
-      description: product.productSubTitle,
-      price: product.productPrice,
-      discount: 5,
-      image: product.productImage,
-    }));
+    const getProducts = async () => {
+      const allProducts = await fetchAllProducts();
+      setProducts(allProducts);
+    };
 
-    setProducts(formattedData);
+    getProducts();
   }, []);
 
   return (
@@ -25,7 +20,7 @@ const BestSeller = () => {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {bestSellersData.map((item) => (
+        {products.map((item) => (
           <Card key={item.id} item={item} />
         ))}
       </div>

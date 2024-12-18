@@ -3,7 +3,7 @@ import { CiHeart, CiSearch } from "react-icons/ci";
 import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import MiniCart from "../MiniCart";
+import MiniCart from "./Minicart";
 import { HiChevronDown } from "react-icons/hi";
 import Mega from "./Mega";
 

@@ -44,7 +44,7 @@ const Minicart = ({ cartItems = [] }) => {
         <button
           className="bg-black text-white py-2 rounded-lg w-full"
           onClick={() => {
-            handleRedirect("viewproducts");
+            handleRedirect("shop");
           }}
         >
           Browse Products

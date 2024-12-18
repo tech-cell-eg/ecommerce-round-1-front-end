@@ -62,7 +62,7 @@ const CategorySlider = () => {
               }}
             >
               <Link
-                to="/viewproducts"
+                to="/shop"
                 className="w-[95%] bg-white px-4 py-2 rounded-lg shadow-md flex justify-center items-center"
               >
                 <h3 className="text-lg font-semibold text-gray-800 text-center">
