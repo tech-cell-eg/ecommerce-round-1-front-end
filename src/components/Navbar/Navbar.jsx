@@ -3,8 +3,7 @@ import { CiHeart, CiSearch } from "react-icons/ci";
 import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import MiniCart from "../MiniCart";
-import { MegaMenu } from "flowbite-react";
+import MiniCart from "./Minicart";
 import { HiChevronDown } from "react-icons/hi";
 import Mega from "./Mega";
 
@@ -16,6 +15,8 @@ export default function Navbar() {
   const [searchText, setSearchText] = useState("");
 
   const [token, setToken] = useState(true);
+  const [showMegaMenu, setShowMegaMenu] = useState(false);
+
   const handellogout = () => {
     setToken(false);
   };
@@ -43,7 +44,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="py-3">
+      <nav className="py-3 relative">
         <div className="w-[90%] m-auto md:flex items-center justify-between">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -58,34 +59,30 @@ export default function Navbar() {
 
           {/* NAV LIST */}
           {showNavList && (
-            <div className="md:flex items-center gap-4">
-
+            <ul className="md:flex items-center gap-4">
               {navlist.map((item, index) => (
-                <ul key={index} className="relative">
-                  <li>
-                    {item.name === "Shop" ? (
-                      <MegaMenu>
-                        <MegaMenu.DropdownToggle>
-                          Shop
-                          <HiChevronDown className="ml-2" />
-                        </MegaMenu.DropdownToggle>
-                        <MegaMenu.Dropdown>
-                          <Mega />
-                        </MegaMenu.Dropdown>
-                      </MegaMenu>
-                    ) : (
-                      <Link
-                        to={item.path}
-                        className="text-lg hover:text-gray-800"
+                <li key={index} className="relative">
+                  {item.name === "Shop" ? (
+                    <>
+                      <button
+                        className="flex items-center text-lg hover:text-gray-800"
+                        onClick={() => setShowMegaMenu(!showMegaMenu)}
                       >
-                        {item.name}
-                      </Link>
-                    )}
-
-                  </li>
-                </ul>
+                        Shop
+                        <HiChevronDown className="ml-2" />
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      className="text-lg hover:text-gray-800"
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </li>
               ))}
-            </div>
+            </ul>
           )}
 
           {/* ICONS */}
@@ -147,6 +144,12 @@ export default function Navbar() {
             </div>
           )}
         </div>
+        {/* Mega Menu */}
+        {showMegaMenu && (
+          <div className="absolute left-40 right-0 top-full z-10">
+            <Mega />
+          </div>
+        )}
       </nav>
     </>
   );

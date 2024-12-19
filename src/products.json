@@ -286,6 +286,21 @@
       "id": 5,
       "title": "Formal Wear",
       "image": "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+      "id": 6,
+      "title": "Accessories",
+      "image": "https://images.pexels.com/photos/1453008/pexels-photo-1453008.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    {
+      "id": 7,
+      "title": "Winter Wears",
+      "image": "https://images.pexels.com/photos/29775633/pexels-photo-29775633/free-photo-of-trendy-woman-in-faux-fur-coat-with-beret.jpeg?auto=compress&cs=tinysrgb&w=600"
+    },
+    {
+      "id": 8,
+      "title": "Women Wears",
+      "image": "https://images.pexels.com/photos/20568214/pexels-photo-20568214/free-photo-of-model-in-denim-jacket-and-patterned-dress.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
     }
   ]
 }

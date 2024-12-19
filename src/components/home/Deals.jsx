@@ -52,7 +52,7 @@ const Deals = ({
   }, [initialDays, initialHours, initialMinutes, initialSeconds]);
 
   const handleRedirect = () => {
-    navigate("/viewproducts");
+    navigate("/shop");
   };
 
   return (

@@ -19,16 +19,11 @@ export default function App() {
       path: "/",
       element: <Layout />,
       children: [
-        { path: "login", element: <Login /> },
-        { path: "register", element: <Register /> },
-        { path: "forgetpassword", element: <ForgetPass /> },
-        { path: "verifyotp", element: <VerifyOtp /> },
+        { index: true, element: <Home /> },
         { path: "/about", element: <h1>About</h1> },
         { path: "/checkout", element: <Checkout /> },
         { path: "/shop", element: <ProductListing /> },
         { path: "/product/:productId", element: <ProductDetails /> },
-        { path: "*", element: <NotFound /> },
-        { index: true, element: <Home /> },
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
 
