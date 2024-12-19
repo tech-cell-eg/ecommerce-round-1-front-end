@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Card.module.css";
+import styles from "./card.module.css";
 import { CiStar } from "react-icons/ci";
 import { FaExchangeAlt } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
