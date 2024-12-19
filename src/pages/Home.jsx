@@ -3,6 +3,7 @@
 import BestSeller from "../components/home/BestSeller";
 import CategorySlider from "../components/home/CategorySlider";
 import Deals from "../components/home/Deals";
+import InstgramStories from "../components/home/InstgramStories";
 
 const Home = () => {
   //?Example of Fetching All Products
@@ -20,7 +21,7 @@ const Home = () => {
 
   return (
     <>
-    {/* //?Example of Fetching All Products */}
+      {/* //?Example of Fetching All Products */}
       {/* <div>
         <h1>Products List</h1>
         <ul>
@@ -33,7 +34,7 @@ const Home = () => {
           ))}
         </ul>
       </div> */}
-      <CategorySlider/>
+      <CategorySlider />
       <BestSeller />
       <Deals
         initialDays={8}
@@ -41,6 +42,7 @@ const Home = () => {
         initialMinutes={0}
         initialSeconds={0}
       />
+      <InstgramStories />
     </>
   );
 };
