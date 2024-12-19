@@ -38,15 +38,15 @@ function Card({ item }) {
           <h2 className={styles.cardTitle}>{item.name}</h2>
         </Link>
         <p className={styles.cardDescription}>{item.description}</p>
-        {/* {item.discount > 0 ? (
+        {item.price - item.compare_price > 0 ? (
           <p className={styles.cardPrice}>
-            ${item.productPrice - item.discount}{" "}
-            <span className={styles.strikeThrough}>${item.productPrice}</span>
+            ${item.price - item.compare_price}{" "}
+            <span className={styles.strikeThrough}>${item.price}</span>
           </p>
         ) : (
-          <p className={styles.cardPrice}>${item.productPrice}</p>
-        )} */}
-        <p className={styles.cardPrice}>${item.price}</p>
+          <p className={styles.cardPrice}>${item.price}</p>
+        )}
+        {/* <p className={styles.cardPrice}>${item.price}</p> */}
       </div>
     </div>
   );

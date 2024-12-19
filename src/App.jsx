@@ -9,7 +9,6 @@ import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/product-listing/ProductListing";
 import ProductDetails from "./pages/product-details/ProductDetails";
 import ErrorElement from "./pages/ErrorElement";
-// import CustomerReview from "./components/customerReview/CustomerReview";
 import Home from "./pages/Home";
 import CustomerTestimonials from "./pages/CustomerTestimonials";
 
