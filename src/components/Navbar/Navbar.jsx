@@ -112,8 +112,8 @@ export default function Navbar() {
                 <div>
                   <input
                     type="text"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
+                    // value={searchInput}
+                    // onChange={(e) => setSearchInput(e.target.value)}
                     placeholder="Search products..."
                     className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   />
