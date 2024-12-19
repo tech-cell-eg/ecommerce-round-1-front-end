@@ -1,7 +1,25 @@
-import PropTypes from 'prop-types';
+// import PropTypes from "prop-types";
 import { FaTrash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateItemQuantity,
+  removeFromCart,
+} from "../../redux/actions/cartActions";
+import { selectCartItems } from "../../redux/selectors/cartSelectors";
 
-const ProductTable = ({ products, onQuantityChange, onDelete }) => {
+const ProductTable = () => {
+  const dispatch = useDispatch();
+  const products = useSelector(selectCartItems);
+
+  const handleQuantityChange = (productId, type) => {
+    const change = type === "increment" ? 1 : -1;
+    dispatch(updateItemQuantity(productId, change));
+  };
+
+  const handleDelete = (productId) => {
+    dispatch(removeFromCart(productId));
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border-collapse ">
@@ -45,16 +63,16 @@ const ProductTable = ({ products, onQuantityChange, onDelete }) => {
                 <div className="flex justify-center items-center space-x-2">
                   <button
                     onClick={() =>
-                      onQuantityChange(product.productId, "decrement")
+                      handleQuantityChange(product.productId, "decrement")
                     }
                     className="border px-2 py-1 rounded hover:bg-gray-200"
                   >
                     -
                   </button>
-                  <span>{product.quantity || 1}</span>
+                  <span>{product.quantity}</span>
                   <button
                     onClick={() =>
-                      onQuantityChange(product.productId, "increment")
+                      handleQuantityChange(product.productId, "increment")
                     }
                     className="border px-2 py-1 rounded hover:bg-gray-200"
                   >
@@ -65,12 +83,12 @@ const ProductTable = ({ products, onQuantityChange, onDelete }) => {
 
               {/* Subtotal */}
               <td className=" p-4 text-center">
-                ${(product.productPrice * (product.quantity || 1)).toFixed(2)}
+                ${(product.productPrice * product.quantity).toFixed(2)}
               </td>
 
               {/* Delete Button */}
               <td className=" p-4 text-center">
-                <button onClick={() => onDelete(product.productId)}>
+                <button onClick={() => handleDelete(product.productId)}>
                   <FaTrash className="text-red-500 hover:text-red-700" />
                 </button>
               </td>
@@ -80,21 +98,6 @@ const ProductTable = ({ products, onQuantityChange, onDelete }) => {
       </table>
     </div>
   );
-};
-
-ProductTable.propTypes = {
-  products: PropTypes.arrayOf(
-    PropTypes.shape({
-      productId: PropTypes.string.isRequired,
-      productImage: PropTypes.string.isRequired,
-      productTitle: PropTypes.string.isRequired,
-      productSize: PropTypes.array.isRequired,
-      productPrice: PropTypes.number.isRequired,
-      quantity: PropTypes.number
-    })
-  ).isRequired,
-  onQuantityChange: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
 };
 
 export default ProductTable;
