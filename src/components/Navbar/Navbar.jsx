@@ -33,7 +33,7 @@ export default function Navbar() {
     { name: "Home", path: "/" },
 
     { name: "Shop", path: "/shop" },
-    { name: "shop", path: "/viewproducts" },
+    { name: "shop", path: "/shop" },
     { name: "Our story", path: "/ourstory" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact", path: "/contact" },
@@ -94,20 +94,34 @@ export default function Navbar() {
                   onClick={() => setShowSearch(true)}
                 />
               ) : (
-                <div className="flex items-center gap-2">
+                // <div className="flex items-center gap-2">
+                //   <input
+                //     type="text"
+                //     value={searchText}
+                //     onChange={(e) => setSearchText(e.target.value)}
+                //     className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                //     placeholder="Search..."
+                //   />
+                //   <button
+                //     onClick={() => setShowSearch(false)}
+                //     className="px-4 py-2 text-white bg-black rounded-lg "
+                //   >
+                //     Search
+                //   </button>
+                // </div>
+                <div>
                   <input
                     type="text"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    placeholder="Search products..."
                     className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                    placeholder="Search..."
                   />
-                  <button
-                    onClick={() => setShowSearch(false)}
-                    className="px-4 py-2 text-white bg-black rounded-lg "
-                  >
-                    Search
-                  </button>
+                  <div>
+                    {filteredProducts.map((product) => (
+                      <div key={product.id}>{product.name}</div>
+                    ))}
+                  </div>
                 </div>
               )}
 

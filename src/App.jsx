@@ -27,11 +27,10 @@ export default function App() {
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
 
-        { path: "viewproducts", element: <ProductListing /> },
-        {path:"customerreview", element: <CustomerReview/>},
+        // { path: "shop", element: <ProductListing /> },
+        { path: "customerreview", element: <CustomerReview /> },
         { path: "shop", element: <ProductListing /> },
         { path: "customerreviews", element: <CustomerTestimonials /> },
-
       ],
       errorElement: <ErrorElement />,
     },

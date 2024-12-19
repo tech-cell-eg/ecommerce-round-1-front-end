@@ -39,7 +39,7 @@ function ProductListing() {
   }, []);
 
   // Filter logic
-  let filteredItems = items;
+  let filteredItems = products;
 
   if (selectedColors.length > 0) {
     filteredItems = filteredItems.filter((item) =>

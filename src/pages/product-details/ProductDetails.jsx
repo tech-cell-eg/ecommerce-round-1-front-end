@@ -7,7 +7,8 @@ import RelatedProducts from "../../components/product-details/RelatedProducts";
 function ProductDetails() {
   const location = useLocation();
   const { product } = location.state || {};
-
+  const fallbackImage =
+  "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
@@ -30,15 +31,15 @@ function ProductDetails() {
           {/* Product Image Section */}
           <div className="flex flex-col items-center xl:col-span-5 col-span-12 ">
             <img
-              src={product.productImage}
-              alt={product.productTitle}
+              src={product.image || fallbackImage}
+              alt={product.name}
               className="w-[80%] mx-10  rounded-lg shadow-md"
             />
             <div className="flex gap-3 mt-4">
               {[...Array(4)].map((_, index) => (
                 <img
                   key={index}
-                  src={product.productImage}
+                  src={product.image || fallbackImage}
                   alt={`Thumbnail ${index + 1}`}
                   className="w-20 h-20 object-cover border border-gray-300 rounded cursor-pointer hover:border-black"
                 />
@@ -48,8 +49,8 @@ function ProductDetails() {
 
           {/* Product Details Section */}
           <div className=" xl:col-span-6 col-span-12 flex flex-col  justify-between py-10">
-            <h1 className="text-3xl font-bold mb-2">{product.productTitle}</h1>
-            <p className="text-gray-500 mb-4">{product.productDescription}</p>
+            <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+            <p className="text-gray-500 mb-4">{product.describtion}</p>
             <p>
               <StarRating rating={product.rating} reviews />
             </p>
@@ -57,14 +58,14 @@ function ProductDetails() {
             <div className="mb-4">
               {product.discount > 0 ? (
                 <div className="text-2xl font-bold text-red-500">
-                  ${product.productPrice - product.discount}{" "}
+                  ${product.price - product.discount}{" "}
                   <span className="text-gray-500 line-through ml-2 text-lg">
-                    ${product.productPrice}
+                    ${product.price}
                   </span>
                 </div>
               ) : (
                 <div className="text-2xl font-bold">
-                  ${product.productPrice}
+                  ${product.price}
                 </div>
               )}
             </div>
