@@ -1,4 +1,4 @@
-import api, { handleError } from "../axiosconfig";
+import api, { handleError } from "../axiosConfig";
 
 // Function to fetch all products
 export const fetchAllProducts = async () => {
