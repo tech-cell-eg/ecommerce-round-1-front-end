@@ -1,17 +1,37 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import StarRating from "../../components/product-details/StarRating";
 import DetailsTabs from "../../components/product-details/DetailsTabs";
 import RelatedProducts from "../../components/product-details/RelatedProducts";
+import { addToCart } from "../../redux/actions/cartActions";
+import { useDispatch, useSelector } from "react-redux";
+import { updateItemQuantity } from "../../redux/actions/cartActions";
 function ProductDetails() {
   const location = useLocation();
   const { product } = location.state || {};
   const fallbackImage =
-  "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
+    "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
+
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const isItemInCart = cartItems.some((cartItem) => cartItem.id === product.id);
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+  };
+
+  const handleQuantityChange = (productId, type) => {
+    if (type === "increment") {
+      setQuantity(quantity + 1);
+    } else if (type === "decrement" && quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+    dispatch(updateItemQuantity(productId, type === "increment" ? 1 : -1));
+  };
 
   if (!product) {
     return (
@@ -64,9 +84,7 @@ function ProductDetails() {
                   </span>
                 </div>
               ) : (
-                <div className="text-2xl font-bold">
-                  ${product.price}
-                </div>
+                <div className="text-2xl font-bold">${product.price}</div>
               )}
             </div>
 
@@ -115,21 +133,29 @@ function ProductDetails() {
             <div className="flex items-center gap-4 mb-6 text-lg">
               <div className="flex items-center gap-2 border border-black rounded-2xl py-3">
                 <button
-                  onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
-                  className="w-8   flex items-center justify-center   hover:bg-gray-100"
+                  onClick={() => handleQuantityChange(product.id, "decrement")}
+                  className="w-8 flex items-center justify-center hover:bg-gray-100"
                 >
                   -
                 </button>
-                <span className=" font-semibold">{quantity}</span>
+                <span className="font-semibold">{quantity}</span>
                 <button
-                  onClick={() => setQuantity((prev) => prev + 1)}
-                  className="w-8   flex items-center justify-center  hover:bg-gray-100"
+                  onClick={() => handleQuantityChange(product.id, "increment")}
+                  className="w-8 flex items-center justify-center hover:bg-gray-100"
                 >
                   +
                 </button>
               </div>
-              <button className="w-full bg-black text-white py-3 rounded-2xl hover:bg-gray-800 border border-black">
-                Add to Cart
+              <button
+                className={`w-full py-3 rounded-2xl ${
+                  isItemInCart
+                    ? "bg-[#4caf50] text-white cursor-not-allowed"
+                    : "bg-black text-white hover:bg-gray-800 cursor-pointer"
+                }`}
+                onClick={handleAddToCart}
+                disabled={isItemInCart}
+              >
+                {isItemInCart ? "Added to Cart" : "Add to Cart"}
               </button>
               <button className="rounded-2xl p-3 hover:bg-gray-100 border border-black text-3xl">
                 <CiHeart />
