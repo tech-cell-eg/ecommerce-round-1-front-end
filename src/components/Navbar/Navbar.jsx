@@ -31,9 +31,7 @@ export default function Navbar() {
 
   const navlist = [
     { name: "Home", path: "/" },
-
     { name: "Shop", path: "/shop" },
-    { name: "shop", path: "/viewproducts" },
     { name: "Our story", path: "/ourstory" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact", path: "/contact" },
