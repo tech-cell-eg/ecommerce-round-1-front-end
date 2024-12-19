@@ -6,13 +6,16 @@ import { Link } from "react-router-dom";
 import MiniCart from "./Minicart";
 import { HiChevronDown } from "react-icons/hi";
 import Mega from "./Mega";
+import { useSelector } from "react-redux";
+import {selectCartItemCount} from '../../redux/selectors/cartSelectors'
 
 export default function Navbar() {
   const [showNavList, setShowNavList] = useState(true);
   const [showMinicart, setShowMinicart] = useState(false);
-  const [cartItems] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const cartItemCount = useSelector(selectCartItemCount);
+
 
   const [token, setToken] = useState(true);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
@@ -37,8 +40,6 @@ export default function Navbar() {
     { name: "Contact", path: "/contact" },
     { name: "Customer Reviews", path: "/customerreviews" },
   ];
-
-  const cartItemCount = cartItems.length;
 
   return (
     <>
@@ -133,7 +134,7 @@ export default function Navbar() {
                 </span>
                 {showMinicart && (
                   <div className="absolute top-10 right-0 z-10">
-                    <MiniCart cartItems={cartItems} />
+                    <MiniCart />
                   </div>
                 )}
               </div>

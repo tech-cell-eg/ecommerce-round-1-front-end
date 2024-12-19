@@ -1,9 +1,12 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { selectCartTotal } from "../../redux/selectors/cartSelectors";
 
-const SummaryCard = ({ products, deliveryCharge, onApplyDiscount }) => {
+const SummaryCard = ({ deliveryCharge, onApplyDiscount }) => {
   const [discountCode, setDiscountCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const subtotal = useSelector(selectCartTotal);
 
   const applyDiscount = () => {
     if (discountCode === "FLAT50") {
@@ -15,10 +18,10 @@ const SummaryCard = ({ products, deliveryCharge, onApplyDiscount }) => {
     }
   };
 
-  const subtotal = products.reduce(
-    (acc, product) => acc + product.productPrice * (product.quantity || 1),
-    0
-  );
+  // const subtotal = products.reduce(
+  //   (acc, product) => acc + product.productPrice * (product.quantity || 1),
+  //   0
+  // );
 
   const total = subtotal - discount + deliveryCharge;
 
@@ -70,12 +73,6 @@ const SummaryCard = ({ products, deliveryCharge, onApplyDiscount }) => {
 };
 
 SummaryCard.propTypes = {
-  products: PropTypes.arrayOf(
-    PropTypes.shape({
-      productPrice: PropTypes.number.isRequired,
-      quantity: PropTypes.number,
-    })
-  ).isRequired,
   deliveryCharge: PropTypes.number.isRequired,
   onApplyDiscount: PropTypes.func.isRequired,
 };
