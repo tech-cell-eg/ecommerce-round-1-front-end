@@ -9,7 +9,6 @@ import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/product-listing/ProductListing";
 import ProductDetails from "./pages/product-details/ProductDetails";
 import ErrorElement from "./pages/ErrorElement";
-import CustomerReview from "./components/customerReview/CustomerReview";
 import Home from "./pages/Home";
 import CustomerTestimonials from "./pages/CustomerTestimonials";
 
@@ -20,16 +19,10 @@ export default function App() {
       element: <Layout />,
       children: [
         { index: true, element: <Home /> },
-        { path: "/about", element: <h1>About</h1> },
-        { path: "/checkout", element: <Checkout /> },
-        { path: "/shop", element: <ProductListing /> },
+        { path: "shop", element: <ProductListing /> },
         { path: "/product/:productId", element: <ProductDetails /> },
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
-
-        // { path: "shop", element: <ProductListing /> },
-        { path: "customerreview", element: <CustomerReview /> },
-        { path: "shop", element: <ProductListing /> },
         { path: "customerreviews", element: <CustomerTestimonials /> },
       ],
       errorElement: <ErrorElement />,
