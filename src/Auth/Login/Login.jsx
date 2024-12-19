@@ -1,11 +1,14 @@
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
+import { fetchlogin } from '../../api/Authentication/fechlogin';
 
 
 export default function Login() {
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const navigate = useNavigate()
 
    
     const validationSchema = yup.object({
@@ -19,11 +22,13 @@ export default function Login() {
             password: ''
              },
         validationSchema,
-        onSubmit: (values) => {
-        setErrorMessage(errors)
-          console.log(values)
-        },
-    })
+        onSubmit: async (values) => {
+            const log = await fetchlogin(values);
+            navigate("/")
+            console.log(values);
+          },
+        });
+
 
   return <>
   <section className='grid grid-cols-12 gap-2 h-screen '>
@@ -37,36 +42,32 @@ export default function Login() {
        </div>
     </div>
 
-    <div className='col-span-12 md:col-span-5 md:bg-white   bg-gray-100 bg-opacity-80 py-6 max-[766px]:absolute w-full h-full'>
+    <div className='col-span-12 md:col-span-5 md:bg-white   bg-black bg-opacity-50 py-6 max-[766px]:absolute w-full h-full'>
     
         <form className='flex flex-col justify-center items-start space-y-4 w-[85%] m-auto h-full' onSubmit={formik.handleSubmit}>
         <div className='space-y-1'>
         <h2 className='text-2xl font-bold'>Welcome🖐</h2>
-        <p className='text-gray-400 '>Please login here</p>
+        <p className='text-gray-400  '>Please login here</p>
     </div>
             <div className='flex flex-col w-full space-y-1'>
-                <label htmlFor='email' className='min-[546px]:flex justify-between items-center '><span>Email Address</span> <span>{formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm'>{formik.errors.email}</div>):('')}</span></label>
-                <input type='email' id='email' className='rounded-lg border-2 bg-transparent border-gray-600 py-2 px-2' name='email' onChange={formik.handleChange} value={formik.values.email} onBlur={formik.handleBlur} required/>
+                <label htmlFor='email' className='max-[766px]:text-white'>Email Address</label>
+                <input type='email' id='email' className='focus:ring-0 focus:border-black max-[766px]:text-white  rounded-lg border-2 bg-transparent border-black py-2 px-2' name='email' onChange={formik.handleChange} value={formik.values.email} onBlur={formik.handleBlur}/>
+                {formik.errors.email && formik.touched.email ? (<div className='text-red-600 max-[766px]:text-red-500 mt-1 font-semibold text-sm'>{formik.errors.email}</div>):('')}
             </div>
             <div className='flex flex-col w-full space-y-1'>
-                <label htmlFor='password' className='min-[546px]:flex justify-between items-center '><span>Password</span> <span>{formik.errors.password && formik.touched.password ? (<div className='text-red-600 mt-1 font-semibold text-sm '>{formik.errors.password}</div>):('')}</span></label>
-                <input type='password' id='password' className='rounded-lg border-2 bg-transparent border-gray-600 py-2 px-2' name='password' onChange={formik.handleChange} value={formik.values.password} onBlur={formik.handleBlur} required/>
+                <label htmlFor='password' className=' max-[766px]:text-white'>Password </label>
+                <input type='password' id='password' className='focus:ring-0 focus:border-black max-[766px]:text-white rounded-lg border-2 bg-transparent border-black py-2 px-2' name='password' onChange={formik.handleChange} value={formik.values.password} onBlur={formik.handleBlur}/>
+                {formik.errors.password && formik.touched.password ? (<div className='text-red-600 max-[766px]:text-red-500  mt-1 font-semibold text-sm '>{formik.errors.password}</div>):('')}
             </div>
      <div className='flex max-[332px]:flex-col justify-between items-center w-full '>
-  <div>
-   <label htmlFor='checkbox' className='flex items-center space-x-2 '>   
-    <input type="checkbox" id="remember-me" name="remember-me" value="remember-me"   className="appearance-none relative h-4 w-4 border border-gray-400 rounded bg-gray-200 checked:bg-black checked:text-white checked:before:content-['✓'] checked:before:absolute checked:before:text-sm checked:before:font-semibold  checked:before:text-white flex items-center justify-center " />
-    <span className="">Remember me</span>
-   </label>
-  </div>
-    <Link to={"/forgetpassword"} className=''>Forgot Password?</Link>
+  
+    <Link to={"/forgetpassword"} className='max-[766px]:text-white ml-auto'>Forgot Password?</Link>
      </div>
 
-
-
             <div className='w-full  '>
-                <button type='submit' className='bg-black text-white py-2 rounded-lg w-full hover:bg-gray-800 transition-all duration-200 '>Login</button>
+                <button type='submit' className='btn-primary'>Login</button>
             </div>
+            <div className='max-[766px]:text-white m-auto flex text-sm max-[280px]:flex-wrap items-center justify-center'><span>Don’t have an account?</span> <Link to={'/register'} className='text-black font-semibold  border-black border-b-2 max-[766px]:border-white max-[766px]:text-white'>Sign up</Link></div>
         </form>
     </div>
   </section>
