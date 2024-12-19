@@ -15,13 +15,13 @@ const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       existingItem = state.items.find(
-        (item) => item.productId === action.payload.productId
+        (item) => item.id === action.payload.productId
       );
       if (existingItem) {
         return {
           ...state,
           items: state.items.map((item) =>
-            item.productId === action.payload.productId
+            item.id === action.payload.productId
               ? { ...item, quantity: item.quantity + 1 }
               : item
           ),
@@ -41,8 +41,11 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         items: state.items.map((item) =>
-          item.productId === action.payload.itemId
-            ? { ...item, quantity: action.payload.quantity }
+          item.id === action.payload.itemId
+            ? {
+                ...item,
+                quantity: Math.max(item.quantity + action.payload.quantity, 1),
+              }
             : item
         ),
       };

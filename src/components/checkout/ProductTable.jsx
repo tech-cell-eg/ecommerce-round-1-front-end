@@ -13,12 +13,20 @@ const ProductTable = () => {
 
   const handleQuantityChange = (productId, type) => {
     const change = type === "increment" ? 1 : -1;
+    if (
+      type === "decrement" &&
+      products.find((product) => product.id === productId).quantity <= 1
+    ) {
+      return;
+    }
     dispatch(updateItemQuantity(productId, change));
   };
 
   const handleDelete = (productId) => {
     dispatch(removeFromCart(productId));
   };
+  const fallbackImage =
+    "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
 
   return (
     <div className="overflow-x-auto">
@@ -36,34 +44,32 @@ const ProductTable = () => {
 
         {/* Table Body */}
         <tbody>
-          {products.map((product) => (
-            <tr key={product.productId} className="border-b hover:bg-gray-50">
+          {products?.map((product) => (
+            <tr key={product.id} className="border-b hover:bg-gray-50">
               {/* Product Information */}
               <td className=" p-4 flex items-center space-x-4">
                 <img
-                  src={product.productImage}
-                  alt={product.productTitle}
+                  src={product.image || fallbackImage}
+                  alt={product.name}
                   className="w-16 h-16 object-cover rounded-md"
                 />
                 <div>
-                  <h2 className="font-bold">{product.productTitle}</h2>
+                  <h2 className="font-bold">{product.name}</h2>
                   <p className="text-gray-500 text-sm">
-                    Size: {product.productSize[0]}
+                    Size: {product.productSize || "N/A"}
                   </p>
                 </div>
               </td>
 
               {/* Price */}
-              <td className=" p-4 text-center">
-                ${product.productPrice.toFixed(2)}
-              </td>
+              <td className=" p-4 text-center">${product.price.toFixed(2)}</td>
 
               {/* Quantity Control */}
               <td className=" p-4 text-center">
                 <div className="flex justify-center items-center space-x-2">
                   <button
                     onClick={() =>
-                      handleQuantityChange(product.productId, "decrement")
+                      handleQuantityChange(product.id, "decrement")
                     }
                     className="border px-2 py-1 rounded hover:bg-gray-200"
                   >
@@ -72,7 +78,7 @@ const ProductTable = () => {
                   <span>{product.quantity}</span>
                   <button
                     onClick={() =>
-                      handleQuantityChange(product.productId, "increment")
+                      handleQuantityChange(product.id, "increment")
                     }
                     className="border px-2 py-1 rounded hover:bg-gray-200"
                   >
@@ -83,12 +89,12 @@ const ProductTable = () => {
 
               {/* Subtotal */}
               <td className=" p-4 text-center">
-                ${(product.productPrice * product.quantity).toFixed(2)}
+                ${(product.price * product.quantity).toFixed(2)}
               </td>
 
               {/* Delete Button */}
               <td className=" p-4 text-center">
-                <button onClick={() => handleDelete(product.productId)}>
+                <button onClick={() => handleDelete(product.id)}>
                   <FaTrash className="text-red-500 hover:text-red-700" />
                 </button>
               </td>

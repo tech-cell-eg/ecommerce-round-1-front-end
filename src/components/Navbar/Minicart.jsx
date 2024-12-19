@@ -1,6 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart } from "../../redux/actions/cartActions";
-import { selectCartTotal } from "../../redux/selectors/cartSelectors";
+import { removeFromCart, clearCart } from "../../redux/actions/cartActions";
+import {
+  selectCartTotal,
+  selectCartItems,
+} from "../../redux/selectors/cartSelectors";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -8,10 +11,14 @@ const Minicart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const subtotal = useSelector(selectCartTotal);
-  const items = useSelector((state) => state.cart.items);
+  const items = useSelector(selectCartItems);
 
   const handleRedirect = (direction) => {
     navigate(`/${direction}`);
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
   };
 
   const handleDelete = (id) => {
@@ -29,7 +36,9 @@ const Minicart = () => {
           className="w-24 h-24 mb-4"
         />
         <h3 className="text-xl">Your cart is empty</h3>
-        <br />
+        <p className="text-gray-400 mt-2 mb-2">
+          Add items to your cart to get started.
+        </p>
         <button
           className="bg-black text-white py-2 rounded-lg w-full"
           onClick={() => handleRedirect("shop")}
@@ -89,9 +98,9 @@ const Minicart = () => {
       <div className="flex flex-col space-y-2">
         <button
           className="bg-white text-black py-2 rounded-lg border"
-          onClick={() => handleRedirect("checkout")}
+          onClick={handleClearCart}
         >
-          View Cart
+          Clear Cart
         </button>
         <button
           className="bg-black text-white py-2 rounded-lg"

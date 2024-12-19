@@ -7,14 +7,15 @@ import MiniCart from "./Minicart";
 import { HiChevronDown } from "react-icons/hi";
 import Mega from "./Mega";
 import { useSelector } from "react-redux";
+import {selectCartItemCount} from '../../redux/selectors/cartSelectors'
 
 export default function Navbar() {
   const [showNavList, setShowNavList] = useState(true);
   const [showMinicart, setShowMinicart] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const items = useSelector((state) => state.cart.items);
-  const cartItemCount = items.length;
+  const cartItemCount = useSelector(selectCartItemCount);
+
 
   const [token, setToken] = useState(true);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
@@ -133,7 +134,7 @@ export default function Navbar() {
                 </span>
                 {showMinicart && (
                   <div className="absolute top-10 right-0 z-10">
-                    <MiniCart cartItems={items} />
+                    <MiniCart />
                   </div>
                 )}
               </div>
