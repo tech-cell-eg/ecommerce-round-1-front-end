@@ -1,31 +1,63 @@
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { Link, useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
+import fetchregister from '../../api/Authentication/register'
 
 export default function Register() {
     const [errorMsg,setErrorMessage] = useState(null)
-     
+    const [disableBtn,setDisableBtn] =useState(false)
+    const [ passwordType, setPasswordType]=useState("password")
+    const navigate = useNavigate()
+
+    const handelPassType = ()=>{
+        setPasswordType(passwordType === "password"? "text" : "password")
+      }
     const validationSchema =  yup.object({
-        firstName: yup.string().min(7,"min 7 characters").required("required"),
-        lastName: yup.string().min(7,"min 7 characters").required("required"),
-        email:yup.string().required('required').email("write avalid email"),
-        password:yup.string().required('required').matches(/^(?=.*[A-Z]).{8,}$/,'Min 8 characters with at least one uppercase letter'),
+        first_name: yup.string().min(3,"min 3 characters").required("First Name is required"),
+        last_name: yup.string().min(3,"min 3 characters").required("Last Name is required"),
+        email:yup.string().required('Email is required').email("write avalid email"),
+        password:yup
+              .string()
+              .required("password is required")
+              .matches(
+                /^(?=.*[A-Z]).{8,}$/,
+                "Min 8 characters with at least one uppercase letter"
+              ),
+        terms_agreed: yup
+        .boolean()
+        .oneOf([true], "You must agree to the terms and conditions")
+        .required("You must agree to the terms and conditions")
+       
          })
 
 
     const formik = useFormik({
         initialValues: {
-            firstName: '',
-            lastName: '',
+            first_name: '',
+            last_name: '',
             email: '',
             password: '',
+            terms_agreed: 0
         },
         validationSchema,
-        onSubmit: (values) => {
-            setErrorMessage(error)
-            console.log(values)
-        },
+        onSubmit: async (values) => {
+            let id;
+      setDisableBtn(true); 
+      try {
+        id = toast.loading("Waiting...");
+        const log = await fetchregister({...values, terms_agreed: values.terms_agreed ? 1 : 0});
+        toast.dismiss(id);
+        toast.success("User signup successful");
+        navigate("/login");
+      } catch (error) {
+        toast.dismiss(id);
+        toast.error(error.message || "An error occurred during signup");
+      } finally {
+        setDisableBtn(false);
+        }}
     })
 
   return <>
@@ -40,44 +72,55 @@ export default function Register() {
        <h1 className='text-2xl max-[280px]:text-lg font-semibold'>Kirst</h1>
        </div>
     </div>
-    <div className='col-span-12 md:col-span-5 md:bg-white bg-gray-100 bg-opacity-80 py-6 max-[766px]:absolute w-full h-full'>
+    <div className='col-span-12 md:col-span-5 md:bg-white   bg-black bg-opacity-50 py-6 max-[766px]:absolute w-full h-full'>
     
-        <form className='flex flex-col justify-center items-start space-y-4 w-[85%] m-auto h-full' onSubmit={formik.handleSubmit}>
+        <form className='flex flex-col justify-center items-start space-y-2 w-[85%] m-auto h-full' onSubmit={formik.handleSubmit}>
         <div className='space-y-1'>
-        <h2 className='text-2xl font-bold max-[278px]:text-xl'>Create new account</h2>
+        <h2 className='text-2xl font-bold max-[278px]:text-xl max-[766px]:text-white'>Create new account</h2>
         <p className='text-gray-400 '>Please enter details</p>
     </div>
 
             <div className='flex flex-col w-full space-y-1'>
-                <label htmlFor='firstName' className='flex items-center justify-between space-x-2'><span>First Name</span> <span>{formik.errors.firstName && formik.touched.firstName ? (<div className='text-red-600 mt-1 font-semibold text-sm'>{formik.errors.firstName}</div>):('')}</span></label>
-                <input type='text' id='firstName' name='firstName' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.firstName} className='rounded-lg border-2 bg-transparent border-gray-600 py-2 px-2'/>
+                <label htmlFor=' first_name' className='max-[766px]:text-white'>First Name </label>
+                <input type='text' id=' first_name' name='first_name' onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.first_name} className='form-control'/>
+                <span>{formik.errors.first_name && formik.touched.first_name ? (<div className='text-red-600 max-[766px]:text-red-500  font-semibold text-sm'>{formik.errors.first_name}</div>):('')}</span>
             </div>
 
             <div className='flex flex-col w-full space-y-1'>
-                <label htmlFor='LastName' className='flex items-center justify-between space-x-2'><span>Last Name</span> <span>{formik.errors.lastName && formik.touched.lastName ? (<div className='text-red-600 mt-1 font-semibold text-sm'>{formik.errors.lastName}</div>):('')}</span></label>
-                <input type='text' id='LastName' name='lastName'  onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.lastName} className='rounded-lg border-2 bg-transparent border-gray-600 py-2 px-2'/>
+                <label htmlFor='last_name' className='max-[766px]:text-white'>Last Name </label>
+                <input type='text' id='last_name' name='last_name'  onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.last_name} className='form-control'/>
+                <span>{formik.errors.last_name && formik.touched.last_name ? (<div className='text-red-600  max-[766px]:text-red-500 font-semibold text-sm'>{formik.errors.last_name}</div>):('')}</span>
             </div>
 
             <div className='flex flex-col w-full space-y-1'>
-                <label htmlFor='email' className='flex items-center justify-between space-x-2'><span className='text-nowrap'>Email Address</span> <span>{formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm'>{formik.errors.email}</div>):('')}</span></label>
-                <input type='email' id='email' className='rounded-lg border-2 bg-transparent border-gray-600 py-2 px-2' name='email'  onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.email} />
+                <label htmlFor='email' className='max-[766px]:text-white'>Email Address </label>
+                <input type='email' id='email' className='form-control' name='email'  onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.email} />
+                <span>{formik.errors.email && formik.touched.email ? (<div className='text-red-600 max-[766px]:text-red-500  font-semibold text-sm'>{formik.errors.email}</div>):('')}</span>
             </div>
             <div className='flex flex-col w-full space-y-1'>
-                <label htmlFor='password' className='flex items-center justify-between space-x-2'><span>password</span> <span>{formik.errors.password && formik.touched.password ? (<div className='text-red-600 mt-1 font-semibold text-sm'>{formik.errors.password}</div>):('')}</span> </label>
-                <input type='password' id='password' className='rounded-lg border-2 bg-transparent border-gray-600 py-2 px-2' name='password'  onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.password}/>
+                <label htmlFor='password' className='max-[766px]:text-white'>password  </label>
+                <div className='relative'>
+                <input type={passwordType} id='password' className='form-control' name='password'  onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.password}/>
+                <div className="absolute right-2 bottom-3 cursor-pointer" onClick={handelPassType}>{passwordType === "password"?<FaEye />:<FaEyeSlash  />}</div>
+
+                </div>
+                <span>{formik.errors.password && formik.touched.password ? (<div className='text-red-600 max-[766px]:text-red-500  font-semibold text-sm'>{formik.errors.password}</div>):('')}</span>
             </div>
     
   <div>
    <label htmlFor='checkbox' className='flex items-center space-x-2 '>   
-    <input type="checkbox" id="" name="" value=""   className="appearance-none relative h-4 w-4 border border-gray-400 rounded bg-gray-200 checked:bg-black checked:text-white checked:before:content-['✓'] checked:before:absolute checked:before:text-sm checked:before:font-semibold  checked:before:text-white flex items-center justify-center " />
-   <span className="">I agree to the <span className='font-bold'>Terms & Conditions</span></span>
+    <input type="checkbox" id="terms_agreed" name="terms_agreed" onBlur={formik.handleBlur}  onChange={(e) =>
+    formik.setFieldValue("terms_agreed", e.target.checked)
+  }  checked={formik.values.terms_agreed}    className="focus:ring-0 focus:border-black appearance-none relative h-4 w-4 border border-gray-400 rounded bg-gray-200 checked:bg-black checked:text-white checked:before:content-['✓'] checked:before:absolute checked:before:text-sm checked:before:font-semibold  checked:before:text-white flex items-center justify-center " />
+   <span className="max-[766px]:text-white ">I agree to the <span className='font-bold max-[766px]:text-white'>Terms & Conditions</span></span>
    </label>
+   {formik.errors.terms_agreed && formik.touched.terms_agreed ? (<div className='text-red-600 max-[766px]:text-red-500  font-semibold text-sm'>{formik.errors.terms_agreed}</div>):('')}
   </div>
      
 
 
             <div className='w-full  '>
-                <button type='submit' className='bg-black text-white py-2 rounded-lg w-full  hover:bg-gray-800 transition-all duration-200'>Signup</button>
+                <button type='submit' className='btn-primary' disabled={disableBtn}> {disableBtn ?<span>Waiting...</span>:<span>Signup</span>}</button>
             </div>
         </form>
     </div>
