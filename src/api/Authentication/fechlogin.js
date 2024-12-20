@@ -6,9 +6,9 @@ const fetchlogin = async (values) => {
       email: values.email,
       password: values.password,
     });
-    return response.data.data;
+    localStorage.setItem("token",response.data.data.token)
+    return response.data;
   } catch (error) {
-    console.log(error.response, "Failed to fetch login");
     handleError(error);
   }
 };
