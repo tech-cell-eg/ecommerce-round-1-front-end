@@ -122,7 +122,7 @@ export default function Login() {
                 value={formik.values.password}
                 onBlur={formik.handleBlur}
               />
-              <div className="absolute right-2 bottom-3 cursor-pointer">{passwordType?<FaEye onClick={handelPassType}/>:<FaEyeSlash />}</div>
+              <div className="absolute right-2 bottom-3 cursor-pointer" onClick={handelPassType}>{passwordType === "password"?<FaEye />:<FaEyeSlash/>}</div>
              </div>
               {formik.errors.password && formik.touched.password ? (
                 <div className="text-red-600 max-[766px]:text-red-500  mt-1 font-semibold text-sm ">
