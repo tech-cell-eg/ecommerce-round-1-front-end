@@ -17,11 +17,11 @@ export default function Navbar() {
   const cartItemCount = useSelector(selectCartItemCount);
 
 
-  const [token, setToken] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [showMegaMenu, setShowMegaMenu] = useState(false);
 
   const handellogout = () => {
-    setToken(false);
+        setToken(localStorage.removeItem("token"));
   };
 
   const handelShowNavList = () => {
@@ -55,10 +55,9 @@ export default function Navbar() {
               onClick={handelShowNavList}
             />
           </div>
-
           {/* NAV LIST */}
           {showNavList && (
-            <ul className="md:flex items-center gap-4">
+            <ul className="md:flex items-center max-[911px]:gap-2 max-[767px]:gap-4 gap-4">
               {navlist.map((item, index) => (
                 <li key={index} className="relative">
                   {item.name === "Shop" ? (
@@ -74,7 +73,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       to={item.path}
-                      className="text-lg hover:text-gray-800"
+                      className="text-lg   hover:text-gray-800"
                     >
                       {item.name}
                     </Link>
