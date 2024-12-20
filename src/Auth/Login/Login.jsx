@@ -16,8 +16,6 @@ export default function Login() {
   const handelPassType = ()=>{
     setPasswordType(passwordType === "password"? "text" : "password")
   }
-
-
   const validationSchema = yup.object({
     email: yup
       .string()
@@ -141,7 +139,7 @@ export default function Login() {
      checked={rememberMe}
      onChange={(e) => setRememberMe(e.target.checked)}
      id="" name="" value=""   className="appearance-none focus:ring-0 focus:border-none focus:shadow-none shadow-none relative h-4 w-4 border border-gray-400 rounded bg-gray-200 checked:bg-black checked:text-white checked:before:content-['✓'] checked:before:absolute checked:before:text-sm checked:before:font-semibold  checked:before:text-white flex items-center justify-center " />
-    <span className=""> Remmembre me</span></label>
+    <span className=""> Remember me</span></label>
    </div>
               <Link
                 to={"/forgetpassword"}
