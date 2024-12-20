@@ -11,6 +11,7 @@ import ProductDetails from "./pages/product-details/ProductDetails";
 import ErrorElement from "./pages/ErrorElement";
 import Home from "./pages/Home";
 import CustomerTestimonials from "./pages/CustomerTestimonials";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -36,7 +37,8 @@ export default function App() {
 
   return (
     <>
-      <RouterProvider router={routes} />
+    <Toaster/>
+    <RouterProvider router={routes} />
     </>
   );
 }

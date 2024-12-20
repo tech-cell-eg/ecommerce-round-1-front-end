@@ -1,20 +1,29 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useCallback, useState } from "react";
+import { data, Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import fetchlogin from "../../api/Authentication/fechlogin";
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState(null);
+  const [ passwordType, setPasswordType]=useState("password")
+  const [disableBtn,setDisableBtn] =useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
 
   const navigate = useNavigate();
+  const handelPassType = ()=>{
+    setPasswordType(passwordType === "password"? "text" : "password")
+  }
+
 
   const validationSchema = yup.object({
     email: yup
       .string()
       .required("email is required")
       .email("write avalid email"),
-    password: yup
+      password: yup
       .string()
       .required("password is required")
       .matches(
@@ -30,12 +39,26 @@ export default function Login() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const log = await fetchlogin(values);
-      navigate("/");
-      console.log(values);
-    },
-  });
-
+        let id;
+  setDisableBtn(true); 
+  try {
+    id = toast.loading("Waiting...");
+    const log = await fetchlogin({ ...values, rememberMe });
+    toast.dismiss(id);
+    toast.success("User login successful");
+    if (rememberMe) {
+        localStorage.setItem("email", values.email);
+        localStorage.setItem("password", values.password);
+      }
+    navigate("/");
+  } catch (error) {
+    toast.dismiss(id);
+    toast.error(error.message || "An error occurred during login");
+  } finally {
+    setDisableBtn(false);
+    }}
+})
+      
   return (
     <>
       <section className="grid grid-cols-12 gap-2 h-screen ">
@@ -73,7 +96,7 @@ export default function Login() {
               <input
                 type="email"
                 id="email"
-                className="focus:ring-0 focus:border-black max-[766px]:text-white  rounded-lg border-2 bg-transparent border-black py-2 px-2"
+                className="form-control"
                 name="email"
                 onChange={formik.handleChange}
                 value={formik.values.email}
@@ -87,19 +110,22 @@ export default function Login() {
                 ""
               )}
             </div>
-            <div className="flex flex-col w-full space-y-1">
+            <div className=" flex flex-col w-full space-y-1">
               <label htmlFor="password" className=" max-[766px]:text-white">
                 Password{" "}
               </label>
-              <input
-                type="password"
+             <div className="relative">
+             <input
+                type={passwordType}
                 id="password"
-                className="focus:ring-0 focus:border-black max-[766px]:text-white rounded-lg border-2 bg-transparent border-black py-2 px-2"
+                className="form-control"
                 name="password"
                 onChange={formik.handleChange}
                 value={formik.values.password}
                 onBlur={formik.handleBlur}
               />
+              <div className="absolute right-2 bottom-3 cursor-pointer">{passwordType?<FaEye onClick={handelPassType}/>:<FaEyeSlash />}</div>
+             </div>
               {formik.errors.password && formik.touched.password ? (
                 <div className="text-red-600 max-[766px]:text-red-500  mt-1 font-semibold text-sm ">
                   {formik.errors.password}
@@ -109,17 +135,25 @@ export default function Login() {
               )}
             </div>
             <div className="flex max-[332px]:flex-col justify-between items-center w-full ">
+            <div>
+   <label htmlFor='checkbox' className='flex items-center space-x-2  max-[766px]:text-white'>   
+    <input type="checkbox" 
+     checked={rememberMe}
+     onChange={(e) => setRememberMe(e.target.checked)}
+     id="" name="" value=""   className="appearance-none focus:ring-0 focus:border-none focus:shadow-none shadow-none relative h-4 w-4 border border-gray-400 rounded bg-gray-200 checked:bg-black checked:text-white checked:before:content-['✓'] checked:before:absolute checked:before:text-sm checked:before:font-semibold  checked:before:text-white flex items-center justify-center " />
+    <span className=""> Remmembre me</span></label>
+   </div>
               <Link
                 to={"/forgetpassword"}
-                className="max-[766px]:text-white ml-auto"
+                className="max-[766px]:text-white"
               >
                 Forgot Password?
               </Link>
             </div>
 
             <div className="w-full  ">
-              <button type="submit" className="btn-primary">
-                Login
+              <button type="submit" className="btn-primary" disabled={disableBtn}>
+               {disableBtn ?<span>Waiting...</span>:<span>Login</span>}
               </button>
             </div>
             <div className="max-[766px]:text-white m-auto flex text-sm max-[280px]:flex-wrap items-center justify-center">
