@@ -23,8 +23,8 @@ export default function Register() {
               .string()
               .required("password is required")
               .matches(
-                /^(?=.*[A-Z]).{8,}$/,
-                "Min 8 characters with at least one uppercase letter"
+                /^(?=.*[A-Z])(?=.*[a-z]).{8,}$/, 
+                "Min 8 characters with at least one uppercase letter and one lowercase letter"
               ),
         terms_agreed: yup
         .boolean()
@@ -116,9 +116,6 @@ export default function Register() {
    </label>
    {formik.errors.terms_agreed && formik.touched.terms_agreed ? (<div className='text-red-600 max-[766px]:text-red-500  font-semibold text-sm'>{formik.errors.terms_agreed}</div>):('')}
   </div>
-     
-
-
             <div className='w-full  '>
                 <button type='submit' className='btn-primary' disabled={disableBtn}> {disableBtn ?<span>Waiting...</span>:<span>Signup</span>}</button>
             </div>
