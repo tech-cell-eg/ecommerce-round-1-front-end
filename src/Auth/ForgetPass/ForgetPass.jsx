@@ -10,7 +10,8 @@ export default function ForgetPass() {
     const [errorMsg,setErrorMsg] = useState(null)
      const [disableBtn,setDisableBtn] =useState(false)
     const navigate = useNavigate()
-
+    
+    
     const validationSchema = yup.object({
         email:yup.string().required('email is required').email("write a valid email"),
     })
@@ -28,7 +29,7 @@ export default function ForgetPass() {
         const log = await forgetpasssword(values,);
         toast.dismiss(id);
         toast.success("OTP send to your email");
-        navigate("/verifyotp");
+        navigate("/verifyotp",{ state: { email: values.email } });
       } catch (error) {
         toast.dismiss(id);
         toast.error(error.message );
