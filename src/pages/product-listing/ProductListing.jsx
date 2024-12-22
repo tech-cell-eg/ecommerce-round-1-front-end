@@ -5,13 +5,17 @@ import DropDownMenu from "../../components/product-listing/DropDownMenu";
 import { TfiMenuAlt } from "react-icons/tfi";
 import SideBar from "../../components/catgories/SideBar";
 import { useSearchParams } from "react-router-dom";
-import { fetchAllProducts } from "../../api/products/products";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts, selectAllProducts, selectProductsStatus } from "../../redux/reducers/productsReducer";
 
 function ProductListing() {
-
   const [searchParams] = useSearchParams();
-  const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(true); // Sidebar visibility default is open on larger screens
+  const [searchQuery, setSearchQuery] = useState(""); // Search input value
+
+  const dispatch = useDispatch();
+  const products = useSelector(selectAllProducts);
+  const productsStatus = useSelector(selectProductsStatus);
 
   const selectedColors = searchParams.getAll("color");
   const selectedGenders = searchParams.getAll("gender");
@@ -21,24 +25,12 @@ function ProductListing() {
   const selectedTypes = searchParams.getAll("type");
 
   useEffect(() => {
-    const getProducts = async () => {
-      const allProducts = await fetchAllProducts();
-      console.log(allProducts);
-      setProducts(allProducts);
-    };
+    if (productsStatus === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, productsStatus]);
 
-    getProducts();
-  }, []);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const allProducts = await fetchAllProducts();
-      setProducts(allProducts);
-    };
-    getProducts();
-  }, []);
-
-  // Filter logic
+  // Filter logic based on query parameters
   let filteredItems = products;
 
   if (selectedColors.length > 0) {
@@ -71,6 +63,13 @@ function ProductListing() {
     );
   }
 
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    filteredItems = products.filter((product) =>
+      product.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+  };
+
   return (
     <>
       <section className="container mx-auto mt-16">
@@ -82,13 +81,19 @@ function ProductListing() {
           >
             {isOpen ? "Filter ⬎" : "Filter ⬎"}
           </button>
-          <p>Showing 1-16 of 72 results</p>
+          <input
+            type="text"
+            className="p-2 border rounded-md"
+            placeholder="Search products"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Sidebar */}
           {isOpen && (
-            <div className="col-span-1  p-4 rounded-md md:block">
+            <div className="col-span-1 p-4 rounded-md md:block">
               <SideBar />
             </div>
           )}
@@ -103,7 +108,13 @@ function ProductListing() {
               <div className="flex gap-4">
                 <PiSquaresFourLight className="text-2xl" />
                 <TfiMenuAlt className="text-2xl" />
-                <p>Showing 1-16 of 72 results</p>
+                <input
+                  type="text"
+                  className="p-2 border rounded-md"
+                  placeholder="Search products"
+                  value={searchQuery}
+                  onChange={handleSearch}
+                />
               </div>
               <button className="flex items-center">
                 <p>
