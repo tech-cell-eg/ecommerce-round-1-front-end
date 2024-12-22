@@ -119,4 +119,12 @@
     color: #6b7280;
     margin-left: 0.5rem;
   }
+
+
+  .addedButton {
+    background-color: #4caf50; 
+    color: white;
+    cursor: not-allowed; 
+  }
+  
   

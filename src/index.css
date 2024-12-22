@@ -9,3 +9,12 @@
 .full-container{
     width: 100%;
 }
+
+@layer components{
+  .form-control{
+    @apply focus:ring-0 focus:border-black max-[766px]:text-white w-full  rounded-lg border-2 bg-transparent border-black py-2 px-2
+  }
+  .btn-primary{
+    @apply px-4 py-2 text-white bg-black w-full rounded-lg
+  }
+}
