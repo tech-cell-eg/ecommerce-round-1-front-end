@@ -3,7 +3,8 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import cartReducer from "./reducers/cartReducer";
 import productSearchReducer from "./reducers/searchReducer";
-import fetchProductsReducer from "./reducers/productsReducer";
+import productsReducer from "./reducers/productsReducer";
+
 const persistConfig = {
   key: "root",
   storage,
@@ -15,7 +16,7 @@ export const store = configureStore({
   reducer: {
     cart: persistedReducer,
     productSearch: productSearchReducer,
-    fetchProducts: fetchProductsReducer,
+    fetchProducts: productsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

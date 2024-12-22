@@ -1,35 +1,48 @@
-import { FETCH_ALL_PRODUCTS_REQUEST, FETCH_ALL_PRODUCTS_SUCCESS, FETCH_ALL_PRODUCTS_FAILURE } from '../actions/fetchingProductsAction';
-// import { fetchProducts } from '../actions/fetchingProductsAction';
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchAllProducts } from "../../api/products/products"; // Adjust the import path as needed
 
-const initialState = {
+const productsSlice = createSlice({
+  name: "products",
+  initialState: {
     products: [],
-    loading: false,
-    error: null
+    searchQuery: "",
+    filteredProducts: [],
+    status: "idle", // idle | loading | succeeded | failed
+    error: null,
+  },
+  reducers: {
+    setSearchQuery(state, action) {
+      state.searchQuery = action.payload;
+      state.filteredProducts = state.products.filter((product) =>
+        product.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
+    },
+    setProducts(state, action) {
+      state.products = action.payload;
+      state.filteredProducts = action.payload; // Initialize filtered products
+    },
+    setStatus(state, action) {
+      state.status = action.payload;
+    },
+    setError(state, action) {
+      state.error = action.payload;
+    },
+  },
+});
+
+export const { setSearchQuery, setProducts, setStatus, setError } = productsSlice.actions;
+
+// Async function to fetch products
+export const fetchProducts = () => async (dispatch) => {
+  dispatch(setStatus("loading"));
+  try {
+    const data = await fetchAllProducts();
+    dispatch(setProducts(data));
+    dispatch(setStatus("succeeded"));
+  } catch (error) {
+    dispatch(setError(error.message));
+    dispatch(setStatus("failed"));
+  }
 };
 
-const productsReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case FETCH_ALL_PRODUCTS_REQUEST:
-            return {
-                ...state,
-                loading: true,
-                error: null
-            };
-        case FETCH_ALL_PRODUCTS_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                products: action.payload
-            };
-        case FETCH_ALL_PRODUCTS_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                error: action.payload
-            };
-        default:
-            return state;
-    }
-};
-
-export default productsReducer;
+export default productsSlice.reducer;

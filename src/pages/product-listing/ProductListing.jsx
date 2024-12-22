@@ -6,12 +6,22 @@ import { TfiMenuAlt } from "react-icons/tfi";
 import SideBar from "../../components/catgories/SideBar";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, selectAllProducts, selectProductsStatus } from "../../redux/reducers/productsReducer";
+import {
+  fetchProducts as fetchAllProducts,
+  setSearchQuery,
+} from "../../redux/reducers/productsReducer";
+import {
+  selectFilteredProducts,
+  selectProductsStatus,
+  selectProductsError,
+  selectAllProducts, // Ensure this selector is properly imported
+} from "../../redux/selectors/productsSelector";
 
 function ProductListing() {
   const [searchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(true); // Sidebar visibility default is open on larger screens
   const [searchQuery, setSearchQuery] = useState(""); // Search input value
+  const [filteredItems, setFilteredItems] = useState([]); // Store filtered products
 
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
@@ -24,50 +34,61 @@ function ProductListing() {
   const selectedMaxPrice = searchParams.get("maxPrice");
   const selectedTypes = searchParams.getAll("type");
 
+  // Fetch all products when the component mounts
   useEffect(() => {
     if (productsStatus === "idle") {
-      dispatch(fetchProducts());
+      dispatch(fetchAllProducts());
     }
   }, [dispatch, productsStatus]);
 
-  // Filter logic based on query parameters
-  let filteredItems = products;
+  // Apply filters whenever the products or search params change
+  useEffect(() => {
+    let items = products;
 
-  if (selectedColors.length > 0) {
-    filteredItems = filteredItems.filter((item) =>
-      selectedColors.includes(item.color)
-    );
-  }
+    if (selectedColors.length > 0) {
+      items = items.filter((item) => selectedColors.includes(item.color));
+    }
 
-  if (selectedSizes.length > 0) {
-    filteredItems = filteredItems.filter((item) =>
-      selectedSizes.includes(item.size)
-    );
-  }
+    if (selectedSizes.length > 0) {
+      items = items.filter((item) => selectedSizes.includes(item.size));
+    }
 
-  if (selectedGenders.length > 0) {
-    filteredItems = filteredItems.filter((item) =>
-      selectedGenders.includes(item.gender)
-    );
-  }
+    if (selectedGenders.length > 0) {
+      items = items.filter((item) => selectedGenders.includes(item.gender));
+    }
 
-  if (selectedTypes.length > 0) {
-    filteredItems = filteredItems.filter((item) =>
-      selectedTypes.includes(item.type)
-    );
-  }
+    if (selectedTypes.length > 0) {
+      items = items.filter((item) => selectedTypes.includes(item.type));
+    }
 
-  if (selectedMinPrice) {
-    filteredItems = filteredItems.filter(
-      (item) => item.price >= selectedMinPrice && item.price <= selectedMaxPrice
-    );
-  }
+    if (selectedMinPrice) {
+      items = items.filter(
+        (item) => item.price >= selectedMinPrice && item.price <= selectedMaxPrice
+      );
+    }
 
+    // Apply search query filter
+    if (searchQuery) {
+      items = items.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredItems(items);
+  }, [
+    products,
+    selectedColors,
+    selectedSizes,
+    selectedGenders,
+    selectedMinPrice,
+    selectedMaxPrice,
+    selectedTypes,
+    searchQuery,
+  ]);
+
+  // Update search query based on user input
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
-    filteredItems = products.filter((product) =>
-      product.name.toLowerCase().includes(e.target.value.toLowerCase())
-    );
   };
 
   return (
