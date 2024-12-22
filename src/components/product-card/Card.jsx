@@ -4,7 +4,18 @@ import { CiStar } from "react-icons/ci";
 import { FaExchangeAlt } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { addToCart } from "../../redux/actions/cartActions";
+import { useDispatch, useSelector } from "react-redux";
+
 function Card({ item }) {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const isItemInCart = cartItems.some((cartItem) => cartItem.id === item.id);
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(item));
+  };
+
   const fallbackImage =
     "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
 
@@ -27,7 +38,14 @@ function Card({ item }) {
             <IoEyeOutline />
           </button>
         </div>
-        <button className={styles.addToCartButton}>Add to Cart</button>
+        <button
+          className={`${styles.addToCartButton} ${
+            isItemInCart ? styles.addedButton : ""
+          }`}
+          onClick={handleAddToCart}
+        >
+          {isItemInCart ? "Added to Cart" : "Add to Cart"}
+        </button>
       </div>
       <div className={styles.cardContent}>
         <Link
@@ -38,15 +56,15 @@ function Card({ item }) {
           <h2 className={styles.cardTitle}>{item.name}</h2>
         </Link>
         <p className={styles.cardDescription}>{item.description}</p>
-        {/* {item.discount > 0 ? (
+        {item.price - item.compare_price > 0 ? (
           <p className={styles.cardPrice}>
-            ${item.productPrice - item.discount}{" "}
-            <span className={styles.strikeThrough}>${item.productPrice}</span>
+            ${item.price - item.compare_price}{" "}
+            <span className={styles.strikeThrough}>${item.price}</span>
           </p>
         ) : (
-          <p className={styles.cardPrice}>${item.productPrice}</p>
-        )} */}
-        <p className={styles.cardPrice}>${item.price}</p>
+          <p className={styles.cardPrice}>${item.price}</p>
+        )}
+        {/* <p className={styles.cardPrice}>${item.price}</p> */}
       </div>
     </div>
   );

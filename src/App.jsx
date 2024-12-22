@@ -9,9 +9,9 @@ import NotFound from "./pages/NotFound";
 import ProductListing from "./pages/product-listing/ProductListing";
 import ProductDetails from "./pages/product-details/ProductDetails";
 import ErrorElement from "./pages/ErrorElement";
-import CustomerReview from "./components/customerReview/CustomerReview";
 import Home from "./pages/Home";
 import CustomerTestimonials from "./pages/CustomerTestimonials";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -20,18 +20,11 @@ export default function App() {
       element: <Layout />,
       children: [
         { index: true, element: <Home /> },
-        { path: "/about", element: <h1>About</h1> },
-        { path: "/checkout", element: <Checkout /> },
-        { path: "/shop", element: <ProductListing /> },
+        { path: "shop", element: <ProductListing /> },
         { path: "/product/:productId", element: <ProductDetails /> },
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
-
-        { path: "viewproducts", element: <ProductListing /> },
-        {path:"customerreview", element: <CustomerReview/>},
-        { path: "shop", element: <ProductListing /> },
         { path: "customerreviews", element: <CustomerTestimonials /> },
-
       ],
       errorElement: <ErrorElement />,
     },
@@ -44,7 +37,8 @@ export default function App() {
 
   return (
     <>
-      <RouterProvider router={routes} />
+    <Toaster/>
+    <RouterProvider router={routes} />
     </>
   );
 }

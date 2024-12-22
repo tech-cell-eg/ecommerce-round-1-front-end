@@ -6,19 +6,22 @@ import { Link } from "react-router-dom";
 import MiniCart from "./Minicart";
 import { HiChevronDown } from "react-icons/hi";
 import Mega from "./Mega";
+import { useSelector } from "react-redux";
+import {selectCartItemCount} from '../../redux/selectors/cartSelectors'
 
 export default function Navbar() {
   const [showNavList, setShowNavList] = useState(true);
   const [showMinicart, setShowMinicart] = useState(false);
-  const [cartItems] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const cartItemCount = useSelector(selectCartItemCount);
 
-  const [token, setToken] = useState(true);
+
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [showMegaMenu, setShowMegaMenu] = useState(false);
 
   const handellogout = () => {
-    setToken(false);
+        setToken(localStorage.removeItem("token"));
   };
 
   const handelShowNavList = () => {
@@ -31,16 +34,12 @@ export default function Navbar() {
 
   const navlist = [
     { name: "Home", path: "/" },
-
     { name: "Shop", path: "/shop" },
-    { name: "shop", path: "/viewproducts" },
     { name: "Our story", path: "/ourstory" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact", path: "/contact" },
     { name: "Customer Reviews", path: "/customerreviews" },
   ];
-
-  const cartItemCount = cartItems.length;
 
   return (
     <>
@@ -56,10 +55,9 @@ export default function Navbar() {
               onClick={handelShowNavList}
             />
           </div>
-
           {/* NAV LIST */}
           {showNavList && (
-            <ul className="md:flex items-center gap-4">
+            <ul className="md:flex items-center max-[911px]:gap-2 max-[767px]:gap-4 gap-4">
               {navlist.map((item, index) => (
                 <li key={index} className="relative">
                   {item.name === "Shop" ? (
@@ -75,7 +73,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       to={item.path}
-                      className="text-lg hover:text-gray-800"
+                      className="text-lg   hover:text-gray-800"
                     >
                       {item.name}
                     </Link>
@@ -94,20 +92,34 @@ export default function Navbar() {
                   onClick={() => setShowSearch(true)}
                 />
               ) : (
-                <div className="flex items-center gap-2">
+                // <div className="flex items-center gap-2">
+                //   <input
+                //     type="text"
+                //     value={searchText}
+                //     onChange={(e) => setSearchText(e.target.value)}
+                //     className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                //     placeholder="Search..."
+                //   />
+                //   <button
+                //     onClick={() => setShowSearch(false)}
+                //     className="px-4 py-2 text-white bg-black rounded-lg "
+                //   >
+                //     Search
+                //   </button>
+                // </div>
+                <div>
                   <input
                     type="text"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
+                    // value={searchInput}
+                    // onChange={(e) => setSearchInput(e.target.value)}
+                    placeholder="Search products..."
                     className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                    placeholder="Search..."
                   />
-                  <button
-                    onClick={() => setShowSearch(false)}
-                    className="px-4 py-2 text-white bg-black rounded-lg "
-                  >
-                    Search
-                  </button>
+                  <div>
+                    {filteredProducts.map((product) => (
+                      <div key={product.id}>{product.name}</div>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -121,7 +133,7 @@ export default function Navbar() {
                 </span>
                 {showMinicart && (
                   <div className="absolute top-10 right-0 z-10">
-                    <MiniCart cartItems={cartItems} />
+                    <MiniCart />
                   </div>
                 )}
               </div>

@@ -1,33 +1,32 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart, clearCart } from "../../redux/actions/cartActions";
+import {
+  selectCartTotal,
+  selectCartItems,
+} from "../../redux/selectors/cartSelectors";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 
-const Minicart = ({ cartItems = [] }) => {
-  const [items, setItems] = useState(
-    cartItems.map((item) => ({
-      ...item,
-      quantity: item.quantity || 1,
-    }))
-  );
-
+const Minicart = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const subtotal = useSelector(selectCartTotal);
+  const items = useSelector(selectCartItems);
+
   const handleRedirect = (direction) => {
     navigate(`/${direction}`);
   };
 
-  // Calculate subtotal
-  const subtotal = items.reduce(
-    (total, item) => total + item.quantity * item.productPrice,
-    0
-  );
-
-  // Function to delete an item
-  const handleDelete = (id) => {
-    setItems(items.filter((item) => item.productId !== id));
+  const handleClearCart = () => {
+    dispatch(clearCart());
   };
 
-  // Handle empty cart
+  const handleDelete = (id) => {
+    dispatch(removeFromCart(id));
+  };
+  const fallbackImage =
+    "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
+
   if (items.length === 0) {
     return (
       <div className="minicart-dropdown bg-white p-4 rounded-lg shadow-lg w-80 text-black flex flex-col items-center">
@@ -40,12 +39,9 @@ const Minicart = ({ cartItems = [] }) => {
         <p className="text-gray-400 mt-2 mb-2">
           Add items to your cart to get started.
         </p>
-
         <button
           className="bg-black text-white py-2 rounded-lg w-full"
-          onClick={() => {
-            handleRedirect("shop");
-          }}
+          onClick={() => handleRedirect("shop")}
         >
           Browse Products
         </button>
@@ -61,27 +57,32 @@ const Minicart = ({ cartItems = [] }) => {
       </h3>
       <table className="w-full mb-4">
         <tbody>
-          {items?.map((item) => (
-            <tr key={item.productId} className="border-b border-gray-600 py-2">
+          {items.map((item) => (
+            <tr key={item.id}>
               <td className="w-1/4">
                 <img
-                  src={item.productImage}
-                  alt={item.productTitle}
+                  src={item.image || fallbackImage}
+                  alt={item.name}
                   className="w-16 h-16 object-cover"
                 />
               </td>
-              <td className="flex flex-col">
-                <span className="text-sm font-semibold">
-                  {item.productTitle}
+              <td>
+                <span className="text-sm font-semibold">{item.name}</span>
+                <br />
+                <span className="text-sm">
+                  Size:
+                  {item.productSize && item.productSize.length > 0
+                    ? item.productSize[0]
+                    : "N/A"}
                 </span>
-                <span className="text-sm">Size: {item.productSize[0]}</span>
+                <br />
                 <span className="text-sm bold">
-                  {item.quantity} X ${item.productPrice}
+                  {item.quantity} X ${item.price}
                 </span>
               </td>
               <td className="text-right">
                 <button
-                  onClick={() => handleDelete(item.productId)}
+                  onClick={() => handleDelete(item.id)}
                   className="text-red-500 hover:text-red-700"
                 >
                   <FaTrash />
@@ -97,36 +98,19 @@ const Minicart = ({ cartItems = [] }) => {
       <div className="flex flex-col space-y-2">
         <button
           className="bg-white text-black py-2 rounded-lg border"
-          onClick={() => {
-            handleRedirect("checkout");
-          }}
+          onClick={handleClearCart}
         >
-          View Cart
+          Clear Cart
         </button>
         <button
           className="bg-black text-white py-2 rounded-lg"
-          onClick={() => {
-            handleRedirect("checkout");
-          }}
+          onClick={() => handleRedirect("checkout")}
         >
           Checkout
         </button>
       </div>
     </div>
   );
-};
-
-Minicart.propTypes = {
-  cartItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      productId: PropTypes.number.isRequired,
-      productTitle: PropTypes.string.isRequired,
-      productPrice: PropTypes.number.isRequired,
-      productImage: PropTypes.string.isRequired,
-      productSize: PropTypes.array.isRequired,
-      quantity: PropTypes.number,
-    })
-  ).isRequired,
 };
 
 export default Minicart;
