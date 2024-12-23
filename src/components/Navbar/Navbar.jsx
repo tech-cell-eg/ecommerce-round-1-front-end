@@ -97,7 +97,7 @@ export default function Navbar() {
               {cartItemCount > 0 ? cartItemCount : 0}
             </span>
             {showMinicart && (
-              <div className="absolute top-10 right-0 z-10">
+              <div className="absolute top-10 right-0 z-40">
                 <MiniCart />
               </div>
             )}
@@ -122,7 +122,7 @@ export default function Navbar() {
 
       {/* Mega Menu */}
       {showMegaMenu && (
-        <div className="absolute left-40 right-0 top-full z-10">
+        <div className="absolute left-40 right-0 top-full z-50">
           <Mega />
         </div>
       )}
