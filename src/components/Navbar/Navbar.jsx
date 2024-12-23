@@ -34,7 +34,7 @@ export default function Navbar() {
     { name: "Shop", path: "/shop" },
     { name: "Our Story", path: "/ourstory" },
     { name: "Blogs", path: "/blogs" },
-    { name: "Contact", path: "/contact" },
+    { name: "Contact Us", path: "/contactus" },
     { name: "Customer Reviews", path: "/customerreviews" },
   ];
 
@@ -84,12 +84,15 @@ export default function Navbar() {
 
         {/* Right Section: Icons & Authentication */}
         <div className="hidden md:flex items-center gap-4">
-          <CiSearch className="cursor-pointer" />
+          <CiSearch className="cursor-pointer text-2xl hover:text-gray-700" />
           <Link to="">
-            <CiHeart />
+            <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
           </Link>
           <div className="relative">
-            <FiInbox className="cursor-pointer" onClick={toggleMinicart} />
+            <FiInbox
+              className="cursor-pointer text-2xl hover:text-gray-700"
+              onClick={toggleMinicart}
+            />
             <span className="absolute bottom-2 left-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">
               {cartItemCount > 0 ? cartItemCount : 0}
             </span>
@@ -101,7 +104,7 @@ export default function Navbar() {
           </div>
           {token ? (
             <button
-              className="bg-black text-white py-2 px-4 rounded-lg"
+              className="bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800"
               onClick={handleLogout}
             >
               Logout
@@ -109,7 +112,7 @@ export default function Navbar() {
           ) : (
             <Link
               to="/login"
-              className="bg-black text-white py-2 px-4 rounded-lg"
+              className="bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800"
             >
               Login
             </Link>

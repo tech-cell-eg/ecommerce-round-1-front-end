@@ -7,7 +7,7 @@ const FooterComponent = () => {
   const navigate = useNavigate();
 
   return (
-    <Footer container className="bg-black text-white">
+    <Footer container className="bg-black text-white relative z-50">
       <div className="w-full py-1 px-4 ">
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-4">
           {/* Brand & Contact Section */}
