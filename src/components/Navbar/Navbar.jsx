@@ -4,28 +4,27 @@ import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import MiniCart from "./Minicart";
-import { HiChevronDown } from "react-icons/hi";
 import Mega from "./Mega";
 import { useSelector } from "react-redux";
-import {selectCartItemCount} from '../../redux/selectors/cartSelectors'
+import { selectCartItemCount } from "../../redux/selectors/cartSelectors";
+import Drawer from "./Drawer";
 
 export default function Navbar() {
   const [showNavList, setShowNavList] = useState(true);
   const [showMinicart, setShowMinicart] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [searchText, setSearchText] = useState("");
+  // const [searchText, setSearchText] = useState("");
   const cartItemCount = useSelector(selectCartItemCount);
-
-
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [showMegaMenu] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handellogout = () => {
-        setToken(localStorage.removeItem("token"));
+    setToken(localStorage.removeItem("token"));
   };
 
-  const handelShowNavList = () => {
-    setShowNavList(!showNavList);
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
   };
 
   const toggleMinicart = () => {
@@ -52,77 +51,22 @@ export default function Navbar() {
             </div>
             <FaBars
               className="md:hidden cursor-pointer"
-              onClick={handelShowNavList}
+              onClick={toggleDrawer}
             />
           </div>
-          {/* NAV LIST */}
-          {showNavList && (
-            <ul className="md:flex items-center max-[911px]:gap-2 max-[767px]:gap-4 gap-4">
-              {navlist.map((item, index) => (
-                <li key={index} className="relative">
-                  {item.name === "Shop" ? (
-                    <>
-                      <button
-                        className="flex items-center text-lg hover:text-gray-800"
-                        onClick={() => setShowMegaMenu(!showMegaMenu)}
-                      >
-                        Shop
-                        <HiChevronDown className="ml-2" />
-                      </button>
-                    </>
-                  ) : (
-                    <Link
-                      to={item.path}
-                      className="text-lg   hover:text-gray-800"
-                    >
-                      {item.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
 
-          {/* ICONS */}
-          {showNavList && (
-            <div className="flex items-center gap-4 md:justify-between">
-              {!showSearch ? (
-                <CiSearch
-                  className="cursor-pointer"
-                  onClick={() => setShowSearch(true)}
-                />
-              ) : (
-                // <div className="flex items-center gap-2">
-                //   <input
-                //     type="text"
-                //     value={searchText}
-                //     onChange={(e) => setSearchText(e.target.value)}
-                //     className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                //     placeholder="Search..."
-                //   />
-                //   <button
-                //     onClick={() => setShowSearch(false)}
-                //     className="px-4 py-2 text-white bg-black rounded-lg "
-                //   >
-                //     Search
-                //   </button>
-                // </div>
-                <div>
-                  <input
-                    type="text"
-                    // value={searchInput}
-                    // onChange={(e) => setSearchInput(e.target.value)}
-                    placeholder="Search products..."
-                    className="px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                  />
-                  <div>
-                    {filteredProducts.map((product) => (
-                      <div key={product.id}>{product.name}</div>
-                    ))}
-                  </div>
-                </div>
-              )}
+          <Drawer
+            isOpen={isDrawerOpen}
+            toggleDrawer={toggleDrawer}
+            navlist={navlist}
+          />
 
+          {showNavList && (
+            <div className="hidden md:flex items-center gap-4 md:justify-between">
+              <CiSearch
+                className="cursor-pointer"
+                onClick={() => setShowSearch(true)}
+              />
               <Link to={""}>
                 <CiHeart />
               </Link>
