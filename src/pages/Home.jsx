@@ -3,6 +3,8 @@
 import BestSeller from "../components/home/BestSeller";
 import CategorySlider from "../components/home/CategorySlider";
 import Deals from "../components/home/Deals";
+import Header from "../components/home/Header";
+
 
 const Home = () => {
   //?Example of Fetching All Products
@@ -33,6 +35,7 @@ const Home = () => {
           ))}
         </ul>
       </div> */}
+       <Header/>
       <CategorySlider/>
       <BestSeller />
       <Deals
