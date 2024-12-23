@@ -37,7 +37,7 @@ export default function Navbar() {
     { name: "Shop", path: "/shop" },
     { name: "Our story", path: "/ourstory" },
     { name: "Blogs", path: "/blogs" },
-    { name: "Contact", path: "/contact" },
+    { name: "Contact Us", path: "/contactus" },
     { name: "Customer Reviews", path: "/customerreviews" },
   ];
 
