@@ -5,8 +5,8 @@ import { categories } from "../../products.json";
 
 const CategorySlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerPage] = useState(4);
 
-  const itemsPerPage = 4;
 
   const goToPrevSlide = () => {
     setCurrentIndex((prev) =>
@@ -56,7 +56,7 @@ const CategorySlider = () => {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="min-w-[calc(25%-1rem)] h-[300px] bg-cover bg-center flex items-end justify-center p-4 rounded-lg shadow-md"
+              className="min-w-[calc(100%/1-1rem)] md:min-w-[calc(100%/2-1rem)] lg:min-w-[calc(100%/4-1rem)] h-[300px] bg-cover bg-center flex items-end justify-center p-4 rounded-lg shadow-md"
               style={{
                 backgroundImage: `url(${category.image})`,
               }}
