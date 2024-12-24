@@ -4,11 +4,12 @@ import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
 import { HiChevronDown } from "react-icons/hi";
 import { RxPerson } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MiniCart from "./Minicart";
 import Mega from "./Mega";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectCartItemCount } from "../../redux/selectors/cartSelectors";
+import { signOut } from "../../redux/actions/userActions";
 import Drawer from "./Drawer";
 
 export default function Navbar() {
@@ -17,9 +18,13 @@ export default function Navbar() {
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const cartItemCount = useSelector(selectCartItemCount);
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setToken(localStorage.removeItem("token"));
+    dispatch(signOut());
+    navigate("/login");
   };
 
   const toggleDrawer = () => {
@@ -37,7 +42,6 @@ export default function Navbar() {
     { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contactus" },
     { name: "Customer Reviews", path: "/customerreviews" },
-   
   ];
 
   return (
@@ -92,8 +96,7 @@ export default function Navbar() {
           </Link>
 
           <Link to="/profile">
-            <RxPerson
-            className="cursor-pointer text-2xl" />
+            <RxPerson className="cursor-pointer text-2xl" />
           </Link>
           <div className="relative">
             <FiInbox

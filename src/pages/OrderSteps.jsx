@@ -13,6 +13,7 @@ import AddressSelection from "../components/orderSteps/AddressSelection";
 import PaymentMethod from "../components/orderSteps/PaymentMethod";
 import OrderReview from "../components/orderSteps/OrderReview";
 import OrderConfirmation from "../components/orderSteps/OrderConfirmation";
+import { selectUser } from "../redux/selectors/userSelectors";
 
 const OrderSteps = () => {
   const [deliveryCharge] = useState(5);
@@ -21,12 +22,12 @@ const OrderSteps = () => {
   const isCartHasItem = useSelector(selectCartItemCount);
   const activeStep = useSelector(selectActiveStep);
   const orderConfirmed = useSelector(selectOrderConfirmed);
+  const user = useSelector(selectUser);
 
   // Apply discount
   const handleApplyDiscount = (discount) => {
     console.log("Discount applied: ", discount);
   };
-
 
   // Empty Cart View
   if (isCartHasItem === 0) {
@@ -58,6 +59,21 @@ const OrderSteps = () => {
     return <OrderConfirmation />;
   }
 
+  if (!user.id) {
+    return (
+      <div className="bg-white p-6 shadow-lg w-[90%] lg:w-[60%] mx-auto text-black flex flex-col items-center justify-center min-h-[60vh]">
+        <h2 className="text-2xl font-semibold text-center mb-4">
+          Please Log in or sign up to complete checkout process
+        </h2>
+        <button
+          className="bg-black text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition duration-300"
+          onClick={() => navigate("/login")}
+        >
+          Log In
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-8">

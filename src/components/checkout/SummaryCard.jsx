@@ -82,8 +82,6 @@ const SummaryCard = ({ deliveryCharge, onApplyDiscount }) => {
 SummaryCard.propTypes = {
   deliveryCharge: PropTypes.number.isRequired,
   onApplyDiscount: PropTypes.func.isRequired,
-  buttonText: PropTypes.string,
-  onProceed: PropTypes.func.isRequired,
 };
 
 export default SummaryCard;

@@ -9,6 +9,8 @@ const Checkout = () => {
   const [deliveryCharge] = useState(5);
   const navigate = useNavigate();
   const isCartHasItem = useSelector(selectCartItemCount);
+ 
+ 
 
   // Apply discount
   const handleApplyDiscount = (discount) => {
@@ -39,6 +41,8 @@ const Checkout = () => {
       </div>
     );
   }
+
+ 
 
   return (
     <div className="container mx-auto py-8">
