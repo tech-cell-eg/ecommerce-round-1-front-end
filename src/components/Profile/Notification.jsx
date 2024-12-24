@@ -21,35 +21,6 @@ export default function Notification() {
     fetchNotifications();
   }, []);
 
-//   delete Notification
-
-  useEffect(() => {
-    const deleteNotifications = async () => {
-      try {
-        const res = await deleteNotification();
-        setNotifications(res);
-      } catch (error) {
-        console.error("Failed to fetch notifications:", error);
-      }
-    };
-
-    deleteNotifications();
-  }, []);
-
-
-  useEffect(() => {
-    const getPsicialNotifications = async () => {
-      try {
-        const res = await getspicialNotification();
-        setNotifications(res);
-      } catch (error) {
-        console.error("Failed to fetch notifications:", error);
-      }
-    };
-
-    getPsicialNotifications();
-  }, []);
-
 
   return (
     <>
