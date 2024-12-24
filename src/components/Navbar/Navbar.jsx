@@ -3,6 +3,7 @@ import { CiHeart, CiSearch } from "react-icons/ci";
 import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
 import { HiChevronDown } from "react-icons/hi";
+import { RxPerson } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import MiniCart from "./Minicart";
 import Mega from "./Mega";
@@ -36,6 +37,7 @@ export default function Navbar() {
     { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contactus" },
     { name: "Customer Reviews", path: "/customerreviews" },
+   
   ];
 
   return (
@@ -87,6 +89,11 @@ export default function Navbar() {
           <CiSearch className="cursor-pointer text-2xl hover:text-gray-700" />
           <Link to="">
             <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
+          </Link>
+
+          <Link to="/profile">
+            <RxPerson
+            className="cursor-pointer text-2xl" />
           </Link>
           <div className="relative">
             <FiInbox
