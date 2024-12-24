@@ -1,25 +1,21 @@
 import axios from "axios";
+
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 const api = axios.create({
   baseURL: baseURL,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-
-export const setAuthToken = (token) => {
-  if (token) {
-    api.defaults.headers.Authorization = `Bearer ${token}`;
-  } else {
-    delete api.defaults.headers.Authorization;
-  }
-};
-
 api.interceptors.request.use(
   (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -27,8 +23,7 @@ api.interceptors.request.use(
   }
 );
 
-export default api;
-
+// Handle Errors
 export const handleError = (error, defaultMessage) => {
   if (error.response) {
     const errorMessage =
@@ -42,3 +37,16 @@ export const handleError = (error, defaultMessage) => {
     throw new Error(error.message || defaultMessage);
   }
 };
+
+// Utility to set or clear token manually
+export const setAuthToken = (token) => {
+  if (token) {
+    localStorage.setItem("authToken", token);
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  } else {
+    localStorage.removeItem("authToken");
+    delete api.defaults.headers.Authorization;
+  }
+};
+
+export default api;

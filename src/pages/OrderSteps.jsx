@@ -1,19 +1,32 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectCartItemCount } from "../redux/selectors/cartSelectors";
-import ProductTable from "../components/checkout/ProductTable";
-import SummaryCard from "../components/checkout/SummaryCard";
 
-const Checkout = () => {
+import {
+  selectActiveStep,
+  selectOrderConfirmed,
+} from "../redux/selectors/checkoutSelectors";
+import { selectCartItemCount } from "../redux/selectors/cartSelectors";
+import SummaryCard from "../components/checkout/SummaryCard";
+import CheckoutSteps from "../components/orderSteps/CheckoutSteps";
+import AddressSelection from "../components/orderSteps/AddressSelection";
+import PaymentMethod from "../components/orderSteps/PaymentMethod";
+import OrderReview from "../components/orderSteps/OrderReview";
+import OrderConfirmation from "../components/orderSteps/OrderConfirmation";
+
+const OrderSteps = () => {
   const [deliveryCharge] = useState(5);
   const navigate = useNavigate();
+
   const isCartHasItem = useSelector(selectCartItemCount);
+  const activeStep = useSelector(selectActiveStep);
+  const orderConfirmed = useSelector(selectOrderConfirmed);
 
   // Apply discount
   const handleApplyDiscount = (discount) => {
     console.log("Discount applied: ", discount);
   };
+
 
   // Empty Cart View
   if (isCartHasItem === 0) {
@@ -40,20 +53,34 @@ const Checkout = () => {
     );
   }
 
+  // Order Confirmation View
+  if (orderConfirmed) {
+    return <OrderConfirmation />;
+  }
+
+
   return (
     <div className="container mx-auto py-8">
       <div className="p-6 bg-white shadow-md rounded-md max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-left">Checkout</h1>
-        <div className="flex flex-col lg:flex-row w-[100%] gap-10">
-            <ProductTable />
+        <div className="flex flex-col lg:flex-row gap-10">
+          <div className="w-[100%]">
+            <CheckoutSteps />
+
+            {activeStep === 1 && <AddressSelection />}
+            {activeStep === 2 && <PaymentMethod />}
+            {activeStep === 3 && (
+              <OrderReview deliveryCharge={deliveryCharge} />
+            )}
+          </div>
+
           <SummaryCard
             deliveryCharge={deliveryCharge}
             onApplyDiscount={handleApplyDiscount}
           />
-          
         </div>
       </div>
     </div>
   );
 };
-export default Checkout;
+export default OrderSteps;

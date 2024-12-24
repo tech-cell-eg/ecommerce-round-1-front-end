@@ -2,11 +2,13 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { selectCartTotal } from "../../redux/selectors/cartSelectors";
+import { useNavigate } from "react-router-dom";
 
 const SummaryCard = ({ deliveryCharge, onApplyDiscount }) => {
   const [discountCode, setDiscountCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const subtotal = useSelector(selectCartTotal);
+  const navigate = useNavigate();
 
   const applyDiscount = () => {
     if (discountCode === "FLAT50") {
@@ -26,7 +28,7 @@ const SummaryCard = ({ deliveryCharge, onApplyDiscount }) => {
   const total = subtotal - discount + deliveryCharge;
 
   return (
-    <div className="mt-6 p-4 border rounded-md w-[100%] h-auto">
+    <div className="mt-6 p-4 border rounded-md w-[50%] h-auto">
       <div className="flex justify-between mb-2">
         <p className="font-semibold">Subtotal</p>
         <p>${subtotal.toFixed(2)}</p>
@@ -65,7 +67,12 @@ const SummaryCard = ({ deliveryCharge, onApplyDiscount }) => {
         <p>${total.toFixed(2)}</p>
       </div>
 
-      <button className="bg-black text-white w-full py-3 mt-4 rounded hover:bg-gray-800">
+      <button
+        className="bg-black text-white w-full py-3 mt-4 rounded hover:bg-gray-800"
+        onClick={() => {
+          navigate("/order");
+        }}
+      >
         Proceed to Checkout
       </button>
     </div>
@@ -75,6 +82,8 @@ const SummaryCard = ({ deliveryCharge, onApplyDiscount }) => {
 SummaryCard.propTypes = {
   deliveryCharge: PropTypes.number.isRequired,
   onApplyDiscount: PropTypes.func.isRequired,
+  buttonText: PropTypes.string,
+  onProceed: PropTypes.func.isRequired,
 };
 
 export default SummaryCard;
