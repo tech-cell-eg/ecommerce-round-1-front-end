@@ -6,7 +6,8 @@ const fetchlogin = async (values) => {
       email: values.email,
       password: values.password,
     });
-    localStorage.setItem("token",response.data.data.token)
+    localStorage.setItem("token", response.data.data.token);
+    
     return response.data;
   } catch (error) {
     handleError(error);

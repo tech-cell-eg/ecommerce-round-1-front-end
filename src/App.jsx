@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import CustomerTestimonials from "./pages/CustomerTestimonials";
 import { Toaster } from "react-hot-toast";
 import ContactUs from "./pages/ContactUs/ContactUs";
+import OrderSteps from "./pages/OrderSteps"
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -25,6 +26,7 @@ export default function App() {
         { path: "/product/:productId", element: <ProductDetails /> },
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
+        { path: "order", element: <OrderSteps /> },
         { path: "contactUs", element: <ContactUs/> },
         { path: "customerreviews", element: <CustomerTestimonials /> },
       ],

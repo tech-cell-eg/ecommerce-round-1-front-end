@@ -5,27 +5,30 @@ import * as yup from "yup";
 import fetchlogin from "../../api/Authentication/fechlogin";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { setUser } from "../../redux/actions/userActions";
+import { useDispatch } from "react-redux";
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState(null);
-  const [ passwordType, setPasswordType]=useState("password")
-  const [disableBtn,setDisableBtn] =useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
+  const [passwordType, setPasswordType] = useState("password");
+  const [disableBtn, setDisableBtn] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const handelPassType = ()=>{
-    setPasswordType(passwordType === "password"? "text" : "password")
-  }
+  const handelPassType = () => {
+    setPasswordType(passwordType === "password" ? "text" : "password");
+  };
   const validationSchema = yup.object({
     email: yup
       .string()
       .required("email is required")
       .email("write avalid email"),
-      password: yup
+    password: yup
       .string()
       .required("password is required")
       .matches(
-        /^(?=.*[A-Z])(?=.*[a-z]).{8,}$/, 
+        /^(?=.*[A-Z])(?=.*[a-z]).{8,}$/,
         "Min 8 characters with at least one uppercase letter and one lowercase letter"
       ),
   });
@@ -37,26 +40,28 @@ export default function Login() {
     },
     validationSchema,
     onSubmit: async (values) => {
-        let id;
-  setDisableBtn(true); 
-  try {
-    id = toast.loading("Waiting...");
-    const log = await fetchlogin({ ...values, rememberMe });
-    toast.dismiss(id);
-    toast.success("User login successful");
-    if (rememberMe) {
-        localStorage.setItem("email", values.email);
-        localStorage.setItem("password", values.password);
+      let id;
+      setDisableBtn(true);
+      try {
+        id = toast.loading("Waiting...");
+        const log = await fetchlogin({ ...values, rememberMe });
+        toast.dismiss(id);
+        toast.success("User login successful");
+        if (rememberMe) {
+          localStorage.setItem("email", values.email);
+          localStorage.setItem("password", values.password);
+        }
+        dispatch(setUser(log.data.user));
+        navigate("/");
+      } catch (error) {
+        toast.dismiss(id);
+        toast.error(error.message || "An error occurred during login");
+      } finally {
+        setDisableBtn(false);
       }
-    navigate("/");
-  } catch (error) {
-    toast.dismiss(id);
-    toast.error(error.message || "An error occurred during login");
-  } finally {
-    setDisableBtn(false);
-    }}
-})
-      
+    },
+  });
+
   return (
     <>
       <section className="grid grid-cols-12 gap-2 h-screen ">
@@ -112,18 +117,23 @@ export default function Login() {
               <label htmlFor="password" className=" max-[766px]:text-white">
                 Password{" "}
               </label>
-             <div className="relative">
-             <input
-                type={passwordType}
-                id="password"
-                className="form-control"
-                name="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                onBlur={formik.handleBlur}
-              />
-              <div className="absolute right-2 bottom-3 cursor-pointer" onClick={handelPassType}>{passwordType === "password"?<FaEye />:<FaEyeSlash/>}</div>
-             </div>
+              <div className="relative">
+                <input
+                  type={passwordType}
+                  id="password"
+                  className="form-control"
+                  name="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  onBlur={formik.handleBlur}
+                />
+                <div
+                  className="absolute right-2 bottom-3 cursor-pointer"
+                  onClick={handelPassType}
+                >
+                  {passwordType === "password" ? <FaEye /> : <FaEyeSlash />}
+                </div>
+              </div>
               {formik.errors.password && formik.touched.password ? (
                 <div className="text-red-600 max-[766px]:text-red-500  mt-1 font-semibold text-sm ">
                   {formik.errors.password}
@@ -133,25 +143,35 @@ export default function Login() {
               )}
             </div>
             <div className="flex max-[332px]:flex-col justify-between items-center w-full ">
-            <div>
-   <label htmlFor='checkbox' className='flex items-center space-x-2  max-[766px]:text-white'>   
-    <input type="checkbox" 
-     checked={rememberMe}
-     onChange={(e) => setRememberMe(e.target.checked)}
-     id="" name="" value=""   className="appearance-none focus:ring-0 focus:border-none focus:shadow-none shadow-none relative h-4 w-4 border border-gray-400 rounded bg-gray-200 checked:bg-black checked:text-white checked:before:content-['✓'] checked:before:absolute checked:before:text-sm checked:before:font-semibold  checked:before:text-white flex items-center justify-center " />
-    <span className=""> Remember me</span></label>
-   </div>
-              <Link
-                to={"/forgetpassword"}
-                className="max-[766px]:text-white"
-              >
+              <div>
+                <label
+                  htmlFor="checkbox"
+                  className="flex items-center space-x-2  max-[766px]:text-white"
+                >
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    id=""
+                    name=""
+                    value=""
+                    className="appearance-none focus:ring-0 focus:border-none focus:shadow-none shadow-none relative h-4 w-4 border border-gray-400 rounded bg-gray-200 checked:bg-black checked:text-white checked:before:content-['✓'] checked:before:absolute checked:before:text-sm checked:before:font-semibold  checked:before:text-white flex items-center justify-center "
+                  />
+                  <span className=""> Remember me</span>
+                </label>
+              </div>
+              <Link to={"/forgetpassword"} className="max-[766px]:text-white">
                 Forgot Password?
               </Link>
             </div>
 
             <div className="w-full  ">
-              <button type="submit" className="btn-primary" disabled={disableBtn}>
-               {disableBtn ?<span>Waiting...</span>:<span>Login</span>}
+              <button
+                type="submit"
+                className="btn-primary"
+                disabled={disableBtn}
+              >
+                {disableBtn ? <span>Waiting...</span> : <span>Login</span>}
               </button>
             </div>
             <div className="max-[766px]:text-white m-auto flex text-sm max-[280px]:flex-wrap items-center justify-center">

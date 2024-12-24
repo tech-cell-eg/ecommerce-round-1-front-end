@@ -29,7 +29,7 @@ const ProductTable = () => {
     "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto w-[100%]">
       <table className="min-w-full border-collapse ">
         {/* Table Header */}
         <thead>
