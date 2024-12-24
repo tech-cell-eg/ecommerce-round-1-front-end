@@ -5,13 +5,27 @@ import DropDownMenu from "../../components/product-listing/DropDownMenu";
 import { TfiMenuAlt } from "react-icons/tfi";
 import SideBar from "../../components/catgories/SideBar";
 import { useSearchParams } from "react-router-dom";
-import { fetchAllProducts } from "../../api/products/products";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProducts as fetchAllProducts,
+  setSearchQuery,
+} from "../../redux/reducers/productsReducer";
+import {
+  selectFilteredProducts,
+  selectProductsStatus,
+  selectProductsError,
+  selectAllProducts, // Ensure this selector is properly imported
+} from "../../redux/selectors/productsSelector";
 
 function ProductListing() {
-
   const [searchParams] = useSearchParams();
-  const [products, setProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(true); // Sidebar visibility default is open on larger screens
+  const [searchQuery, setSearchQuery] = useState(""); // Search input value
+  const [filteredItems, setFilteredItems] = useState([]); // Store filtered products
+
+  const dispatch = useDispatch();
+  const products = useSelector(selectAllProducts);
+  const productsStatus = useSelector(selectProductsStatus);
 
   const selectedColors = searchParams.getAll("color");
   const selectedGenders = searchParams.getAll("gender");
@@ -20,56 +34,62 @@ function ProductListing() {
   const selectedMaxPrice = searchParams.get("maxPrice");
   const selectedTypes = searchParams.getAll("type");
 
+  // Fetch all products when the component mounts
   useEffect(() => {
-    const getProducts = async () => {
-      const allProducts = await fetchAllProducts();
-      console.log(allProducts);
-      setProducts(allProducts);
-    };
+    if (productsStatus === "idle") {
+      dispatch(fetchAllProducts());
+    }
+  }, [dispatch, productsStatus]);
 
-    getProducts();
-  }, []);
-
+  // Apply filters whenever the products or search params change
   useEffect(() => {
-    const getProducts = async () => {
-      const allProducts = await fetchAllProducts();
-      setProducts(allProducts);
-    };
-    getProducts();
-  }, []);
+    let items = products;
 
-  // Filter logic
-  let filteredItems = products;
+    if (selectedColors.length > 0) {
+      items = items.filter((item) => selectedColors.includes(item.color));
+    }
 
-  if (selectedColors.length > 0) {
-    filteredItems = filteredItems.filter((item) =>
-      selectedColors.includes(item.color)
-    );
-  }
+    if (selectedSizes.length > 0) {
+      items = items.filter((item) => selectedSizes.includes(item.size));
+    }
 
-  if (selectedSizes.length > 0) {
-    filteredItems = filteredItems.filter((item) =>
-      selectedSizes.includes(item.size)
-    );
-  }
+    if (selectedGenders.length > 0) {
+      items = items.filter((item) => selectedGenders.includes(item.gender));
+    }
 
-  if (selectedGenders.length > 0) {
-    filteredItems = filteredItems.filter((item) =>
-      selectedGenders.includes(item.gender)
-    );
-  }
+    if (selectedTypes.length > 0) {
+      items = items.filter((item) => selectedTypes.includes(item.type));
+    }
 
-  if (selectedTypes.length > 0) {
-    filteredItems = filteredItems.filter((item) =>
-      selectedTypes.includes(item.type)
-    );
-  }
+    if (selectedMinPrice) {
+      items = items.filter(
+        (item) => item.price >= selectedMinPrice && item.price <= selectedMaxPrice
+      );
+    }
 
-  if (selectedMinPrice) {
-    filteredItems = filteredItems.filter(
-      (item) => item.price >= selectedMinPrice && item.price <= selectedMaxPrice
-    );
-  }
+    // Apply search query filter
+    if (searchQuery) {
+      items = items.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredItems(items);
+  }, [
+    products,
+    selectedColors,
+    selectedSizes,
+    selectedGenders,
+    selectedMinPrice,
+    selectedMaxPrice,
+    selectedTypes,
+    searchQuery,
+  ]);
+
+  // Update search query based on user input
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <>
@@ -82,13 +102,19 @@ function ProductListing() {
           >
             {isOpen ? "Filter ⬎" : "Filter ⬎"}
           </button>
-          <p>Showing 1-16 of 72 results</p>
+          <input
+            type="text"
+            className="p-2 border rounded-md"
+            placeholder="Search products"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Sidebar */}
           {isOpen && (
-            <div className="col-span-1  p-4 rounded-md md:block">
+            <div className="col-span-1 p-4 rounded-md md:block">
               <SideBar />
             </div>
           )}
@@ -103,7 +129,13 @@ function ProductListing() {
               <div className="flex gap-4">
                 <PiSquaresFourLight className="text-2xl" />
                 <TfiMenuAlt className="text-2xl" />
-                <p>Showing 1-16 of 72 results</p>
+                <input
+                  type="text"
+                  className="p-2 border rounded-md"
+                  placeholder="Search products"
+                  value={searchQuery}
+                  onChange={handleSearch}
+                />
               </div>
               <button className="flex items-center">
                 <p>
