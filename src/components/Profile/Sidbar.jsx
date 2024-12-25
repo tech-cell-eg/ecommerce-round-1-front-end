@@ -4,9 +4,14 @@ import { CgBox } from 'react-icons/cg'
 import { GrLocation } from 'react-icons/gr'
 import { IoIosNotificationsOutline } from 'react-icons/io'
 import { IoHeartOutline, IoPersonOutline, IoSettingsOutline } from 'react-icons/io5'
-import { Link, NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 
 export default function Sidbar() {
+    const user = useSelector((state) => state.user);
+    const first_name = user.name && user.name !== "" ? user.name : "User";
+
+
     const sidbarDetails = [
         {
             id: 1,
@@ -59,7 +64,7 @@ export default function Sidbar() {
         </div>
         <div>
         <p>Hello🖐</p>
-        <h3 className='font-semibold text-lg text-center'>Robit Fox</h3>
+        <h3 className='font-semibold text-lg text-center'>{first_name}</h3>
         </div>
     </div>
   {
