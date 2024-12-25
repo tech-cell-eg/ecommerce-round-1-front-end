@@ -10,6 +10,8 @@ import Mega from "./Mega";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCartItemCount } from "../../redux/selectors/cartSelectors";
 import { signOut } from "../../redux/actions/userActions";
+import { clearCart } from "../../redux/actions/cartActions";
+import { setActiveStep } from "../../redux/actions/checkoutActions";
 import Drawer from "./Drawer";
 
 export default function Navbar() {
@@ -23,6 +25,8 @@ export default function Navbar() {
 
   const handleLogout = () => {
     setToken(localStorage.removeItem("token"));
+    dispatch(setActiveStep(1));
+    dispatch(clearCart());
     dispatch(signOut());
     navigate("/login");
   };

@@ -3,15 +3,25 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { IoMdClose } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { selectCartItemCount } from "../../redux/selectors/cartSelectors";
+import { signOut } from "../../redux/actions/userActions";
+import { clearCart } from "../../redux/actions/cartActions";
+import { setActiveStep } from "../../redux/actions/checkoutActions";
 
 const Drawer = ({ isOpen, toggleDrawer, navlist }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const cartItemCount = useSelector(selectCartItemCount);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handellogout = () => {
+  const handleLogout = () => {
     setToken(localStorage.removeItem("token"));
+    dispatch(setActiveStep(1));
+    dispatch(clearCart());
+    dispatch(signOut());
+    navigate("/login");
   };
 
   return (
@@ -39,6 +49,15 @@ const Drawer = ({ isOpen, toggleDrawer, navlist }) => {
         </div>
 
         <ul className="flex flex-col p-4">
+          <li className="py-2 border-b">
+            <Link
+              to="/profile"
+              onClick={toggleDrawer}
+              className="text-lg hover:text-gray-800 block w-full flex items-center justify-between"
+            >
+              <span className="flex items-center gap-2">Profile</span>
+            </Link>
+          </li>
           {navlist.map((item, index) => (
             <li key={index} className="py-2 border-b">
               <Link
@@ -72,7 +91,7 @@ const Drawer = ({ isOpen, toggleDrawer, navlist }) => {
           {token ? (
             <button
               className="w-full bg-black text-white text-center py-2 px-4 rounded-lg"
-              onClick={handellogout}
+              onClick={handleLogout}
             >
               Logout
             </button>
