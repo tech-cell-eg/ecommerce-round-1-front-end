@@ -2,13 +2,43 @@ import { Footer } from "flowbite-react";
 import { BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { FaCcVisa, FaCcMastercard, FaCcAmex, FaCcPaypal } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { subscription } from "../api/subscription/subscription";
 
 const FooterComponent = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [alert, setAlert] = useState({ message: "", type: "" });
+
+  const handleSubscribe = async () => {
+    if (!email) {
+      setAlert({
+        message: "Please enter a valid email address.",
+        type: "error",
+      });
+      return;
+    }
+
+    try {
+      const response = await subscription({ email });
+      setAlert({
+        message: "Subscription successful! Thank you!",
+        type: "success",
+      });
+      setEmail("");
+    } catch (error) {
+      setAlert({
+        message: "Subscription failed. Please try again.",
+        type: "error",
+      });
+    }
+
+    setTimeout(() => setAlert({ message: "", type: "" }), 3000);
+  };
 
   return (
     <Footer container className="bg-black text-white relative z-50">
-      <div className="w-full py-1 px-4 ">
+      <div className="w-full py-1 px-4">
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-4">
           {/* Brand & Contact Section */}
           <div>
@@ -104,11 +134,25 @@ const FooterComponent = () => {
                 type="email"
                 placeholder="Your Email"
                 className="flex-1 p-2 rounded-l-md text-black"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <button className="bg-gray-700 px-4 rounded-r-md hover:bg-gray-600">
+              <button
+                className="bg-gray-700 px-4 rounded-r-md hover:bg-gray-600"
+                onClick={handleSubscribe}
+              >
                 →
               </button>
             </div>
+            {alert.message && (
+              <div
+                className={`mt-2 text-sm p-2 rounded ${
+                  alert.type === "success" ? "bg-green-500" : "bg-red-500"
+                }`}
+              >
+                {alert.message}
+              </div>
+            )}
           </div>
         </div>
 
