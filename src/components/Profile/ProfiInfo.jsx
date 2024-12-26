@@ -148,10 +148,6 @@ export default function ProfiInfo() {
             </div>
           )}
         </div>
-
-        <div className="flex justify-end">
-          <button type="submit" className="btn-primary">Save Changes</button>
-        </div>
       </form>
     </section>
   );
