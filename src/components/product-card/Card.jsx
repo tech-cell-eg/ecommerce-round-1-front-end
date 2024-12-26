@@ -19,9 +19,6 @@ function Card({ item }) {
     (cartItem) => cartItem.data.product_id === item.id
   );
 
-
-
-  const isItemInCart = cartItems.some((cartItem) => cartItem.id === item.id);
   const [isInWishlist, setIsInWishlist] = useState(false);
 
   const handleAddToWishlist = async (itemId) => {
