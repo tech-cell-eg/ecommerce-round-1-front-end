@@ -22,6 +22,14 @@ export default function Notification() {
   }, []);
 
 
+  const deleteNotification = async (id) => {
+    try {
+      await deleteNotification(id);
+      setNotifications(notifications.filter((n) => n.id!== id));
+    } catch (error) {
+      console.error("Failed to delete notification:", error);
+    }
+  };
   return (
     <>
       <section className="p-4">

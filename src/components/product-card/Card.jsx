@@ -50,8 +50,8 @@ function Card({ item }) {
           alt={item.name}
           className={styles.cardImage}
         />
-        <div className={styles.topIcons} onClick={() => handleAddToWishlist(item.id)}>
-        <button className={styles.iconButton}>
+        <div className={styles.topIcons} >
+        <button className={styles.iconButton} onClick={() => handleAddToWishlist(item.id)}>
         {isInWishlist ? (
             <CiHeart />
             ) : (
