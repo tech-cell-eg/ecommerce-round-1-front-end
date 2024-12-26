@@ -4,15 +4,21 @@ import { CiHeart, CiStar } from "react-icons/ci";
 import { FaExchangeAlt } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { addToCart } from "../../redux/actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
 import addtowhishlist from "../../api/wishlist/addtowhishlist";
 import toast from "react-hot-toast";
+
 
 function Card({ item }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-  const isItemInCart = cartItems.some((cartItem) => cartItem.id === item.id);
+
+
+  const isItemInCart = cartItems.some(
+    (cartItem) => cartItem.data.product_id === item.id
+  );
+
   const [isInWishlist, setIsInWishlist] = useState(false);
 
   const handleAddToWishlist = async (itemId) => {
@@ -27,8 +33,10 @@ function Card({ item }) {
     }
   };
 
+
   const handleAddToCart = () => {
-    dispatch(addToCart(item));
+    // console.log("Add to Cart clicked for item:", item);
+    dispatch(addToCart({ item, userId: 13 })); 
   };
 
   const fallbackImage =
@@ -62,6 +70,7 @@ function Card({ item }) {
             isItemInCart ? styles.addedButton : ""
           }`}
           onClick={handleAddToCart}
+          disabled={isItemInCart} 
         >
           {isItemInCart ? "Added to Cart" : "Add to Cart"}
         </button>
@@ -83,7 +92,6 @@ function Card({ item }) {
         ) : (
           <p className={styles.cardPrice}>${item.price}</p>
         )}
-        {/* <p className={styles.cardPrice}>${item.price}</p> */}
       </div>
     </div>
   );

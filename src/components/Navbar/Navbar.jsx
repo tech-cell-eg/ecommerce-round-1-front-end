@@ -8,9 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import MiniCart from "./Minicart";
 import Mega from "./Mega";
 import { useSelector, useDispatch } from "react-redux";
-import { selectCartItemCount } from "../../redux/selectors/cartSelectors";
 import { signOut } from "../../redux/actions/userActions";
-import { clearCart } from "../../redux/actions/cartActions";
+import { clearCart } from "../../redux/cartSlice";
 import { setActiveStep } from "../../redux/actions/checkoutActions";
 import Drawer from "./Drawer";
 
@@ -18,7 +17,7 @@ export default function Navbar() {
   const [showMinicart, setShowMinicart] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
-  const cartItemCount = useSelector(selectCartItemCount);
+  const cartItemCount = useSelector((state) => state.cart.items.length);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -95,7 +94,7 @@ export default function Navbar() {
         {/* Right Section: Icons & Authentication */}
         <div className="hidden md:flex items-center gap-4">
           <CiSearch className="cursor-pointer text-2xl hover:text-gray-700" />
-          <Link to="">
+          <Link to="/profile/wishlist">
             <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
           </Link>
 
@@ -108,7 +107,7 @@ export default function Navbar() {
               onClick={toggleMinicart}
             />
             <span className="absolute bottom-2 left-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">
-              {cartItemCount > 0 ? cartItemCount : 0}
+              {cartItemCount}
             </span>
             {showMinicart && (
               <div className="absolute top-10 right-0 z-40">

@@ -1,46 +1,53 @@
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "flowbite-react";
 import { setOrderConfirmed } from "../../redux/actions/checkoutActions";
-import { clearCart } from "../../redux/actions/cartActions"; // Add a clearCart action
+import { clearCart } from "../../redux/cartSlice";
 import {
   selectSelectedAddress,
   selectSelectedPayment,
 } from "../../redux/selectors/checkoutSelectors";
-import { selectCartItems } from "../../redux/selectors/cartSelectors";
 import { createOrder } from "../../api/checkout/setOrder";
 import { selectUser } from "../../redux/selectors/userSelectors";
+import { fetchUserCart } from "../../api/cart/cart"; 
 
 const OrderReview = () => {
   const dispatch = useDispatch();
   const selectedAddress = useSelector(selectSelectedAddress);
   const selectedPayment = useSelector(selectSelectedPayment);
-  const cartItems = useSelector(selectCartItems);
-  const user = useSelector(selectUser);
-  console.log(selectedAddress);
+  const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalAmount = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+
+console.log(selectedAddress);
+
+  useEffect(() => {
+    const getCart = async () => {
+      setLoading(true);
+      try {
+        console.log("Fetching cart items...");
+        const allCartItems = await fetchUserCart();
+        console.log("Cart items fetched:", allCartItems); 
+        setCart(allCartItems);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    getCart();
+  }, []);
 
   const handlePlaceOrder = async () => {
     const order = {
-      user_id: user.id,
-      user_address_id: selectedAddress.id,
-      user_card_id: selectedPayment,
-      status: "in process",
-      delivery_date: new Date().toISOString(),
-      delivery_charge: 60.0,
-      grand_total: totalAmount + 60,
-      products: cartItems.map((item) => ({
-        id: item.id,
-        pivot: {
-          price: item.price * item.quantity,
-          quantity: item.quantity,
-          size: item.size || "N/A",
-        },
-      })),
-    };
+      "user_address_id":selectedAddress.id,
+      "user_card_id":selectedPayment.id,
+      "products":[1],
+      "quantities":[1],
+      "sizes":["S"]
+
+    }
 
     try {
       console.log("Order data being sent:", JSON.stringify(order, null, 2));
@@ -67,18 +74,18 @@ const OrderReview = () => {
       <div className="space-y-6">
         {/* Order Items */}
         <div className="space-y-4">
-          {cartItems.map((item) => (
+          {cart.map((item) => (
             <div key={item.id} className="flex items-center space-x-4">
               <img
-                src={item.image || fallbackImage}
-                alt={item.name}
+                src={item.product.image || fallbackImage}
+                alt={item.product.name}
                 className="w-20 h-20 object-cover"
               />
               <div>
-                <h3 className="font-medium">{item.name}</h3>
-                <p className="text-gray-600">${item.price}</p>
+                <h3 className="font-medium">{item.product.name}</h3>
+                <p className="text-gray-600">${item.product.price}</p>
                 <p className="text-sm text-gray-500">
-                  Size: {item.size || " N/A"}
+                  Size: {item.product.size || " N/A"}
                 </p>
               </div>
             </div>

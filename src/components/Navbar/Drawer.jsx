@@ -5,14 +5,13 @@ import { IoMdClose } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectCartItemCount } from "../../redux/selectors/cartSelectors";
 import { signOut } from "../../redux/actions/userActions";
-import { clearCart } from "../../redux/actions/cartActions";
+import { clearCart } from "../../redux/cartSlice";
 import { setActiveStep } from "../../redux/actions/checkoutActions";
 
 const Drawer = ({ isOpen, toggleDrawer, navlist }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const cartItemCount = useSelector(selectCartItemCount);
+  const cartItemCount = useSelector((state) => state.cart.items.length);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,7 +27,7 @@ const Drawer = ({ isOpen, toggleDrawer, navlist }) => {
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="fixed inset-0 bg-black bg-opacity-50 z-50"
           onClick={toggleDrawer}
         />
       )}
