@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { FaPlus, FaTrash, FaEdit } from "react-icons/fa";
-import { Button, TextInput, Label, Spinner, Modal } from "flowbite-react";
+import {
+  Button,
+  TextInput,
+  Label,
+  Spinner,
+  Modal,
+  Alert,
+} from "flowbite-react";
 import {
   fetchUserAddresses,
   createAddress,
@@ -25,6 +32,7 @@ export default function ManageAddress() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
 
   useEffect(() => {
     const loadAddresses = async () => {
@@ -47,15 +55,16 @@ export default function ManageAddress() {
       !state ||
       !pin_code
     ) {
-      alert("All fields are required.");
+      setAlertMessage("All fields are required.");
       return false;
     }
 
     if (mobile_number.length !== 11) {
-      alert("Phone number must be exactly 11 digits.");
+      setAlertMessage("Phone number must be exactly 11 digits.");
       return false;
     }
 
+    setAlertMessage(null);
     return true;
   };
 
@@ -137,9 +146,15 @@ export default function ManageAddress() {
       console.error("Error updating address:", error.message);
     }
   };
+
   return (
     <>
       <section>
+        {alertMessage && (
+          <Alert color="failure">
+            <span>{alertMessage}</span>
+          </Alert>
+        )}
         {showNewAddressForm ? (
           <form onSubmit={handleAddAddress} className="space-y-4">
             {/* Form Fields */}
@@ -257,35 +272,42 @@ export default function ManageAddress() {
 
       {/* Address List */}
       <div className="space-y-4">
-        {addresses.map((address) => (
-          <div
-            key={address.id}
-            className="flex items-center justify-between border p-4 rounded-lg shadow-sm"
-          >
-            <div>
-              <p className="font-semibold text-lg">{address.name}</p>
-              <p className="text-sm text-gray-500">{address.address}</p>
-              <p className="text-sm text-gray-500">
-                {address.city}, {address.state} {address.zip}
-              </p>
-            </div>
+        {addresses.length === 0 ? (
+          <p className="text-gray-500 text-center">
+            You have no saved Addresses.
+          </p>
+        ) : (
+          addresses.map((address) => (
+            <div
+              key={address.id}
+              className="flex items-center justify-between border p-4 rounded-lg shadow-sm"
+            >
+              <div>
+                <p className="font-semibold text-lg">{address.name}</p>
+                <p className="text-sm text-gray-500">{address.address}</p>
+                <p className="text-sm text-gray-500">
+                  {address.city}, {address.state} {address.zip}
+                </p>
+              </div>
 
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => handleEditAddress(address)}
-                className="text-blue-600 hover:text-blue-800 flex items-center space-x-2"
-              >
-                <FaEdit /> <span>Edit</span>
-              </button>
-              <button
-                onClick={() => handleDeleteAddress(address.id)}
-                className="text-red-600 hover:text-red-800 flex items-center space-x-2"
-              >
-                <FaTrash /> <span>Delete</span>
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => handleEditAddress(address)}
+                  className="text-blue-600 hover:text-blue-800 flex items-center space-x-2"
+                >
+                  <FaEdit /> <span>Edit</span>
+                </button>
+                <button
+                  onClick={() => handleDeleteAddress(address.id)}
+                  className="text-red-600 hover:text-red-800 flex items-center space-x-2"
+                >
+                  <FaTrash /> <span>Delete</span>
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
+
         {/* Edit Modal */}
         <Modal show={showModal} onClose={() => setShowModal(false)}>
           <Modal.Header>Edit Address</Modal.Header>

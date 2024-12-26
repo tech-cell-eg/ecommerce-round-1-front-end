@@ -76,7 +76,7 @@ export default function SavedCard() {
 
   const handleDeleteCard = async (id) => {
     try {
-      await removeCard({ id });
+      await removeCard(id);
       setCards((prevCards) => prevCards.filter((card) => card.id !== id));
       setAlert({
         message: "Card deleted successfully.",
@@ -129,7 +129,7 @@ export default function SavedCard() {
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16">
                   <img
-                    src="/image.png"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/640px-Mastercard_2019_logo.svg.png"
                     alt="Card"
                     className="w-full h-full object-cover"
                   />
@@ -208,7 +208,10 @@ export default function SavedCard() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleAddCard} className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+          <Button
+            onClick={handleAddCard}
+            className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
+          >
             Add Card
           </Button>
           <Button color="gray" onClick={handleCloseModal}>
