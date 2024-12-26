@@ -95,7 +95,7 @@ export default function OurStory() {
     </SwiperSlide>
   ))
 ) : (
-  <p className="text-center text-gray-500">No stories available at the moment. Please check back later.</p> // الفقرة التي ستظهر عند كون المصفوفة فارغة
+  <p className="text-center text-gray-500">No stories available at the moment. Please check back later.</p> 
 )}
       </Swiper>
 

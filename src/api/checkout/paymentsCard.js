@@ -19,3 +19,13 @@ export const addNewCard = async (cardDetails) => {
     handleError(error, "Failed to add User payment card");
   }
 };
+
+// Function to delete User payment card
+export const removeCard = async (id) => {
+  try {
+    const response = await api.post("cards/store", id);
+    return response.data;
+  } catch (error) {
+    handleError(error, "Failed to add User payment card");
+  }
+};
