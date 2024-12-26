@@ -21,6 +21,7 @@ import ManageAddress from "./components/Profile/ManageAddress";
 import Notification from "./components/Profile/Notification";
 import Setting from "./components/Profile/Setting";
 import WishList from "./components/Profile/WishList";
+import OrderList from './components/Profile/OrderList'
 
 
 export default function App() {
@@ -43,7 +44,7 @@ export default function App() {
           children: [
             {path:"",element:< ProfiInfo/>},
             { path: "PersonalInformation", element: < ProfiInfo/> },
-            { path: "orders", element: <h1>Orders</h1> },
+            { path: "orders", element: <OrderList/> },
             { path: "wishlist", element: <WishList/> },
             { path: "savedCards", element: <SavedCard/> },
             { path: "notifications", element: <Notification/> },
