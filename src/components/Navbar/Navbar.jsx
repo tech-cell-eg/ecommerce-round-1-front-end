@@ -12,6 +12,7 @@ import { signOut } from "../../redux/actions/userActions";
 import { clearCart } from "../../redux/cartSlice";
 import { setActiveStep } from "../../redux/actions/checkoutActions";
 import Drawer from "./Drawer";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const [showMinicart, setShowMinicart] = useState(false);
@@ -98,9 +99,13 @@ export default function Navbar() {
             <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
           </Link>
 
-          <Link to="/profile" >
+          {token ?(
+            <Link to="/profile" >
             <RxPerson className="cursor-pointer text-2xl" />
           </Link>
+          ): <button>
+          <RxPerson className="cursor-pointer text-2xl" onClick={()=>{toast.error("Please Login First")}}/>
+        </button>}
           <div className="relative">
             <FiInbox
               className="cursor-pointer text-2xl hover:text-gray-700"

@@ -61,9 +61,9 @@ function Card({ item }) {
           <button className={styles.iconButton}>
             <FaExchangeAlt />
           </button>
-          <button className={styles.iconButton}>
+          <Link to={`/product/${item.id}`} state={{ product: item }} className={styles.iconButton}>
             <IoEyeOutline />
-          </button>
+          </Link>
         </div>
         <button
           className={`${styles.addToCartButton} ${
