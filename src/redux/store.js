@@ -10,10 +10,11 @@ import userReducer from "./reducers/userReducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["cart", "checkout"],
+  whitelist: ["cart", "checkout", "user"],
 };
 
 const persistedCartReducer = persistReducer(persistConfig, cartReducer);
+const persistedUserReducer = persistReducer(persistConfig, userReducer);
 const persistedCheckoutReducer = persistReducer(persistConfig, checkoutReducer);
 
 export const store = configureStore({
@@ -22,7 +23,7 @@ export const store = configureStore({
     productSearch: productSearchReducer,
     fetchProducts: productsReducer,
     checkout: persistedCheckoutReducer,
-    user: userReducer,
+    user: persistedUserReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
