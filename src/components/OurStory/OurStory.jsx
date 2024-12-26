@@ -40,11 +40,13 @@ export default function OurStory() {
 
       {/* Swiper Slider */}
       <Swiper
+      
         modules={[Navigation]}
         navigation={{
           prevEl: "#prev",
           nextEl: "#next",
         }}
+        loop={true}
         slidesPerView={1} // Default 2 slides per view (for small screens)
         spaceBetween={20}
         breakpoints={{

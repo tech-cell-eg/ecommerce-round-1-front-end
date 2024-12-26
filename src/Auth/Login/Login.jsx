@@ -52,6 +52,7 @@ export default function Login() {
           localStorage.setItem("password", values.password);
         }
         dispatch(setUser(log.data.user));
+
         console.log(log.data.user);
         navigate("/");
       } catch (error) {
