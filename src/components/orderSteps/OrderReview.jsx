@@ -8,8 +8,7 @@ import {
   selectSelectedPayment,
 } from "../../redux/selectors/checkoutSelectors";
 import { createOrder } from "../../api/checkout/setOrder";
-import { selectUser } from "../../redux/selectors/userSelectors";
-import { fetchUserCart } from "../../api/cart/cart"; 
+import { fetchUserCart } from "../../api/cart/cart";
 
 const OrderReview = () => {
   const dispatch = useDispatch();
@@ -18,36 +17,32 @@ const OrderReview = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
-console.log(selectedAddress);
-
   useEffect(() => {
     const getCart = async () => {
       setLoading(true);
       try {
         console.log("Fetching cart items...");
         const allCartItems = await fetchUserCart();
-        console.log("Cart items fetched:", allCartItems); 
+        console.log("Cart items fetched:", allCartItems);
         setCart(allCartItems);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     getCart();
   }, []);
-
+ 
   const handlePlaceOrder = async () => {
     const order = {
-      "user_address_id":selectedAddress.id,
-      "user_card_id":selectedPayment.id,
-      "products":[1],
-      "quantities":[1],
-      "sizes":["S"]
-
-    }
+      user_address_id: selectedAddress.id,
+      user_card_id: selectedPayment,
+      products: cart.map(item => item.product.id),
+      quantities: cart.map(item => item.quantity),
+      sizes: cart.map(item => item.product.size || "S"),
+    };
 
     try {
       console.log("Order data being sent:", JSON.stringify(order, null, 2));
@@ -121,3 +116,5 @@ console.log(selectedAddress);
 };
 
 export default OrderReview;
+
+
