@@ -12,6 +12,7 @@ export default function ProfiInfo() {
   const firstName = user?.first_name || 'Guest';
   const lastName = user?.last_name || 'Guest';
   const email = user?.email || 'Guest';
+  const addressRegex = /^[a-zA-Z0-9\s,]+, [a-zA-Z\s]+, [a-zA-Z\s]+, [a-zA-Z\s]+, \d{5}$/;
 
   const validationSchema = yup.object({
     first_name: yup
@@ -19,7 +20,10 @@ export default function ProfiInfo() {
       .min(3, 'Min 3 characters')
       .required('First Name is required'),
     mobile_number: yup.string().required('Mobile Number is required'),
-    address: yup.string().required('Address is required'),
+    address: yup
+      .string()
+      .matches(addressRegex, 'Please enter the address in the format: address, Area, City, State, Pin Code')
+      .required('Address is required'),
   });
 
   const formik = useFormik({
