@@ -23,7 +23,7 @@ export const addNewCard = async (cardDetails) => {
 // Function to delete User payment card
 export const removeCard = async (id) => {
   try {
-    const response = await api.post("cards/store", id);
+    const response = await api.delete(`cards/${id}`);
     return response.data;
   } catch (error) {
     handleError(error, "Failed to add User payment card");
