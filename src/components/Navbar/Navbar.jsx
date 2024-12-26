@@ -9,7 +9,7 @@ import MiniCart from "./Minicart";
 import Mega from "./Mega";
 import { useSelector, useDispatch } from "react-redux";
 import { signOut } from "../../redux/actions/userActions";
-import { clearCart } from "../../redux/actions/cartActions";
+import { clearCart } from "../../redux/cartSlice";
 import { setActiveStep } from "../../redux/actions/checkoutActions";
 import Drawer from "./Drawer";
 
