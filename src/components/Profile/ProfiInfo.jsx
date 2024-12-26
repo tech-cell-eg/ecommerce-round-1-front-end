@@ -19,7 +19,7 @@ export default function ProfiInfo() {
       .string()
       .min(3, 'Min 3 characters')
       .required('First Name is required'),
-    mobile_number: yup.string().required('Mobile Number is required'),
+    mobile_number: yup.string().required('Mobile Number is required').min(11, 'Phone number must be exactly 11 digits'),
     address: yup
       .string()
       .matches(addressRegex, 'Please enter the address in the format: address, Area, City, State, Pin Code')
