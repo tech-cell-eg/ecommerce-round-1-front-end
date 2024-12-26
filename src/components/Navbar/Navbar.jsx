@@ -95,7 +95,7 @@ export default function Navbar() {
         {/* Right Section: Icons & Authentication */}
         <div className="hidden md:flex items-center gap-4">
           <CiSearch className="cursor-pointer text-2xl hover:text-gray-700" />
-          <Link to="">
+          <Link to="/profile/wishlist">
             <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
           </Link>
 
