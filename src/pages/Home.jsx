@@ -4,6 +4,7 @@ import CustomerReviews from "../components/home/CustomerReviews";
 import Deals from "../components/home/Deals";
 import Header from "../components/home/Header";
 import InstgramStories from "../components/home/InstgramStories";
+import OurStory from "../components/OurStory/OurStory";
 
 
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
         initialSeconds={0}
       />
       <CustomerReviews/>
+      <OurStory/>
       <InstgramStories />
 
     </>

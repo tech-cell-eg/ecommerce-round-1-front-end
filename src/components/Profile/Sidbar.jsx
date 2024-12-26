@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BsBox, BsBoxSeam } from 'react-icons/bs'
 import { CgBox } from 'react-icons/cg'
 import { GrLocation } from 'react-icons/gr'
 import { IoIosNotificationsOutline } from 'react-icons/io'
 import { IoHeartOutline, IoPersonOutline, IoSettingsOutline } from 'react-icons/io5'
-import { Link, NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import localStorage from 'redux-persist/es/storage'
 
 export default function Sidbar() {
+    const user = useSelector(state => state.user);
+    const userName = (user && user.first_name && user.last_name)
+    ? user.first_name + " " + user.last_name
+    : "Guest";
+
+  
+    
+   
     const sidbarDetails = [
         {
             id: 1,
@@ -59,7 +69,7 @@ export default function Sidbar() {
         </div>
         <div>
         <p>Hello🖐</p>
-        <h3 className='font-semibold text-lg text-center'>Robit Fox</h3>
+        <h3 className='font-semibold text-lg text-center'>{userName}</h3>
         </div>
     </div>
   {

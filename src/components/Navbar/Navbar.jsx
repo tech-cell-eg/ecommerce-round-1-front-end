@@ -98,7 +98,7 @@ export default function Navbar() {
             <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
           </Link>
 
-          <Link to="/profile">
+          <Link to="/profile" >
             <RxPerson className="cursor-pointer text-2xl" />
           </Link>
           <div className="relative">
