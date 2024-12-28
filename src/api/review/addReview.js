@@ -3,7 +3,6 @@ import api, { handleError } from "../axiosConfig";
 
 const addReview = async (values) => {
     const token = localStorage.getItem("token");
-
   try {
     const response = await api.post("reviews", {
         msg: values.msg,
