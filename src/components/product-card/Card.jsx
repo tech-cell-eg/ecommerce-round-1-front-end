@@ -6,32 +6,28 @@ import { IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
-import addtowhishlist from "../../api/wishlist/addtowhishlist";
 import toast from "react-hot-toast";
+import { addtoWishlist } from "../../redux/wishlistSlice";
 
 
-function Card({ item }) {
+function Card({ item}) {
+  
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
+  const wishlistItems = useSelector((state) => state.wishlist.wishlist)
 
 
   const isItemInCart = cartItems.some(
     (cartItem) => cartItem.data.product_id === item.id
   );
 
-  const [isInWishlist, setIsInWishlist] = useState(false);
+  const isInWishlist = wishlistItems.some((wishlistItem) => wishlistItem.id === item.id);
 
-  const handleAddToWishlist = async (itemId) => {
-    try {
-      const response = await addtowhishlist(itemId);
-      console.log(response);
-      toast.success("Item added to wishlist!");
-      setIsInWishlist(true)
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to add item to wishlist.");
-    }
-  };
+  const handleAddToWishlist= (productId)=>{
+     dispatch(addtoWishlist(productId));
+    toast.success("product added to wishlist");
+  }
+
 
 
   const handleAddToCart = () => {

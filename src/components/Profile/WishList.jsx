@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import getAllwishlist from "../../api/wishlist/wishlit";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import deletefromwhishlist from "../../api/wishlist/deletfromwishlist";
+import { getWishList } from "../../redux/wishlistSlice";
 
 export default function WishList() {
-  const [wishlist, setWishlist] = useState([]);
+  const wishlist = useSelector((state) => state.wishlist.wishlist)
   const id = useSelector((state) => state.user.id);
+  const dispatch =useDispatch()
 
+
+  console.log(wishlist);
   
   useEffect(() => {
-    const fetchWishlist = async () => {
-      const data = await getAllwishlist(id);
-      if (data) {
-        setWishlist(data); 
-      }
-    };
-
     if (id) {
-      fetchWishlist();
+      dispatch(getWishList(id)); 
+      
     }
-  }, [id]); 
+  }, [id, dispatch])
+  
+
 
   const handeldeletefromwhishlist = async (id) => {
     await deletefromwhishlist(id);
-    setWishlist(wishlist.filter((item) => item.id!== id));
+    dispatch(getWishList(id))
   };
 
   return (
@@ -33,7 +32,7 @@ export default function WishList() {
         {wishlist.length > 0 ? (
           wishlist.map((item) => (
             <div key={item.id} className="space-y-1">
-              <div className="relative group">
+            <div className="relative group">
                 <img src={item.image || "/Group-1.png"} alt={item.name} className="w-full" />
                 <div className="absolute top-0 bg-black bg-opacity-0 w-full h-full opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center justify-center">
                   <button className="btn-primary text-black bg-white absolute bottom-2 left-[10%] w-[80%]">
@@ -48,9 +47,9 @@ export default function WishList() {
                 <h2 className="font-bold">{item.name}</h2>
                 <p>{item.description}</p>
                 <div className="flex gap-4">
-                  <p>{item.price} EGP</p>
+                  <p>{item.price}EGP</p>
                   {item.discountedPrice && (
-                    <p className="line-through text-gray-300">{item.discountedPrice} EGP</p>
+                    <p className="line-through text-gray-300">{item.discountedPrice}EGP</p>
                   )}
                 </div>
               </div>
