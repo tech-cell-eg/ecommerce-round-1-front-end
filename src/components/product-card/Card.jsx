@@ -10,18 +10,11 @@ import toast from "react-hot-toast";
 import { addtoWishlist } from "../../redux/wishlistSlice";
 
 
-
-function Card({ item}) {
-  
-  const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
-  const wishlistItems = useSelector((state) => state.wishlist.wishlist)
-
-
 function Card({ item }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const wishlistItems = useSelector((state) => state.wishlist.wishlist)
 
   const isItemInCart = cartItems.some(
     (cartItem) => cartItem.data.product_id === item.id
@@ -34,19 +27,6 @@ function Card({ item }) {
     toast.success("product added to wishlist");
   }
 
-
-
-  const handleAddToWishlist = async (itemId) => {
-    try {
-      const response = await addtowhishlist(itemId);
-      console.log(response);
-      toast.success("Item added to wishlist!");
-      setIsInWishlist(true);
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to add item to wishlist.");
-    }
-  };
 
 
   const handleAddToCart = () => {
