@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CiHeart, CiSearch } from "react-icons/ci";
+import { CiHeart } from "react-icons/ci";
 import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
 import { HiChevronDown } from "react-icons/hi";
@@ -42,7 +42,7 @@ export default function Navbar() {
   const navlist = [
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
-    { name: "Our Story", path: "/ourstory" },
+    { name: "Our Story", path: "/#ourstory" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contactus" },
     { name: "Customer Reviews", path: "/customerreviews" },
@@ -79,7 +79,7 @@ export default function Navbar() {
               }}
             >
               {item.name === "Shop" ? (
-                <button className="flex items-center text-lg hover:text-gray-800">
+                <button className="flex items-center text-lg hover:text-gray-800" onClick={()=> navigate("/shop")}>
                   {item.name}
                   <HiChevronDown className="ml-2" />
                 </button>
@@ -94,7 +94,6 @@ export default function Navbar() {
 
         {/* Right Section: Icons & Authentication */}
         <div className="hidden md:flex items-center gap-4">
-          <CiSearch className="cursor-pointer text-2xl hover:text-gray-700" />
           <Link to="/profile/wishlist">
             <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
           </Link>

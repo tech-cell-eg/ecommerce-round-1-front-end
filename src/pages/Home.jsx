@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import BestSeller from "../components/home/BestSeller";
 import CategorySlider from "../components/home/CategorySlider";
 import CustomerReviews from "../components/home/CustomerReviews";
@@ -6,12 +8,21 @@ import Header from "../components/home/Header";
 import InstgramStories from "../components/home/InstgramStories";
 import OurStory from "../components/OurStory/OurStory";
 
-
 const Home = () => {
- 
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.querySelector(location.hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
+
   return (
     <>
-       <Header/>
+      <Header />
       <CategorySlider />
       <BestSeller />
       <Deals
@@ -20,10 +31,11 @@ const Home = () => {
         initialMinutes={0}
         initialSeconds={0}
       />
-      <CustomerReviews/>
-      <OurStory/>
+      <CustomerReviews />
+      <div id="ourstory">
+        <OurStory />
+      </div>
       <InstgramStories />
-
     </>
   );
 };

@@ -1,78 +1,78 @@
 import { useState, useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import CustomerReviewCard from "./CustomerReviewCard";
-// import { fetchAllReviews } from "../../api/reviews/reviews";
+import { fetchAllReviews } from "../../api/reviews/reviews";
 
-const reviews = [
-  {
-    id: 1,
-    name: "Leslie Alexander",
-    role: "Model",
-    review:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
-    rating: 5,
-    image: "",
-  },
-  {
-    id: 2,
-    name: "Jacob Jones",
-    role: "Co-Founder",
-    review:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
-    rating: 5,
-    image: "",
-  },
-  {
-    id: 3,
-    name: "Jenny Wilson",
-    role: "Fashion Designer",
-    review:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
-    rating: 5,
-    image: "",
-  },
-  {
-    id: 5,
-    name: "Jenny Wilson",
-    role: "Fashion Designer",
-    review:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
-    rating: 5,
-    image: "",
-  },
-  {
-    id: 4,
-    name: "Jenny Wilson",
-    role: "Fashion Designer",
-    review:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
-    rating: 5,
-    image: "",
-  },
-  {
-    id: 6,
-    name: "Jenny Wilson",
-    role: "Fashion Designer",
-    review:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
-    rating: 5,
-    image: "",
-  },
-];
+// const reviews = [
+//   {
+//     id: 1,
+//     name: "Leslie Alexander",
+//     role: "Model",
+//     review:
+//       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
+//     rating: 5,
+//     image: "",
+//   },
+//   {
+//     id: 2,
+//     name: "Jacob Jones",
+//     role: "Co-Founder",
+//     review:
+//       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
+//     rating: 5,
+//     image: "",
+//   },
+//   {
+//     id: 3,
+//     name: "Jenny Wilson",
+//     role: "Fashion Designer",
+//     review:
+//       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
+//     rating: 5,
+//     image: "",
+//   },
+//   {
+//     id: 5,
+//     name: "Jenny Wilson",
+//     role: "Fashion Designer",
+//     review:
+//       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
+//     rating: 5,
+//     image: "",
+//   },
+//   {
+//     id: 4,
+//     name: "Jenny Wilson",
+//     role: "Fashion Designer",
+//     review:
+//       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
+//     rating: 5,
+//     image: "",
+//   },
+//   {
+//     id: 6,
+//     name: "Jenny Wilson",
+//     role: "Fashion Designer",
+//     review:
+//       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.",
+//     rating: 5,
+//     image: "",
+//   },
+// ];
 
 const CustomerReviews = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage] = useState(4);
-//   const [reviews, setReviews] = useState();
+  const [reviews, setReviews] = useState();
 
-// useEffect(() => {
-//     const getReviews = async () => {
-//       const allReviews = await fetchAllReviews();
-//       setReviews(allReviews);
-//     };
-//     getReviews();
+useEffect(() => {
+    const getReviews = async () => {
+      const allReviews = await fetchAllReviews();
+      setReviews(allReviews);
+    };
+    getReviews();
 
-// }, []);
+}, []);
 
 
   const goToPrevSlide = () => {
@@ -136,8 +136,8 @@ const CustomerReviews = () => {
               </div>
             ))
           ) : (
-            <div className="bg-gray-200 p-6 rounded-lg text-center w-full">
-              <p className="text-gray-600 text-xl">
+            <div className=" rounded-lg text-center w-full">
+              <p className="text-gray-600 text-l">
                 No reviews available at the moment. Please check back later!
               </p>
             </div>
