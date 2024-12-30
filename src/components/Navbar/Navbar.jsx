@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CiHeart, CiSearch } from "react-icons/ci";
+import { CiHeart } from "react-icons/ci";
 import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
 import { HiChevronDown } from "react-icons/hi";
@@ -94,7 +94,6 @@ export default function Navbar() {
 
         {/* Right Section: Icons & Authentication */}
         <div className="hidden md:flex items-center gap-4">
-          <CiSearch className="cursor-pointer text-2xl hover:text-gray-700" />
           <Link to="/profile/wishlist">
             <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
           </Link>
