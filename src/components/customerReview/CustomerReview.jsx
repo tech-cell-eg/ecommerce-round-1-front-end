@@ -15,12 +15,11 @@ import { useSelector } from "react-redux";
 export default function CustomerReview({ product }) {
   const [activeTab, setActiveTab] = useState("reviews");
   const [errorMessage, setErrorMessage] = useState(null);
-  const [reviews, setReviews] = useState([])
-  const user = useSelector(state => state.user);
-  const userId = user.id 
+  const [reviews, setReviews] = useState([]);
+  const user = useSelector((state) => state.user);
+  const userId = user.id;
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const fetchSpicialReview = async () => {
       try {
         const res = await getspicialreview(product.id);
@@ -30,24 +29,28 @@ export default function CustomerReview({ product }) {
       }
     };
     fetchSpicialReview();
-  },[])
+  }, []);
 
-    
- const handelAddReview = async(values)=>{
-  try{
-    const response = await addReview(values)
-  toast.success("Review added successfully")
-  }catch(err){
-    console.log(err);
-    
-  }
- }
+  const handelAddReview = async (values) => {
+    try {
+      const response = await addReview(values);
+      toast.success("Review added successfully");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const validationSchema = yup.object({
     name: yup.string().required("Name is required").min(3, "Min 3 characters"),
     email: yup.string().email("Invalid email").required("Email is required"),
-    review: yup.string().required("Review is required").min(10, "Min 10 characters"),
-    stars: yup.number().required("Rating is required").min(1, "At least 1 star"),
+    review: yup
+      .string()
+      .required("Review is required")
+      .min(10, "Min 10 characters"),
+    stars: yup
+      .number()
+      .required("Rating is required")
+      .min(1, "At least 1 star"),
   });
 
   const formik = useFormik({
@@ -55,7 +58,7 @@ export default function CustomerReview({ product }) {
       name: "",
       email: "",
       review: "",
-      stars: 0, 
+      stars: 0,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -111,133 +114,140 @@ export default function CustomerReview({ product }) {
         <div className="py-4">
           <h2 className="text-lg font-bold">Customer Reviews</h2>
           <div className="space-y-6">
-            {reviews.length > 0 ? reviews.map((review) => (
-              <div className="space-y-1 border-b py-3" key={review.id}>
-                <div className="flex items-center space-x-2">
-                  <img
-                    src={review.img}
-                    alt=""
-                    className="w-12 h-12 rounded-full"
-                  />
-                  <div className="space-y-1">
-                    <h2 className="font-bold">{review.name}</h2>
-                    <div className="flex items-center space-x-1 text-gray-500">
-                      {[...Array(review.rating)].map((_, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center text-yellow-400"
-                        >
-                          <RiStarSFill />
-                        </span>
-                      ))}
+            {reviews.length > 0 ? (
+              reviews.map((review) => (
+                <div className="space-y-1 border-b py-3" key={review.id}>
+                  <div className="flex items-center space-x-2">
+                    <img
+                      src={review.img}
+                      alt=""
+                      className="w-12 h-12 rounded-full"
+                    />
+                    <div className="space-y-1">
+                      <h2 className="font-bold">{review.name}</h2>
+                      <div className="flex items-center space-x-1 text-gray-500">
+                        {[...Array(review.rating)].map((_, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center text-yellow-400"
+                          >
+                            <RiStarSFill />
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
+                  <p className="text-sm font-semibold">{review.shortReview}</p>
+                  <p className="text-sm">{review.review}</p>
+                  <div>
+                    <span>
+                      <span className="text-gray-400">reviewed by </span>{" "}
+                      {review.name}
+                    </span>
+                    <span className=" ">
+                      {" "}
+                      <span className="text-gray-400">Posted on </span>{" "}
+                      {review.date}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-sm font-semibold">{review.shortReview}</p>
-                <p className="text-sm">{review.review}</p>
-                <div>
-                  <span>
-                    <span className="text-gray-400">reviewed by </span>{" "}
-                    {review.name}
-                  </span>
-                  <span className=" ">
-                    {" "}
-                    <span className="text-gray-400">Posted on </span>{" "}
-                    {review.date}
-                  </span>
-                </div>
+              ))
+            ) : (
+              <div className="text-lg font-semibold text-center">
+                No reviews yet
               </div>
-            )) : <div className="text-lg font-semibold text-center">No reviews yet</div>}
+            )}
             <div className="space-y-4 mt-2">
               <h2 className=" font-bold">Add your review</h2>
               {/* rating */}
-             
+
               {/* form */}
               <div>
-      <form className="space-y-3" onSubmit={formik.handleSubmit}>
-
-      <div className="space-y-2">
-  <h2>Your Rating</h2>
-  <div className="flex max-[390px]:flex-wrap max-[390px]:gap-2 items-center">
-    {[1, 2, 3, 4, 5].map((star) => (
-      <RiStarSFill
-        key={star}
-        className={`text-lg cursor-pointer ${
-          formik.values.stars >= star ? "text-yellow-400" : "text-gray-400"
-        }`}
-        onClick={() => formik.setFieldValue("stars", star)}
-      />
-    ))}
-  </div>
-  {formik.touched.stars && formik.errors.stars && (
-    <span className="text-red-500 text-sm font-semibold">
-      {formik.errors.stars}
-    </span>
-  )}
-  {formik.touched.rating && !formik.errors.rating && (
-    <span className="text-green-500 text-sm font-semibold">
-      {formik.errors.rating}
-    </span>
-  )}
-</div>
-        <div className="flex flex-col space-y-1">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            placeholder="Enter your name"
-            className="border p-2 rounded-lg"
-            onChange={formik.handleChange}
-            value={formik.values.name}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.name && formik.errors.name && (
-            <span className="text-red-500 text-sm font-semibold">
-              {formik.errors.name}
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col space-y-1">
-          <label htmlFor="email">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Enter your email"
-            className="border p-2 rounded-lg"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.email && formik.errors.email && (
-            <span className="text-red-500 text-sm font-semibold">
-              {formik.errors.email}
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col space-y-1">
-          <label htmlFor="review">Your Review</label>
-          <textarea
-            id="review"
-            placeholder="Enter your review"
-            className="border p-2 rounded-lg"
-            onChange={formik.handleChange}
-            value={formik.values.review}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.review && formik.errors.review && (
-            <span className="text-red-500 text-sm font-semibold">
-              {formik.errors.review}
-            </span>
-          )}
-        </div>
-        <button
-          type="submit"
-          className="bg-black text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-200"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+                <form className="space-y-3" onSubmit={formik.handleSubmit}>
+                  <div className="space-y-2">
+                    <h2>Your Rating</h2>
+                    <div className="flex max-[390px]:flex-wrap max-[390px]:gap-2 items-center">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <RiStarSFill
+                          key={star}
+                          className={`text-lg cursor-pointer ${
+                            formik.values.stars >= star
+                              ? "text-yellow-400"
+                              : "text-gray-400"
+                          }`}
+                          onClick={() => formik.setFieldValue("stars", star)}
+                        />
+                      ))}
+                    </div>
+                    {formik.touched.stars && formik.errors.stars && (
+                      <span className="text-red-500 text-sm font-semibold">
+                        {formik.errors.stars}
+                      </span>
+                    )}
+                    {formik.touched.rating && !formik.errors.rating && (
+                      <span className="text-green-500 text-sm font-semibold">
+                        {formik.errors.rating}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-col space-y-1">
+                    <label htmlFor="name">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      placeholder="Enter your name"
+                      className="border p-2 rounded-lg"
+                      onChange={formik.handleChange}
+                      value={formik.values.name}
+                      onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.name && formik.errors.name && (
+                      <span className="text-red-500 text-sm font-semibold">
+                        {formik.errors.name}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-col space-y-1">
+                    <label htmlFor="email">Email Address</label>
+                    <input
+                      type="email"
+                      id="email"
+                      placeholder="Enter your email"
+                      className="border p-2 rounded-lg"
+                      onChange={formik.handleChange}
+                      value={formik.values.email}
+                      onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.email && formik.errors.email && (
+                      <span className="text-red-500 text-sm font-semibold">
+                        {formik.errors.email}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-col space-y-1">
+                    <label htmlFor="review">Your Review</label>
+                    <textarea
+                      id="review"
+                      placeholder="Enter your review"
+                      className="border p-2 rounded-lg"
+                      onChange={formik.handleChange}
+                      value={formik.values.review}
+                      onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.review && formik.errors.review && (
+                      <span className="text-red-500 text-sm font-semibold">
+                        {formik.errors.review}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-black text-white py-2 px-6 rounded-lg hover:bg-gray-800 transition-all duration-200"
+                  >
+                    Submit
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -252,11 +262,15 @@ export default function CustomerReview({ product }) {
           <ul className="list-disc pl-5">
             <li className="font-normal">
               <p className="font-semibold inline-block mr-6">Color</p>{" "}
-              {product.color}
+              <span>
+                {product.color == null ? "Not available" : product.color}
+              </span>
             </li>
             <li className="font-normal">
               <p className="font-semibold inline-block mr-8">Size</p>{" "}
-              {product.size}
+              <span>
+                {product.size == null ? "Not available" : product.size}
+              </span>
             </li>
           </ul>
         </div>

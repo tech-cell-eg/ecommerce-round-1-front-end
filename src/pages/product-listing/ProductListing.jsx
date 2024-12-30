@@ -6,8 +6,9 @@ import { TfiMenuAlt } from "react-icons/tfi";
 import SideBar from "../../components/catgories/SideBar";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchAllProducts } from "../../api/products/products";
 import {
-  fetchProducts as fetchAllProducts,
+  fetchProducts as fetchAllProductsRedux,
   setSearchQuery,
 } from "../../redux/reducers/productsReducer";
 import {
@@ -37,9 +38,23 @@ function ProductListing() {
   // Fetch all products when the component mounts
   useEffect(() => {
     if (productsStatus === "idle") {
-      dispatch(fetchAllProducts());
+      dispatch(fetchAllProductsRedux());
     }
   }, [dispatch, productsStatus]);
+
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     try {
+  //       const response = await fetchAllProducts();
+  //       console.log(response);
+  //       setFilteredItems(response);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetch();
+  // }, [fetchAllProducts]);
 
   // Apply filters whenever the products or search params change
   useEffect(() => {
@@ -63,7 +78,8 @@ function ProductListing() {
 
     if (selectedMinPrice) {
       items = items.filter(
-        (item) => item.price >= selectedMinPrice && item.price <= selectedMaxPrice
+        (item) =>
+          item.price >= selectedMinPrice && item.price <= selectedMaxPrice
       );
     }
 
@@ -144,7 +160,7 @@ function ProductListing() {
               </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {filteredItems.map((item) => (
+              {filteredItems?.map((item) => (
                 <Card key={item.id} item={item} />
               ))}
             </div>
