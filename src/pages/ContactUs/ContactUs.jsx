@@ -19,36 +19,30 @@ export default function ContactUs() {
       .string()
       .required("email is required")
       .email("write avalid email"),
-      msg: yup
+      text: yup
       .string()
       .required("message is required"),
-      password: yup
-      .string()
-      .required("password is required")
-      .matches(
-        /^(?=.*[A-Z])(?=.*[a-z]).{8,}$/, 
-        "Min 8 characters with at least one uppercase letter and one lowercase letter"
-      ),
+     
   });
 
   const formik = useFormik({
     initialValues: {
       name: '',
       email: "",
-      msg: "",
-      password: ""
+      text: "",
+      
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values,{resetForm}) => {
       let id;
       setDisableBtn(true); 
-      console.log(values);
       
       try {
         id = toast.loading("Waiting...");
         const contactus = await contact(values) ;
         toast.dismiss(id);
         toast.success("message send successfully");
+        resetForm()
       } catch (error) {
         toast.dismiss(id);
         toast.error(error.message || "An error occurred during login");
@@ -79,22 +73,10 @@ export default function ContactUs() {
        <input type="email" id='email' name="email" placeholder="Email Address" className='form-control' onChange={formik.handleChange} value={formik.values.email} />
        {formik.touched.email && formik.errors.email && <p className='text-red-500'>{formik.errors.email}</p>}
        </div>
-        <div>
-  <input 
-    type="password" 
-    id='password' 
-    name="password" 
-    placeholder="Your password" 
-    className='form-control' 
-    onChange={formik.handleChange} 
-    value={formik.values.password} 
-  />
-  {formik.touched.password && formik.errors.password && <p className='text-red-500'>{formik.errors.password}</p>}
-</div>
 
        <div>
-        <textarea id='msg' name="msg" placeholder="Your Message" className='form-control' rows="6"  onChange={formik.handleChange} value={formik.values.msg}></textarea>
-        {formik.touched.msg && formik.errors.msg && <p className='text-red-500'>{formik.errors.msg}</p>}
+        <textarea id='text' name="text" placeholder="Your Message" className='form-control' rows="6"  onChange={formik.handleChange} value={formik.values.text}></textarea>
+        {formik.touched.text && formik.errors.text && <p className='text-red-500'>{formik.errors.text}</p>}
        </div>
 
        <button className='btn-primary ' type='submit'>

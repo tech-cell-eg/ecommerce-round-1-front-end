@@ -22,6 +22,7 @@ import Notification from "./components/Profile/Notification";
 import Setting from "./components/Profile/Setting";
 import WishList from "./components/Profile/WishList";
 import OrderList from './components/Profile/OrderList'
+import { ApiProvider } from "@reduxjs/toolkit/query/react";
 
 
 export default function App() {
