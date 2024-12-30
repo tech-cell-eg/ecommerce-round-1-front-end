@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { combineReducers } from "redux";
 import cartReducer from "./cartSlice";
 import productSearchReducer from "./reducers/searchReducer";
 import productsReducer from "./reducers/productsReducer";
@@ -12,27 +13,29 @@ import wishlistReducer from "./wishlistSlice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["cart", "checkout", "user","wishlist"],
+  whitelist: ["cart", "checkout", "user", "wishlist"], 
 };
 
-const persistedCartReducer = persistReducer(persistConfig, cartReducer);
-const persistedUserReducer = persistReducer(persistConfig, userReducer);
-const persistedCheckoutReducer = persistReducer(persistConfig, checkoutReducer);
-const persistedwishlistReducer = persistReducer(persistConfig, wishlistReducer )
+const rootReducer = combineReducers({
+  cart: cartReducer,
+  productSearch: productSearchReducer,
+  fetchProducts: productsReducer,
+  checkout: checkoutReducer,
+  user: userReducer,
+  wishlist: wishlistReducer,
+});
+
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 
 export const store = configureStore({
-  reducer: {
-    cart: persistedCartReducer,
-    productSearch: productSearchReducer,
-    fetchProducts: productsReducer,
-    checkout: persistedCheckoutReducer,
-    user: persistedUserReducer,
-    wishlist: persistedwishlistReducer 
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
 });
 
-export const persistor = persistStore(store);
+
+export const persistor = persistStore(store) 

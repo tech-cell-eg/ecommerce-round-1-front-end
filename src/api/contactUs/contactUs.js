@@ -1,20 +1,14 @@
 import api, { handleError } from "../axiosConfig";
 
 const contact = async (values) => {
-    const token = localStorage.getItem("token");
-    
+   
   try {
-    const response = await api.post("login", {
+    const response = await api.post("contact", {
         name: values.name,
         email: values.email,
-        msg: values.msg,
-        password: values.password
+        text: values.text,
     },
-    {
-      headers: {
-       Authorization: "Bearer " + token
-      },
-    }
+   
 );
     return response.data;
   } catch (error) {
