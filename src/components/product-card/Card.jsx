@@ -9,25 +9,22 @@ import { addToCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
 import { addtoWishlist } from "../../redux/wishlistSlice";
 
-
 function Card({ item }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const wishlistItems = useSelector((state) => state.wishlist.wishlist)
+  const wishlistItems = useSelector((state) => state.wishlist.wishlist);
 
   const isItemInCart = cartItems.some(
     (cartItem) => cartItem.data.product_id === item.id
   );
 
-  const isInWishlist = wishlistItems.some((wishlistItem) => wishlistItem.id === item.id);
+  // const isInWishlist = wishlistItems.some((wishlistItem) => wishlistItem.id === item.id);
 
-  const handleAddToWishlist= (productId)=>{
-     dispatch(addtoWishlist(productId));
+  const handleAddToWishlist = (productId) => {
+    dispatch(addtoWishlist(productId));
     toast.success("product added to wishlist");
-  }
-
-
+  };
 
   const handleAddToCart = () => {
     // console.log("Add to Cart clicked for item:", item);
@@ -50,7 +47,7 @@ function Card({ item }) {
             className={styles.iconButton}
             onClick={() => handleAddToWishlist(item.id)}
           >
-            {isInWishlist ? <CiHeart /> : <CiStar />}
+            {/* {isInWishlist ? <CiHeart /> : <CiStar />} */}
           </button>
           <button className={styles.iconButton}>
             <FaExchangeAlt />
@@ -97,11 +94,13 @@ function Card({ item }) {
         <p className={styles.cardDescription}>{item.description}</p>
         {item.price - item.compare_price > 0 ? (
           <p className={styles.cardPrice}>
-            ${item.price - item.compare_price}{" "}
-            <span className={styles.strikeThrough}>${item.price}</span>
+            {(item.price - item.compare_price).toFixed(2)}{" "}
+            <span className={styles.strikeThrough}>
+              ${item.price.toFixed(2)}
+            </span>
           </p>
         ) : (
-          <p className={styles.cardPrice}>${item.price}</p>
+          <p className={styles.cardPrice}>${item.price.toFixed(2)}</p>
         )}
       </div>
     </div>

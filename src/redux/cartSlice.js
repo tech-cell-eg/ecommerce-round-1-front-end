@@ -20,9 +20,9 @@ export const fetchCart = createAsyncThunk(
 
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ item, userId }, thunkAPI) => {
+  async ({ item }, thunkAPI) => {
     try {
-      const response = await addToCartApi(item, userId);
+      const response = await addToCartApi(item);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -35,7 +35,6 @@ export const removeFromCart = createAsyncThunk(
   async (itemId, thunkAPI) => {
     try {
       await removeFromCartApi(itemId);
-      return itemId;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -44,10 +43,10 @@ export const removeFromCart = createAsyncThunk(
 
 export const updateQuantity = createAsyncThunk(
   "cart/updateQuantity",
-  async ({ itemId, quantity }, thunkAPI) => {
+  async ({ id, quantity }, thunkAPI) => {
     try {
-      const data = await updateCartQuantityApi(itemId, quantity);
-      return { itemId, quantity, data };
+      const data = await updateCartQuantityApi(id, quantity);
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

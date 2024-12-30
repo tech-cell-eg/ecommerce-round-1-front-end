@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, Radio, TextInput, Label, Spinner } from "flowbite-react";
+import {
+  Button,
+  Radio,
+  TextInput,
+  Label,
+  Spinner,
+  Alert,
+} from "flowbite-react";
 import { fetchSavedCards, addNewCard } from "../../api/checkout/paymentsCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,6 +27,8 @@ const PaymentMethod = () => {
   const [savedCards, setSavedCards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [addingCard, setAddingCard] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("info");
 
   useEffect(() => {
     const loadSavedCards = async () => {
@@ -27,17 +36,15 @@ const PaymentMethod = () => {
       try {
         const response = await fetchSavedCards();
         setSavedCards(response.data || []);
-        // console.log(response.data);
       } catch (error) {
-        console.error("Error fetching saved cards:", error.message);
+        setAlertMessage("Error fetching saved cards.", error);
+        setAlertType("error");
       } finally {
         setLoading(false);
       }
     };
     loadSavedCards();
   }, []);
-
-  // console.log(savedCards);
 
   const handleAddCard = async () => {
     if (
@@ -46,24 +53,32 @@ const PaymentMethod = () => {
       !cardDetails.card_expiry_date ||
       !cardDetails.card_cvv
     ) {
-      alert("All card fields are required.");
+      setAlertMessage("All card fields are required.");
+      setAlertType("warning");
       return;
     }
 
     setAddingCard(true);
     try {
       const newCard = await addNewCard(cardDetails);
-      setSavedCards([...savedCards, newCard]);
-      dispatch(setSelectedPayment(newCard));
-      // Reset form
+      const updatedCards = await fetchSavedCards();
+      setSavedCards(updatedCards.data || []);
       setCardDetails({
         card_number: "",
         card_name: "",
         card_expiry_date: "",
         card_cvv: "",
       });
+      dispatch(setSelectedPayment(newCard.id));
+
+      setAlertMessage("Card added successfully!");
+      setAlertType("success");
     } catch (error) {
-      console.error("Error adding new card:", error.message);
+      setAlertType("error");
+      setAlertMessage(
+        error.message || "An unexpected error occurred while adding the card."
+      );
+      setAlertType("error");
     } finally {
       setAddingCard(false);
     }
@@ -71,7 +86,8 @@ const PaymentMethod = () => {
 
   const handleContinue = () => {
     if (!selectedPaymentMethod) {
-      alert("Please select a payment method.");
+      setAlertMessage("Please select a payment method.");
+      setAlertType("warning");
       return;
     }
     dispatch(setActiveStep(3));
@@ -80,6 +96,13 @@ const PaymentMethod = () => {
   return (
     <div className="max-w-2xl mx-auto p-4">
       <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
+
+      {/* Alert Section */}
+      {alertMessage && (
+        <Alert color={alertType} onDismiss={() => setAlertMessage("")}>
+          {alertMessage}
+        </Alert>
+      )}
 
       <div className="space-y-4">
         {loading ? (
@@ -96,7 +119,7 @@ const PaymentMethod = () => {
                   name="payment"
                   value={card.id}
                   checked={selectedPaymentMethod === card.id}
-                  onChange={() => dispatch(setSelectedPayment(card.id))}
+                  onChange={() => dispatch(setSelectedPayment(card.id, "card"))}
                 />
                 <Label className="ml-2">
                   {card.card_name} - **** **** **** {card.card_number.slice(-4)}
@@ -177,7 +200,7 @@ const PaymentMethod = () => {
                 name="payment"
                 value="google-pay"
                 checked={selectedPaymentMethod === "google-pay"}
-                onChange={() => dispatch(setSelectedPayment("google-pay"))}
+                onChange={() => dispatch(setSelectedPayment("google_pay"))}
               />
               <Label className="ml-2">Google Pay</Label>
             </div>

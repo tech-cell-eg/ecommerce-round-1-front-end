@@ -1,19 +1,18 @@
 import { FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import {
-  updateItemQuantity,
-  removeFromCart,
-} from "../../redux/actions/cartActions";
+// import {
+//   updateItemQuantity,
+
+// } from "../../redux/actions/cartActions";
+import { updateQuantity, removeFromCart } from "../../redux/cartSlice";
 import PropTypes from "prop-types";
 
 const ProductTable = ({ cart, setCart }) => {
   const dispatch = useDispatch();
 
-  const handleQuantityChange = (productId, type) => {
+  const handleQuantityChange = (cartId, type) => {
     const newCart = [...cart];
-    const itemIndex = newCart.findIndex(
-      (item) => item.product_id === productId
-    );
+    const itemIndex = newCart.findIndex((item) => item.id === cartId);
     if (itemIndex !== -1) {
       const item = newCart[itemIndex];
       const newQuantity =
@@ -23,14 +22,14 @@ const ProductTable = ({ cart, setCart }) => {
       item.quantity = newQuantity;
 
       setCart(newCart);
-      dispatch(updateItemQuantity(productId, newQuantity));
+      dispatch(updateQuantity({ id: cartId, quantity: newQuantity }));
     }
   };
 
-  const handleDelete = (productId) => {
-    const newCart = cart.filter((item) => item.product_id !== productId);
+  const handleDelete = (cartId) => {
+    const newCart = cart.filter((item) => item.id !== cartId);
     setCart(newCart);
-    dispatch(removeFromCart(productId));
+    dispatch(removeFromCart(cartId));
   };
 
   const fallbackImage =
@@ -74,18 +73,14 @@ const ProductTable = ({ cart, setCart }) => {
               <td className="p-4 text-center">
                 <div className="flex justify-center items-center space-x-2">
                   <button
-                    onClick={() =>
-                      handleQuantityChange(item.product_id, "decrement")
-                    }
+                    onClick={() => handleQuantityChange(item.id, "decrement")}
                     className="border px-2 py-1 rounded hover:bg-gray-200"
                   >
                     -
                   </button>
                   <span>{item.quantity}</span>
                   <button
-                    onClick={() =>
-                      handleQuantityChange(item.product_id, "increment")
-                    }
+                    onClick={() => handleQuantityChange(item.id, "increment")}
                     className="border px-2 py-1 rounded hover:bg-gray-200"
                   >
                     +
@@ -96,7 +91,7 @@ const ProductTable = ({ cart, setCart }) => {
                 ${(item.product.price * item.quantity).toFixed(2)}
               </td>
               <td className="p-4 text-center">
-                <button onClick={() => handleDelete(item.product_id)}>
+                <button onClick={() => handleDelete(item.id)}>
                   <FaTrash className="text-red-500 hover:text-red-700" />
                 </button>
               </td>

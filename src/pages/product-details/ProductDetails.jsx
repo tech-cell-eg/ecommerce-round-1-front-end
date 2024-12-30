@@ -21,7 +21,7 @@ function ProductDetails() {
   const isItemInCart = cartItems.some((cartItem) => cartItem.id === product.id);
 
   const handleAddToCart = () => {
-    dispatch(addToCart(product));
+    dispatch(addToCart(product.id));
   };
 
   const handleQuantityChange = (productId, type) => {
@@ -30,6 +30,8 @@ function ProductDetails() {
     } else if (type === "decrement" && quantity > 1) {
       setQuantity(quantity - 1);
     }
+
+    
     dispatch(updateItemQuantity(productId, type === "increment" ? 1 : -1));
   };
 
@@ -41,7 +43,7 @@ function ProductDetails() {
     );
   }
 
-  const colors = ["#FF5733", "#335BFF", "#000000", "#28B463", "#F4D03F"]; // Example colors
+  const colors = ["#FF5733", "#335BFF", "#000000", "#28B463", "#F4D03F"]; 
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
   return (
