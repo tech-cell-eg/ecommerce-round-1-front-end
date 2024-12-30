@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import StarRating from "../../components/product-details/StarRating";
 import DetailsTabs from "../../components/product-details/DetailsTabs";
 import RelatedProducts from "../../components/product-details/RelatedProducts";
-import { addToCart } from "../../redux/actions/cartActions";
+import { addToCart, updateQuantity } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { updateItemQuantity } from "../../redux/actions/cartActions";
 function ProductDetails() {
   const location = useLocation();
   const { product } = location.state || {};
@@ -14,25 +13,42 @@ function ProductDetails() {
     "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("M");
-  const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-  const isItemInCart = cartItems.some((cartItem) => cartItem.id === product.id);
+  const cartItem = cartItems.find(
+    (item) => item.data.product_id === product.id
+  );
+  const isItemInCart = cartItem !== undefined;
+  const cartId = cartItem ? cartItem.data.id : null;
+  const currentQuantity = cartItem ? cartItem.data.quantity : 1;
 
-  const handleAddToCart = () => {
-    dispatch(addToCart(product.id));
+  const [quantity, setQuantity] = useState(currentQuantity);
+
+  useEffect(() => {
+    if (cartId) {
+      const item = cartItems.find((item) => item.data.id === cartId);
+      if (item) {
+        setQuantity(item.data.quantity);
+      }
+    }
+  }, [cartItems, cartId]);
+
+  const handleQuantityChange = (cartId, type) => {
+    const itemIndex = cartItems.findIndex((item) => item.data.id === cartId);
+    if (itemIndex !== -1) {
+      const item = cartItems[itemIndex];
+      const newQuantity =
+        type === "increment"
+          ? item.data.quantity + 1
+          : Math.max(1, item.data.quantity - 1);
+      dispatch(updateQuantity({ id: cartId, quantity: newQuantity }));
+    }
   };
 
-  const handleQuantityChange = (productId, type) => {
-    if (type === "increment") {
-      setQuantity(quantity + 1);
-    } else if (type === "decrement" && quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-
-    
-    dispatch(updateItemQuantity(productId, type === "increment" ? 1 : -1));
+  const handleAddToCart = () => {
+    const item = product;
+    dispatch(addToCart({ item }));
   };
 
   if (!product) {
@@ -43,7 +59,7 @@ function ProductDetails() {
     );
   }
 
-  const colors = ["#FF5733", "#335BFF", "#000000", "#28B463", "#F4D03F"]; 
+  const colors = ["#FF5733", "#335BFF", "#000000", "#28B463", "#F4D03F"];
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
   return (
@@ -135,14 +151,18 @@ function ProductDetails() {
             <div className="flex items-center gap-4 mb-6 text-lg">
               <div className="flex items-center gap-2 border border-black rounded-2xl py-3">
                 <button
-                  onClick={() => handleQuantityChange(product.id, "decrement")}
+                  onClick={() =>
+                    cartId && handleQuantityChange(cartId, "decrement")
+                  }
                   className="w-8 flex items-center justify-center hover:bg-gray-100"
                 >
                   -
                 </button>
                 <span className="font-semibold">{quantity}</span>
                 <button
-                  onClick={() => handleQuantityChange(product.id, "increment")}
+                  onClick={() =>
+                    cartId && handleQuantityChange(cartId, "increment")
+                  }
                   className="w-8 flex items-center justify-center hover:bg-gray-100"
                 >
                   +

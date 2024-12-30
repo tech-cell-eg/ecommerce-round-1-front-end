@@ -13,7 +13,7 @@ function Card({ item }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const wishlistItems = useSelector((state) => state.wishlist.wishlist);
+  // const wishlistItems = useSelector((state) => state.wishlist.wishlist);
 
   const isItemInCart = cartItems.some(
     (cartItem) => cartItem.data.product_id === item.id
@@ -25,7 +25,6 @@ function Card({ item }) {
     dispatch(addtoWishlist(productId));
     toast.success("product added to wishlist");
   };
-
   const handleAddToCart = () => {
     // console.log("Add to Cart clicked for item:", item);
     dispatch(addToCart({ item }));

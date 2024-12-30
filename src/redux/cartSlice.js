@@ -92,10 +92,15 @@ const cartSlice = createSlice({
         state.items = state.items.filter((item) => item.id !== action.payload);
       })
       .addCase(updateQuantity.fulfilled, (state, action) => {
-        const { itemId, quantity } = action.payload;
-        const item = state.items.find((item) => item.id === itemId);
-        if (item) item.quantity = quantity;
+        const updatedItem = action.payload;
+        const itemIndex = state.items.findIndex(
+          (item) => item.id === updatedItem.id
+        );
+        if (itemIndex !== -1) {
+          state.items[itemIndex] = updatedItem;
+        }
       })
+
       .addCase(clearCart.fulfilled, (state) => {
         state.items = [];
       });
