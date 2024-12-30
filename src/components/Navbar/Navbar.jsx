@@ -42,7 +42,7 @@ export default function Navbar() {
   const navlist = [
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
-    { name: "Our Story", path: "/ourstory" },
+    { name: "Our Story", path: "/#ourstory" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contactus" },
     { name: "Customer Reviews", path: "/customerreviews" },
@@ -79,7 +79,7 @@ export default function Navbar() {
               }}
             >
               {item.name === "Shop" ? (
-                <button className="flex items-center text-lg hover:text-gray-800">
+                <button className="flex items-center text-lg hover:text-gray-800" onClick={()=> navigate("/shop")}>
                   {item.name}
                   <HiChevronDown className="ml-2" />
                 </button>
