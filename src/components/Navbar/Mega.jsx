@@ -4,7 +4,6 @@ export default function Mega() {
   return (
     <div className="bg-white shadow-md w-[80%] p-8">
       <ul className="grid grid-cols-4 gap-4">
-     
         <div className="flex flex-col border-r-2 border-gray-100 pr-4">
           {/* Men Section */}
           <div className="flex flex-col mb-4">

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { IoIosArrowBack } from 'react-icons/io'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import VerifypassSucc from '../../components/verifypassSucc/VerifypassSucc'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -13,7 +13,10 @@ export default function VerifyOtp() {
   const[viewsuccess,setviewsuccess] = useState(false)
    const [ passwordType, setPasswordType]=useState("password")
    const [ confirmPasswordType, setconfirmPasswordType]=useState("password")
+   
   const otpRefs = useRef([]);
+  const location = useLocation();
+  const email = location.state?.email || 'No email provided';
   const handelPassType = ()=>{
     setPasswordType(passwordType === "password"? "text" : "password")
   }
@@ -91,7 +94,7 @@ export default function VerifyOtp() {
         <div className='space-y-1'>
         <Link to={"/forgetpassword"} className='text-lg flex items-center w-fit max-[766px]:text-white' ><IoIosArrowBack className='mr-2 '/> Back</Link>
         <h2 className='text-2xl font-bold'>Enter OTP</h2>
-        <p className='text-gray-600 md:text-gray-400  text-lg max-[260px]:text-sm max-[766px]:text-white'>we have share a code of your register email address <br/><span>ayafarh@gmail.com</span></p>
+        <p className='text-gray-600 md:text-gray-400  text-lg max-[260px]:text-sm max-[766px]:text-white'>we have share a code of your register email address <br/><span>{email}</span></p>
     </div>
     <div className="flex items-center justify-start w-full">
   {[...Array(5)].map((_, index) => (

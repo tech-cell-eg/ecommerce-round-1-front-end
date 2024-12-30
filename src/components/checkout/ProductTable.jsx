@@ -1,37 +1,71 @@
-// import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   updateItemQuantity,
   removeFromCart,
 } from "../../redux/actions/cartActions";
-import { selectCartItems } from "../../redux/selectors/cartSelectors";
+import { fetchUserCart } from "../../api/cart/cart"; 
 
 const ProductTable = () => {
   const dispatch = useDispatch();
-  const products = useSelector(selectCartItems);
+  const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getCart = async () => {
+      setLoading(true);
+      try {
+        console.log("Fetching cart items...");
+        const allCartItems = await fetchUserCart();
+        console.log("Cart items fetched:", allCartItems); 
+        setCart(allCartItems);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    getCart();
+  }, []);
 
   const handleQuantityChange = (productId, type) => {
-    const change = type === "increment" ? 1 : -1;
-    if (
-      type === "decrement" &&
-      products.find((product) => product.id === productId).quantity <= 1
-    ) {
-      return;
+    const newCart = [...cart];
+    const itemIndex = newCart.findIndex(
+      (item) => item.product_id === productId
+    );
+    if (itemIndex !== -1) {
+      const item = newCart[itemIndex];
+      const newQuantity =
+        type === "increment"
+          ? item.quantity + 1
+          : Math.max(1, item.quantity - 1);
+      item.quantity = newQuantity;
+
+      setCart(newCart);
+      dispatch(updateItemQuantity(productId, newQuantity));
     }
-    dispatch(updateItemQuantity(productId, change));
   };
 
   const handleDelete = (productId) => {
     dispatch(removeFromCart(productId));
   };
+
   const fallbackImage =
     "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-4">
+        <div className="spinner">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full border-collapse ">
-        {/* Table Header */}
+    <div className="overflow-x-auto w-full">
+      <table className="min-w-full border-collapse">
         <thead>
           <tr>
             <th className="p-4 text-left font-semibold">Product</th>
@@ -41,65 +75,60 @@ const ProductTable = () => {
             <th className="p-4 text-center font-semibold"></th>
           </tr>
         </thead>
-
-        {/* Table Body */}
         <tbody>
-          {products?.map((product) => (
-            <tr key={product.id} className="border-b hover:bg-gray-50">
-              {/* Product Information */}
-              <td className=" p-4 flex items-center space-x-4">
-                <img
-                  src={product.image || fallbackImage}
-                  alt={product.name}
-                  className="w-16 h-16 object-cover rounded-md"
-                />
-                <div>
-                  <h2 className="font-bold">{product.name}</h2>
-                  <p className="text-gray-500 text-sm">
-                    Size: {product.productSize || "N/A"}
-                  </p>
-                </div>
-              </td>
+          {cart?.map((item) => {
+            if (!item.product) return null;
 
-              {/* Price */}
-              <td className=" p-4 text-center">${product.price.toFixed(2)}</td>
-
-              {/* Quantity Control */}
-              <td className=" p-4 text-center">
-                <div className="flex justify-center items-center space-x-2">
-                  <button
-                    onClick={() =>
-                      handleQuantityChange(product.id, "decrement")
-                    }
-                    className="border px-2 py-1 rounded hover:bg-gray-200"
-                  >
-                    -
+            return (
+              <tr key={item.id} className="border-b hover:bg-gray-50">
+                <td className="p-4 flex items-center space-x-4">
+                  <img
+                    src={item.product.image || fallbackImage}
+                    alt={item.product.name}
+                    className="w-16 h-16 object-cover rounded-md"
+                  />
+                  <div>
+                    <h2 className="font-bold">{item.product.name}</h2>
+                    <p className="text-gray-500 text-sm">
+                      Size: {item.product.size || "N/A"}
+                    </p>
+                  </div>
+                </td>
+                <td className="p-4 text-center">
+                  ${item.product.price.toFixed(2)}
+                </td>
+                <td className="p-4 text-center">
+                  <div className="flex justify-center items-center space-x-2">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.product_id, "decrement")
+                      }
+                      className="border px-2 py-1 rounded hover:bg-gray-200"
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.product_id, "increment")
+                      }
+                      className="border px-2 py-1 rounded hover:bg-gray-200"
+                    >
+                      +
+                    </button>
+                  </div>
+                </td>
+                <td className="p-4 text-center">
+                  ${(item.product.price * item.quantity).toFixed(2)}
+                </td>
+                <td className="p-4 text-center">
+                  <button onClick={() => handleDelete(item.product_id)}>
+                    <FaTrash className="text-red-500 hover:text-red-700" />
                   </button>
-                  <span>{product.quantity}</span>
-                  <button
-                    onClick={() =>
-                      handleQuantityChange(product.id, "increment")
-                    }
-                    className="border px-2 py-1 rounded hover:bg-gray-200"
-                  >
-                    +
-                  </button>
-                </div>
-              </td>
-
-              {/* Subtotal */}
-              <td className=" p-4 text-center">
-                ${(product.price * product.quantity).toFixed(2)}
-              </td>
-
-              {/* Delete Button */}
-              <td className=" p-4 text-center">
-                <button onClick={() => handleDelete(product.id)}>
-                  <FaTrash className="text-red-500 hover:text-red-700" />
-                </button>
-              </td>
-            </tr>
-          ))}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

@@ -1,19 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./card.module.css";
-import { CiStar } from "react-icons/ci";
+import { CiHeart, CiStar } from "react-icons/ci";
 import { FaExchangeAlt } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { addToCart } from "../../redux/actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
+import toast from "react-hot-toast";
+import { addtoWishlist } from "../../redux/wishlistSlice";
+
 
 function Card({ item }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-  const isItemInCart = cartItems.some((cartItem) => cartItem.id === item.id);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const wishlistItems = useSelector((state) => state.wishlist.wishlist)
+
+  const isItemInCart = cartItems.some(
+    (cartItem) => cartItem.data.product_id === item.id
+  );
+
+  const isInWishlist = wishlistItems.some((wishlistItem) => wishlistItem.id === item.id);
+
+  const handleAddToWishlist= (productId)=>{
+     dispatch(addtoWishlist(productId));
+    toast.success("product added to wishlist");
+  }
+
+
 
   const handleAddToCart = () => {
-    dispatch(addToCart(item));
+    // console.log("Add to Cart clicked for item:", item);
+    dispatch(addToCart({ item }));
   };
 
   const fallbackImage =
@@ -28,24 +46,45 @@ function Card({ item }) {
           className={styles.cardImage}
         />
         <div className={styles.topIcons}>
-          <button className={styles.iconButton}>
-            <CiStar />
+          <button
+            className={styles.iconButton}
+            onClick={() => handleAddToWishlist(item.id)}
+          >
+            {isInWishlist ? <CiHeart /> : <CiStar />}
           </button>
           <button className={styles.iconButton}>
             <FaExchangeAlt />
           </button>
-          <button className={styles.iconButton}>
+          <Link
+            to={`/product/${item.id}`}
+            state={{ product: item }}
+            className={styles.iconButton}
+          >
             <IoEyeOutline />
-          </button>
+          </Link>
         </div>
-        <button
-          className={`${styles.addToCartButton} ${
-            isItemInCart ? styles.addedButton : ""
-          }`}
-          onClick={handleAddToCart}
-        >
-          {isItemInCart ? "Added to Cart" : "Add to Cart"}
-        </button>
+
+        {token ? (
+          <button
+            className={`${styles.addToCartButton} ${
+              isItemInCart ? styles.addedButton : ""
+            }`}
+            onClick={handleAddToCart}
+            disabled={isItemInCart}
+          >
+            {isItemInCart ? "Added to Cart" : "Add to Cart"}
+          </button>
+        ) : (
+          <button
+            className={`${styles.addToCartButton} ${
+              isItemInCart ? styles.addedButton : ""
+            }`}
+            onClick={() => toast.error("Please Login First")}
+            disabled={isItemInCart}
+          >
+            {isItemInCart ? "Added to Cart" : "Add to Cart"}
+          </button>
+        )}
       </div>
       <div className={styles.cardContent}>
         <Link
@@ -64,7 +103,6 @@ function Card({ item }) {
         ) : (
           <p className={styles.cardPrice}>${item.price}</p>
         )}
-        {/* <p className={styles.cardPrice}>${item.price}</p> */}
       </div>
     </div>
   );
