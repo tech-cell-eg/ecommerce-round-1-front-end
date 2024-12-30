@@ -43,7 +43,7 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
     { name: "Our Story", path: "/#ourstory" },
-    { name: "Blogs", path: "/blogs" },
+    // { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contactus" },
     { name: "Customer Reviews", path: "/customerreviews" },
   ];

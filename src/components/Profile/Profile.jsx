@@ -1,9 +1,14 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import Sidbar from './Sidbar'
 import { Outlet } from 'react-router-dom'
 
 export default function Profile() {
   return<>
+   <Helmet>
+    <title>Profile</title>
+    <meta name="description" content="Customer Profile"/>
+  </Helmet>
  <section className="container-main py-6  bg-white">
   <h2 className="text-2xl font-semibold">My Profile</h2>
 

@@ -1,8 +1,14 @@
 import { Button } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  setOrderConfirmed,
+  setActiveStep,
+} from "../../redux/actions/checkoutActions";
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div className="max-w-md mx-auto text-center p-8">
       <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -31,6 +37,8 @@ const OrderConfirmation = () => {
           className="w-full"
           onClick={() => {
             navigate("/profile/orders");
+            dispatch(setOrderConfirmed(false));
+            dispatch(setActiveStep(1));
           }}
         >
           View Order
@@ -40,6 +48,8 @@ const OrderConfirmation = () => {
           className="w-full"
           onClick={() => {
             navigate("/");
+            dispatch(setOrderConfirmed(false));
+            dispatch(setActiveStep(1));
           }}
         >
           Back to Home

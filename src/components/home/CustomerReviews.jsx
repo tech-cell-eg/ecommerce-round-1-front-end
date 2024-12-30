@@ -128,9 +128,8 @@ useEffect(() => {
               >
                 <CustomerReviewCard
                   name={review.name}
-                  role={review.role}
-                  review={review.review}
-                  rating={review.rating}
+                  review={review.msg}
+                  rating={review.stars}
                   image={review.image}
                 />
               </div>

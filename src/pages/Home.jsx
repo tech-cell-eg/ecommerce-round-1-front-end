@@ -7,6 +7,7 @@ import Deals from "../components/home/Deals";
 import Header from "../components/home/Header";
 import InstgramStories from "../components/home/InstgramStories";
 import OurStory from "../components/OurStory/OurStory";
+import { Helmet } from 'react-helmet'
 
 const Home = () => {
   const location = useLocation();
@@ -22,6 +23,10 @@ const Home = () => {
 
   return (
     <>
+     <Helmet>
+    <title>Krist</title>
+    <meta name="description" content="Krist Home"/>
+  </Helmet>
       <Header />
       <CategorySlider />
       <BestSeller />

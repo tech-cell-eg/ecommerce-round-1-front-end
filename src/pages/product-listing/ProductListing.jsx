@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import Card from "../../components/product-card/Card";
 import { PiSquaresFourLight } from "react-icons/pi";
 import DropDownMenu from "../../components/product-listing/DropDownMenu";
@@ -16,6 +17,7 @@ import {
   selectProductsError,
   selectAllProducts, // Ensure this selector is properly imported
 } from "../../redux/selectors/productsSelector";
+
 
 function ProductListing() {
   const [searchParams] = useSearchParams();
@@ -63,7 +65,8 @@ function ProductListing() {
 
     if (selectedMinPrice) {
       items = items.filter(
-        (item) => item.price >= selectedMinPrice && item.price <= selectedMaxPrice
+        (item) =>
+          item.price >= selectedMinPrice && item.price <= selectedMaxPrice
       );
     }
 
@@ -93,6 +96,10 @@ function ProductListing() {
 
   return (
     <>
+      <Helmet>
+        <title>Shop at Krist</title>
+        <meta name="description" content="Shop at Krist" />
+      </Helmet>
       <section className="container mx-auto mt-16">
         {/* Sidebar Toggle Button */}
         <div className="flex items-center justify-between mb-4 md:hidden">

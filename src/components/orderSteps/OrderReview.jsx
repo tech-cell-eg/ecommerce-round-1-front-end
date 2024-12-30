@@ -21,9 +21,7 @@ const OrderReview = () => {
     const getCart = async () => {
       setLoading(true);
       try {
-        console.log("Fetching cart items...");
         const allCartItems = await fetchUserCart();
-        console.log("Cart items fetched:", allCartItems);
         setCart(allCartItems);
       } catch (error) {
         console.error("Error fetching cart items:", error);
@@ -34,21 +32,31 @@ const OrderReview = () => {
 
     getCart();
   }, []);
- 
+
   const handlePlaceOrder = async () => {
-    const order = {
-      user_address_id: selectedAddress.id,
-      user_card_id: selectedPayment,
-      products: cart.map(item => item.product.id),
-      quantities: cart.map(item => item.quantity),
-      sizes: cart.map(item => item.product.size || "S"),
-    };
+    let order;
+    if (selectedPayment === Number) {
+      order = {
+        user_address_id: selectedAddress.id,
+        user_card_id: selectedPayment,
+        payment_method: "card",
+        products: cart.map((item) => item.product.id),
+        quantities: cart.map((item) => item.quantity),
+        sizes: cart.map((item) => item.product.size || "S"),
+      };
+    } else {
+      order = {
+        user_address_id: selectedAddress.id,
+        payment_method: selectedPayment,
+        products: cart.map((item) => item.product.id),
+        quantities: cart.map((item) => item.quantity),
+        sizes: cart.map((item) => item.product.size || "S"),
+      };
+    }
 
     try {
-      console.log("Order data being sent:", JSON.stringify(order, null, 2));
       const response = await createOrder(order);
-      console.log("API response:", response);
-
+      setLoading(true);
       if (response && response.status === 200) {
         dispatch(setOrderConfirmed(true));
         dispatch(clearCart());
@@ -57,6 +65,8 @@ const OrderReview = () => {
       }
     } catch (error) {
       console.error("Error placing order:", error);
+    }finally {
+      setLoading(false);
     }
   };
   const fallbackImage =
@@ -107,7 +117,7 @@ const OrderReview = () => {
           </p>
         </div>
 
-        <Button color="dark" className="w-full" onClick={handlePlaceOrder}>
+        <Button color="dark" className="w-full" onClick={handlePlaceOrder} setLoading={true}>
           Place Order
         </Button>
       </div>
@@ -116,5 +126,3 @@ const OrderReview = () => {
 };
 
 export default OrderReview;
-
-

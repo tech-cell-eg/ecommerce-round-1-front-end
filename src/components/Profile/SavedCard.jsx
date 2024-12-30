@@ -10,14 +10,17 @@ import {
 
 export default function SavedCard() {
   const [cards, setCards] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showAddCardModal, setShowAddCardModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [newCard, setNewCard] = useState({
     card_name: "",
     card_number: "",
     card_expiry_date: "",
     card_cvv: "",
   });
+  const [selectedCardId, setSelectedCardId] = useState(null);
   const [alert, setAlert] = useState({ message: "", type: "", visible: false });
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -30,6 +33,7 @@ export default function SavedCard() {
         }
       } catch (error) {
         console.error("Error fetching cards:", error);
+        setError(error);
       }
     };
 
@@ -45,7 +49,7 @@ export default function SavedCard() {
         type: "success",
         visible: true,
       });
-      setShowModal(false);
+      setShowAddCardModal(false);
     } catch (error) {
       console.error("Error adding card:", error);
       setAlert({
@@ -53,6 +57,7 @@ export default function SavedCard() {
         type: "failure",
         visible: true,
       });
+      setError(error);
     } finally {
       setNewCard({
         card_name: "",
@@ -64,8 +69,33 @@ export default function SavedCard() {
     }
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleDeleteCard = async () => {
+    try {
+      await removeCard(selectedCardId);
+      setCards((prevCards) =>
+        prevCards.filter((card) => card.id !== selectedCardId)
+      );
+      setAlert({
+        message: "Card deleted successfully.",
+        type: "success",
+        visible: true,
+      });
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error("Error deleting card:", error);
+      setAlert({
+        message: "Failed to delete card. Please try again.",
+        type: "failure",
+        visible: true,
+      });
+      setError(error);
+    } finally {
+      setTimeout(() => setAlert({ ...alert, visible: false }), 3000);
+    }
+  };
+
+  const handleCloseAddCardModal = () => {
+    setShowAddCardModal(false);
     setNewCard({
       card_name: "",
       card_number: "",
@@ -74,25 +104,9 @@ export default function SavedCard() {
     });
   };
 
-  const handleDeleteCard = async (id) => {
-    try {
-      await removeCard(id);
-      setCards((prevCards) => prevCards.filter((card) => card.id !== id));
-      setAlert({
-        message: "Card deleted successfully.",
-        type: "success",
-        visible: true,
-      });
-    } catch (error) {
-      console.error("Error deleting card:", error);
-      setAlert({
-        message: "Failed to delete card. Please try again.",
-        type: "failure",
-        visible: true,
-      });
-    } finally {
-      setTimeout(() => setAlert({ ...alert, visible: false }), 3000);
-    }
+  const openDeleteModal = (cardId) => {
+    setSelectedCardId(cardId);
+    setShowDeleteModal(true);
   };
 
   return (
@@ -113,7 +127,7 @@ export default function SavedCard() {
       <button
         type="button"
         className="btn-primary px-8 w-fit flex items-center bg-black text-white"
-        onClick={() => setShowModal(true)}
+        onClick={() => setShowAddCardModal(true)}
       >
         <FaPlus className="inline-block mr-1" /> <span>Add New Card</span>
       </button>
@@ -131,7 +145,7 @@ export default function SavedCard() {
                   <img
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/640px-Mastercard_2019_logo.svg.png"
                     alt="Card"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 <div>
@@ -144,7 +158,7 @@ export default function SavedCard() {
               <button
                 type="button"
                 className="btn-primary px-8 w-fit flex items-center bg-red-100 text-red-600"
-                onClick={() => handleDeleteCard(card.id)}
+                onClick={() => openDeleteModal(card.id)}
               >
                 <RiDeleteBin6Line className="inline-block mr-1" />
                 <span>Delete</span>
@@ -157,18 +171,10 @@ export default function SavedCard() {
       </div>
 
       {/* Add Card Modal */}
-      <Modal show={showModal} onClose={handleCloseModal}>
+      <Modal show={showAddCardModal} onClose={handleCloseAddCardModal}>
         <Modal.Header>Add New Card</Modal.Header>
         <Modal.Body>
           <div className="space-y-4">
-            {alert.visible && alert.type === "failure" && (
-              <Alert
-                color="red"
-                onDismiss={() => setAlert({ ...alert, visible: false })}
-              >
-                {alert.message}
-              </Alert>
-            )}
             <TextInput
               label="Card Name"
               placeholder="Card Name"
@@ -181,6 +187,8 @@ export default function SavedCard() {
             <TextInput
               label="Card Number"
               placeholder="Card Number"
+              min={16}
+              max={16}
               required
               value={newCard.card_number}
               onChange={(e) =>
@@ -206,6 +214,7 @@ export default function SavedCard() {
               }
             />
           </div>
+          {error && <p className="text-white py-2">{error.message}</p>}
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -214,7 +223,25 @@ export default function SavedCard() {
           >
             Add Card
           </Button>
-          <Button color="gray" onClick={handleCloseModal}>
+          <Button color="gray" onClick={handleCloseAddCardModal}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+        <Modal.Header>Confirm Deletion</Modal.Header>
+        <Modal.Body>
+          <p className="text-gray-700">
+            Are you sure you want to delete this card?
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button color="failure" onClick={handleDeleteCard}>
+            Yes, Delete
+          </Button>
+          <Button color="gray" onClick={() => setShowDeleteModal(false)}>
             Cancel
           </Button>
         </Modal.Footer>

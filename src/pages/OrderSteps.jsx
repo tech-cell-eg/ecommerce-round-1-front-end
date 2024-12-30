@@ -14,12 +14,9 @@ import OrderReview from "../components/orderSteps/OrderReview";
 import OrderConfirmation from "../components/orderSteps/OrderConfirmation";
 import { selectUser } from "../redux/selectors/userSelectors";
 
-
-
 const OrderSteps = () => {
   const [deliveryCharge] = useState(5);
   const navigate = useNavigate();
-
   const activeStep = useSelector(selectActiveStep);
   const orderConfirmed = useSelector(selectOrderConfirmed);
   const user = useSelector(selectUser);
@@ -28,7 +25,6 @@ const OrderSteps = () => {
   const handleApplyDiscount = (discount) => {
     console.log("Discount applied: ", discount);
   };
-
 
   // Order Confirmation View
   if (orderConfirmed) {
@@ -66,10 +62,11 @@ const OrderSteps = () => {
             )}
           </div>
 
-          <SummaryCard
+          {/* <SummaryCard
             deliveryCharge={deliveryCharge}
             onApplyDiscount={handleApplyDiscount}
-          />
+            isOrderRedirect={false}
+          /> */}
         </div>
       </div>
     </div>

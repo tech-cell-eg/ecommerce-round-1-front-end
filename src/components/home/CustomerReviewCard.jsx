@@ -1,7 +1,7 @@
 import { Rating } from "flowbite-react";
 import PropTypes from "prop-types";
 
-const CustomerReviewCard = ({ name, role, review, rating, image }) => {
+const CustomerReviewCard = ({ name, review, rating, image }) => {
   const fallbackImage =
     "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-Clip-Art-Transparent-PNG.png";
 
@@ -24,7 +24,6 @@ const CustomerReviewCard = ({ name, role, review, rating, image }) => {
           className="w-16 h-16 rounded-full mb-4"
         />
         <h3 className="font-bold text-lg mb-1">{name}</h3>
-        <p className="text-gray-500 text-sm mb-4">{role}</p>
       </div>
     </div>
   );

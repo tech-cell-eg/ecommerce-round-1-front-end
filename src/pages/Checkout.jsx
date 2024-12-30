@@ -1,21 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectCartItemCount } from "../redux/selectors/cartSelectors";
 import ProductTable from "../components/checkout/ProductTable";
 import SummaryCard from "../components/checkout/SummaryCard";
+import { fetchUserCart } from "../api/cart/cart";
 
 const Checkout = () => {
   const [deliveryCharge] = useState(5);
+  const [cart, setCart] = useState([]);
   const navigate = useNavigate();
-  const isCartHasItem = useSelector(selectCartItemCount);
- 
- 
+  const isCartHasItem = useSelector((state) => state.cart.items.length);
+  const [loading, setLoading] = useState(true);
 
-  // Apply discount
+  const subtotal = cart.reduce((acc, item) => {
+    return acc + item.product.price * item.quantity;
+  }, 0);
+
+  useEffect(() => {
+    const getCart = async () => {
+      setLoading(true);
+      try {
+        // console.log("Fetching cart items...");
+        const allCartItems = await fetchUserCart();
+        // console.log("Cart items fetched:", allCartItems);
+        setCart(allCartItems);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getCart();
+  }, []);
+
   const handleApplyDiscount = (discount) => {
     console.log("Discount applied: ", discount);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-4">
+        <div className="spinner">Loading...</div>
+      </div>
+    );
+  }
 
   // Empty Cart View
   if (isCartHasItem === 0) {
@@ -42,22 +71,22 @@ const Checkout = () => {
     );
   }
 
- 
-
   return (
     <div className="container mx-auto py-8">
       <div className="p-6 bg-white shadow-md rounded-md max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-left">Checkout</h1>
         <div className="flex flex-col lg:flex-row w-[100%] gap-10">
-            <ProductTable />
+          <ProductTable cart={cart} setCart={setCart} />
           <SummaryCard
             deliveryCharge={deliveryCharge}
+            subtotal={subtotal}
             onApplyDiscount={handleApplyDiscount}
+            isOrderRedirect={true}
           />
-          
         </div>
       </div>
     </div>
   );
 };
+
 export default Checkout;

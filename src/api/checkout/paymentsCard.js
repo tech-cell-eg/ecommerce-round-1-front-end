@@ -13,7 +13,7 @@ export const fetchSavedCards = async () => {
 // Function to Add User payment card
 export const addNewCard = async (cardDetails) => {
   try {
-    const response = await api.post("cards/store", cardDetails);
+    const response = await api.post("cards", cardDetails);
     return response.data;
   } catch (error) {
     handleError(error, "Failed to add User payment card");

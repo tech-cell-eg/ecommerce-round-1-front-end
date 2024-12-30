@@ -27,6 +27,7 @@ const PaymentMethod = () => {
       try {
         const response = await fetchSavedCards();
         setSavedCards(response.data || []);
+        // console.log(response.data);
       } catch (error) {
         console.error("Error fetching saved cards:", error.message);
       } finally {
@@ -35,6 +36,8 @@ const PaymentMethod = () => {
     };
     loadSavedCards();
   }, []);
+
+  // console.log(savedCards);
 
   const handleAddCard = async () => {
     if (
@@ -193,8 +196,8 @@ const PaymentMethod = () => {
               <Radio
                 name="payment"
                 value="cod"
-                checked={selectedPaymentMethod === "cod"}
-                onChange={() => dispatch(setSelectedPayment("cod"))}
+                checked={selectedPaymentMethod === "cash"}
+                onChange={() => dispatch(setSelectedPayment("cash"))}
               />
               <Label className="ml-2">Cash on Delivery</Label>
             </div>
