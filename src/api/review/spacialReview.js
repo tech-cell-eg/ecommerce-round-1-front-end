@@ -7,9 +7,9 @@ const getspicialreview = async (id) => {
         headers: {
           Authorization: `Bearer ${token}`,
         }});
-        console.log(response.data.data);
+        console.log(response.data);
         
-    return response.data.data;
+    return response.data;
   } catch (error) {
     handleError(error);
   }

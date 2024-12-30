@@ -25,6 +25,8 @@ export default function CustomerReview({ product }) {
       try {
         const res = await getspicialreview(product.id);
         setReviews(res);
+        console.log(res);
+        
       } catch (error) {
         console.error("Failed to fetch spicial review:", error);
       }
