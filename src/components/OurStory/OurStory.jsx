@@ -19,7 +19,6 @@ export default function OurStory() {
       try {
         const response = await getAllNotstories();
         setStorysdetails(response); 
-        console.log(response);
         
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -84,7 +83,7 @@ export default function OurStory() {
         </div>
         <div className="py-2">
           <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-          <p className="text-gray-600">{item.paragraph}</p>
+          <p className="text-gray-600 line-clamp-2">{item.paragraph}</p>
           <div className="flex justify-start">
             <button className="font-bold rounded-lg" onClick={() => handelSpacialStory(item.id)}>
               View details
