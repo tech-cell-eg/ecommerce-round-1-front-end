@@ -20,35 +20,50 @@ export default function CustomerReview({ product }) {
   const userId = user.id 
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchSpicialReview = async () => {
       try {
         const res = await getspicialreview(product.id);
         setReviews(res);
-        console.log(res);
-        
       } catch (error) {
-        console.error("Failed to fetch spicial review:", error);
+        console.error("Error fetching reviews:", error);
       }
     };
-    fetchSpicialReview();
-  },[])
+  
+    if (product?.id) fetchSpicialReview();
+  }, [product.id]);
 
     
- const handelAddReview = async(values)=>{
-  try{
-    const response = await addReview(values)
-  toast.success("Review added successfully")
-  }catch(err){
-    console.log(err);
-    
-  }
- }
+  const handelAddReview = async (values) => {
+    if (!product?.id) {
+      toast.error("Product ID is missing.");
+      return;
+    }
+  
+    try {
+      const reviewData = {
+        name: values.name,
+        msg: values.msg,
+        stars: values.stars,
+        email: values.email,
+        product_id: product.id, 
+        user_id: userId,
+        user_role: 1,
+      };
+      const response = await addReview(reviewData);
+      toast.success("Review added successfully");
+      setReviews((prev) => (Array.isArray(prev) ? [...prev, response] : [response]));
+    } catch (err) {
+      console.error("Error adding review:", err);
+      toast.error(err.response?.data?.message || "An error occurred during add review");
+    }
+  };
+  
 
   const validationSchema = yup.object({
     name: yup.string().required("Name is required").min(3, "Min 3 characters"),
     email: yup.string().email("Invalid email").required("Email is required"),
-    review: yup.string().required("Review is required").min(10, "Min 10 characters"),
+    msg: yup.string().required("Review is required").min(10, "Min 10 characters"),
     stars: yup.number().required("Rating is required").min(1, "At least 1 star"),
   });
 
@@ -56,20 +71,14 @@ export default function CustomerReview({ product }) {
     initialValues: {
       name: "",
       email: "",
-      review: "",
-      stars: 0, 
+      msg: "",
+      stars: 0,
+      product_id: product?.id || null, 
     },
     validationSchema,
-    onSubmit: (values) => {
-      const reviewData = {
-        msg: values.review,
-        stars: values.stars,
-        product_id: product.id,
-        user_id: userId,
-        user_role: 1,
-      };
-      handelAddReview(reviewData);
-      console.log(reviewData);
+    onSubmit: (values, { resetForm }) => {
+      handelAddReview(values);
+      resetForm();
     },
   });
 
@@ -182,23 +191,26 @@ export default function CustomerReview({ product }) {
     </span>
   )}
 </div>
-        <div className="flex flex-col space-y-1">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            placeholder="Enter your name"
-            className="border p-2 rounded-lg"
-            onChange={formik.handleChange}
-            value={formik.values.name}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.name && formik.errors.name && (
-            <span className="text-red-500 text-sm font-semibold">
-              {formik.errors.name}
-            </span>
-          )}
-        </div>
+
+
+<div className="flex flex-col space-y-1">
+  <label htmlFor="name">Name</label>
+  <input
+    type="text"
+    id="name"
+    name="name" 
+    placeholder="Enter your name"
+    className="border p-2 rounded-lg"
+    onChange={formik.handleChange}
+    value={formik.values.name}
+    onBlur={formik.handleBlur}
+  />
+  {formik.touched.name && formik.errors.name && (
+    <span className="text-red-500 text-sm font-semibold">
+      {formik.errors.name}
+    </span>
+  )}
+</div>
         <div className="flex flex-col space-y-1">
           <label htmlFor="email">Email Address</label>
           <input
@@ -219,16 +231,16 @@ export default function CustomerReview({ product }) {
         <div className="flex flex-col space-y-1">
           <label htmlFor="review">Your Review</label>
           <textarea
-            id="review"
+            id="msg"
             placeholder="Enter your review"
             className="border p-2 rounded-lg"
             onChange={formik.handleChange}
-            value={formik.values.review}
+            value={formik.values.msg}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.review && formik.errors.review && (
+          {formik.touched.msg && formik.errors.msg&& (
             <span className="text-red-500 text-sm font-semibold">
-              {formik.errors.review}
+              {formik.errors.msg}
             </span>
           )}
         </div>
