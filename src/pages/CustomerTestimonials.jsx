@@ -42,9 +42,7 @@ function CustomerTestimonials() {
             {testimonial.image && (
               <img
                 className="w-full h-52 object-cover"
-                src={testimonial.image}
-                alt={`Testimonial by ${testimonial.user.first_name} ${testimonial.user.last_name}`}
-              />
+                src={testimonial.image}  alt={testimonial.user.first_name}/>
             )}
             {/* Card Content */}
             <div className="p-2">

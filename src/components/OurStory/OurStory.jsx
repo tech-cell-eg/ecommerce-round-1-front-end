@@ -34,8 +34,7 @@ export default function OurStory() {
   const handelSpacialStory = async (id) => {
     try {
       const response = await getspicialstory(id);
-      setStoryDetails(response); 
-      setShowspaicialstory(true); 
+      setStoryDetails(response);  
     } catch (err) {
       console.error("Error fetching story:", err);
     }
@@ -65,9 +64,8 @@ export default function OurStory() {
           prevEl: "#prev",
           nextEl: "#next",
         }}
-        loop={true}
         slidesPerView={1}
-        spaceBetween={20}
+        spaceBetween={10}
         breakpoints={{
           640: { slidesPerView: 2 },
           768: { slidesPerView: 3 },
