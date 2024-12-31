@@ -4,7 +4,7 @@ import api, { handleError } from "../axiosConfig";
 export const fetchAllProducts = async () => {
   try {
     const response = await api.get("products");
-    return response.data.data;
+    return response.data.data.data;
   } catch (error) {
     handleError(error, "Failed to fetch all products");
   }
