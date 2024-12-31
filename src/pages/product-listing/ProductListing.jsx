@@ -17,6 +17,7 @@ import {
   selectProductsError,
   selectAllProducts, // Ensure this selector is properly imported
 } from "../../redux/selectors/productsSelector";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 
 function ProductListing() {
@@ -154,7 +155,12 @@ function ProductListing() {
               {filteredItems.map((item) => (
                 <Card key={item.id} item={item} />
               ))}
+              
             </div>
+            <div className="flex justify-end gap-4 w-[90%] my-4 mx-auto">
+                <button className="text-2xl p-2 rounded shadow-md border-2 border-gray-300"><IoIosArrowBack /></button>
+                <button className="text-2xl p-2 rounded shadow-md border-2 border-gray-300" ><IoIosArrowForward /></button>
+              </div>
           </div>
         </div>
       </section>
