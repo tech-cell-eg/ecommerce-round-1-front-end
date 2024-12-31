@@ -7,6 +7,7 @@ import { Navigation } from "swiper/modules";
 import getAllNotstories from "../../api/ourstories/getAllourstories";
 import { HiOutlineXMark } from "react-icons/hi2";
 import getspicialstory from "../../api/ourstories/spacialStory";
+import { Link } from "react-router-dom";
 
 
 export default function OurStory() {
@@ -79,15 +80,15 @@ export default function OurStory() {
     <SwiperSlide key={item.id}>
       <div className="flex flex-col justify-center p-4 border border-gray-300 rounded-xl">
         <div className="rounded-xl overflow-hidden">
-          <img src={item.image} alt={item.title} />
+          <img src={item.image} alt={item.title} className="line-clamp-1" />
         </div>
         <div className="py-2">
-          <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-          <p className="text-gray-600 line-clamp-2">{item.paragraph}</p>
-          <div className="flex justify-start">
-            <button className="font-bold rounded-lg" onClick={() => handelSpacialStory(item.id)}>
+          <h3 className="text-xl font-semibold mb-2 line-clamp-1">{item.title}</h3>
+          <p className="text-gray-600  line-clamp-2">{item.description}</p>
+          <div className="flex justify-start mt-2">
+            <Link to={`spacialStory/${item.id}`} className="font-bold rounded-lg" >
               View details
-            </button>
+            </Link>
           </div>
         </div>
       </div>

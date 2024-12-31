@@ -23,6 +23,7 @@ import Setting from "./components/Profile/Setting";
 import WishList from "./components/Profile/WishList";
 import OrderList from './components/Profile/OrderList'
 import { ApiProvider } from "@reduxjs/toolkit/query/react";
+import SpacialStory from "./components/OurStory/SpacialStory";
 
 
 export default function App() {
@@ -38,6 +39,7 @@ export default function App() {
         { path: "checkout", element: <Checkout /> },
         { path: "order", element: <OrderSteps /> },
         { path: "contactUs", element: <ContactUs/> },
+        {path:"spacialStory/:id",element: <SpacialStory/>},
         { path: "customerreviews", element: <CustomerTestimonials /> },
         {
           path: "profile",

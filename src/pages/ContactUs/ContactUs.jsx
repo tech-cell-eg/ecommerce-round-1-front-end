@@ -65,7 +65,7 @@ export default function ContactUs() {
         <form className='space-y-4' onSubmit={formik.handleSubmit}>
        <div className='relative'>
        <label htmlFor='name' className='absolute -top-4 left-4 text-lg bg-white'>Name</label>
-       <input type="text" id='name' name="name" placeholder="FIRST_NAME LAST_NAME" className='form-control' onChange={formik.handleChange} value={formik.values.name}  />
+       <input type="text" id='name' name="name" placeholder="Enter your name" className='form-control' onChange={formik.handleChange} value={formik.values.name}  />
        {formik.touched.name && formik.errors.name && <p className='text-red-500'>{formik.errors.name}</p>}
        </div>
       
