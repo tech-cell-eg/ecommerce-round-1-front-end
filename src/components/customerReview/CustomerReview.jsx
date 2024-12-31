@@ -11,6 +11,7 @@ import addReview from "../../api/review/addReview";
 import toast from "react-hot-toast";
 import getspicialreview from "../../api/review/spacialReview";
 import { useSelector } from "react-redux";
+import { fetchAllReviews } from "../../api/reviews/reviews";
 
 export default function CustomerReview({ product }) {
   const [activeTab, setActiveTab] = useState("reviews");
@@ -33,7 +34,8 @@ export default function CustomerReview({ product }) {
     if (product?.id) fetchSpicialReview();
   }, [product.id]);
 
-    
+  
+
   const handelAddReview = async (values) => {
     if (!product?.id) {
       toast.error("Product ID is missing.");
