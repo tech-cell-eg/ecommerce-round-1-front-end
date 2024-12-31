@@ -31,9 +31,8 @@ const CustomerReviewCard = ({ name, review, rating, image }) => {
 
 CustomerReviewCard.propTypes = {
   name: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
   review: PropTypes.string.isRequired,
-  rating: PropTypes.number.isRequired,
+  rating: PropTypes.string.isRequired,
   image: PropTypes.string,
 };
 

@@ -47,7 +47,7 @@ const Checkout = () => {
   }
 
   // Empty Cart View
-  if (isCartHasItem === 0) {
+  if (isCartHasItem === 0 || !cart.length) {
     return (
       <div className="bg-white p-6 shadow-lg w-[90%] lg:w-[60%] mx-auto text-black flex flex-col items-center justify-center min-h-[60vh]">
         <img

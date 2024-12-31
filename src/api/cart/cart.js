@@ -11,24 +11,12 @@ export const fetchUserCart = async () => {
 };
 
 // Add to Cart
-export const addToCartApi = async (item, userId) => {
+export const addToCartApi = async (item) => {
   try {
     const quantity = item.quantity || 1;
     const response = await api.post("cart", {
       quantity,
-      user_id: userId,
       product_id: item.id,
-      product: {
-        id: item.id,
-        name: item.name,
-        description: item.description,
-        image: item.image || null,
-        price: item.price,
-        compare_price: item.compare_price,
-        category_id: item.category_id,
-        size: item.size || null,
-        color: item.color || null,
-      },
     });
     return response;
   } catch (error) {
@@ -44,11 +32,10 @@ export const removeFromCartApi = async (itemId) => {
     handleError(error, "Failed to remove item from cart");
   }
 };
-
 // Update Cart Item Quantity
-export const updateCartQuantityApi = async (itemId, quantity) => {
+export const updateCartQuantityApi = async (id, quantity) => {
   try {
-    const response = await api.put(`cart/${itemId}`, { quantity });
+    const response = await api.put(`cart/${id}`, { quantity });
     return response.data;
   } catch (error) {
     handleError(error, "Failed to update item quantity");

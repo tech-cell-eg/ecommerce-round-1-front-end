@@ -4,6 +4,7 @@ import { fetchAllProducts } from "../../api/products/products";
 
 const BestSeller = () => {
   const [products, setProducts] = useState([]);
+  // const [product, setProduct] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
       const allProducts = await fetchAllProducts();
@@ -12,6 +13,15 @@ const BestSeller = () => {
 
     getProducts();
   }, []);
+
+  // useEffect(() => {
+  //   const getProduct = async () => {
+  //     const onlyOneProduct = await fetchProductById(8);
+  //     setProduct(onlyOneProduct);
+  //   };
+
+  //   getProduct();
+  // }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">

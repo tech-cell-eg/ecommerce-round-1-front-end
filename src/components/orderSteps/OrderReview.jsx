@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import { Button, Spinner, Alert } from "flowbite-react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button } from "flowbite-react";
 import { setOrderConfirmed } from "../../redux/actions/checkoutActions";
 import { clearCart } from "../../redux/cartSlice";
 import {
@@ -15,8 +15,11 @@ const OrderReview = () => {
   const selectedAddress = useSelector(selectSelectedAddress);
   const selectedPayment = useSelector(selectSelectedPayment);
   const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("failure");
 
+  // Fetch cart items
   useEffect(() => {
     const getCart = async () => {
       setLoading(true);
@@ -24,18 +27,28 @@ const OrderReview = () => {
         const allCartItems = await fetchUserCart();
         setCart(allCartItems);
       } catch (error) {
-        console.error("Error fetching cart items:", error);
+        setAlertMessage("Error getting your order", error);
+        setAlertType("failure");
       } finally {
         setLoading(false);
       }
     };
-
     getCart();
   }, []);
 
+  // Calculate total price
+  const calculateTotalPrice = () => {
+    return cart.reduce(
+      (total, item) => total + item.quantity * item.product.price,
+      0
+    );
+  };
+
+  // Handle order placement
   const handlePlaceOrder = async () => {
+    setLoading(true);
     let order;
-    if (selectedPayment === Number) {
+    if (typeof selectedPayment === "number") {
       order = {
         user_address_id: selectedAddress.id,
         user_card_id: selectedPayment,
@@ -56,19 +69,21 @@ const OrderReview = () => {
 
     try {
       const response = await createOrder(order);
-      setLoading(true);
       if (response && response.status === 200) {
         dispatch(setOrderConfirmed(true));
         dispatch(clearCart());
       } else {
-        console.error("Failed to place order:", response.message);
+        setAlertType("failure");
+        setAlertMessage("Error placing your order, Please Try again later");
       }
     } catch (error) {
-      console.error("Error placing order:", error);
-    }finally {
+      setAlertType("failure");
+      setAlertMessage("Error placing your order", error);
+    } finally {
       setLoading(false);
     }
   };
+
   const fallbackImage =
     "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
 
@@ -76,51 +91,75 @@ const OrderReview = () => {
     <div className="max-w-2xl mx-auto p-4">
       <h2 className="text-xl font-semibold mb-4">Review Your Order</h2>
 
-      <div className="space-y-6">
-        {/* Order Items */}
-        <div className="space-y-4">
-          {cart.map((item) => (
-            <div key={item.id} className="flex items-center space-x-4">
-              <img
-                src={item.product.image || fallbackImage}
-                alt={item.product.name}
-                className="w-20 h-20 object-cover"
-              />
-              <div>
-                <h3 className="font-medium">{item.product.name}</h3>
-                <p className="text-gray-600">${item.product.price}</p>
-                <p className="text-sm text-gray-500">
-                  Size: {item.product.size || " N/A"}
-                </p>
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <Spinner size="xl" color="dark" aria-label="Loading" />
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* Order Items */}
+          <div className="space-y-4">
+            {cart.map((item) => (
+              <div key={item.id} className="flex items-center space-x-4">
+                <img
+                  src={item.product.image || fallbackImage}
+                  alt={item.product.name}
+                  className="w-20 h-20 object-cover"
+                />
+                <div>
+                  <h3 className="font-medium">{item.product.name}</h3>
+                  <p className="text-gray-600">${item.product.price}</p>
+                  <p className="text-sm text-gray-500">
+                    Quantity: {item.quantity}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Size: {item.product.size || "N/A"}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Shipping Address */}
-        <div>
-          <h3 className="font-medium mb-2">Shipping Address</h3>
-          <div className="text-gray-600">
-            <p>{selectedAddress.name}</p>
-            <p>{selectedAddress.address}</p>
-            <p>{`${selectedAddress.city}, ${selectedAddress.state} ${selectedAddress.area}`}</p>
+            ))}
           </div>
-        </div>
 
-        {/* Payment Method */}
-        <div>
-          <h3 className="font-medium mb-2">Payment Method</h3>
-          <p className="text-gray-600">
-            {selectedPayment === Number
-              ? "Credit Card ending in ****"
-              : selectedPayment}
-          </p>
-        </div>
+          {/* Total Price */}
+          <div className="text-right text-lg font-semibold">
+            Grand Total: ${calculateTotalPrice().toFixed(1)}
+          </div>
 
-        <Button color="dark" className="w-full" onClick={handlePlaceOrder} setLoading={true}>
-          Place Order
-        </Button>
-      </div>
+          {/* Shipping Address */}
+          <div>
+            <h3 className="font-medium mb-2">Shipping Address</h3>
+            <div className="text-gray-600">
+              <p>{selectedAddress.name}</p>
+              <p>{selectedAddress.address}</p>
+              <p>{`${selectedAddress.city}, ${selectedAddress.state} ${selectedAddress.area}`}</p>
+            </div>
+          </div>
+
+          {/* Payment Method */}
+          <div>
+            <h3 className="font-medium mb-2">Payment Method</h3>
+            <p className="text-gray-600">
+              {typeof selectedPayment === "number"
+                ? "Credit Card ending in ****"
+                : selectedPayment}
+            </p>
+          </div>
+          {alertMessage && (
+            <Alert color={alertType} onDismiss={() => setAlertMessage("")}>
+              {alertMessage}
+            </Alert>
+          )}
+
+          <Button
+            color="dark"
+            className="w-full"
+            onClick={handlePlaceOrder}
+            disabled={loading}
+          >
+            {loading ? <Spinner size="sm" light={true} /> : "Place Order"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
