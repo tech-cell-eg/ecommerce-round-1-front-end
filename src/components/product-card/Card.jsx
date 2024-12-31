@@ -13,13 +13,13 @@ function Card({ item }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  // const wishlistItems = useSelector((state) => state.wishlist.wishlist);
+  const wishlistItems = useSelector((state) => state.wishlist.wishlist);
 
   const isItemInCart = cartItems.some(
     (cartItem) => cartItem.data.product_id === item.id
   );
 
-  // const isInWishlist = wishlistItems.some((wishlistItem) => wishlistItem.id === item.id);
+  const isInWishlist = wishlistItems?.some((wishlistItem) => wishlistItem.id === item.id);
 
   const handleAddToWishlist = (productId) => {
     dispatch(addtoWishlist(productId));
@@ -46,7 +46,7 @@ function Card({ item }) {
             className={styles.iconButton}
             onClick={() => handleAddToWishlist(item.id)}
           >
-            {/* {isInWishlist ? <CiHeart /> : <CiStar />} */}
+            {isInWishlist ? <CiHeart /> : <CiStar />}
           </button>
           <button className={styles.iconButton}>
             <FaExchangeAlt />

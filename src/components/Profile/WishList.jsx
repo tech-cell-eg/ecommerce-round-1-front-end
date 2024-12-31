@@ -32,7 +32,7 @@ const handleAddToCart = () => {
   return (
     <>
      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {wishlist.length > 0 ? (
+  {wishlist?.length > 0 ? (
     wishlist
       .filter((item) => item?.product) 
       .map((item, index) => (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import { Button, Spinner, Alert } from "flowbite-react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Spinner } from "flowbite-react";
 import { setOrderConfirmed } from "../../redux/actions/checkoutActions";
 import { clearCart } from "../../redux/cartSlice";
 import {
@@ -16,6 +16,8 @@ const OrderReview = () => {
   const selectedPayment = useSelector(selectSelectedPayment);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("failure");
 
   // Fetch cart items
   useEffect(() => {
@@ -25,7 +27,8 @@ const OrderReview = () => {
         const allCartItems = await fetchUserCart();
         setCart(allCartItems);
       } catch (error) {
-        console.error("Error fetching cart items:", error);
+        setAlertMessage("Error getting your order", error);
+        setAlertType("failure");
       } finally {
         setLoading(false);
       }
@@ -70,10 +73,12 @@ const OrderReview = () => {
         dispatch(setOrderConfirmed(true));
         dispatch(clearCart());
       } else {
-        console.error("Failed to place order:", response.message);
+        setAlertType("failure");
+        setAlertMessage("Error placing your order, Please Try again later");
       }
     } catch (error) {
-      console.error("Error placing order:", error);
+      setAlertType("failure");
+      setAlertMessage("Error placing your order", error);
     } finally {
       setLoading(false);
     }
@@ -139,6 +144,11 @@ const OrderReview = () => {
                 : selectedPayment}
             </p>
           </div>
+          {alertMessage && (
+            <Alert color={alertType} onDismiss={() => setAlertMessage("")}>
+              {alertMessage}
+            </Alert>
+          )}
 
           <Button
             color="dark"

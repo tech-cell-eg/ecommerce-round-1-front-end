@@ -151,8 +151,6 @@ const OrderList = () => {
         <Modal
           show={showModal}
           onClose={() => setShowModal(false)}
-          size="md"
-          popup={true}
         >
           <Modal.Header>Confirm Cancellation</Modal.Header>
           <Modal.Body>
