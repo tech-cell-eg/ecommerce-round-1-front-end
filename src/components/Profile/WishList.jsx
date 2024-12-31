@@ -20,15 +20,12 @@ export default function WishList() {
     if (id) {
       dispatch(getWishList(id));
     }
-
-  }, [id, dispatch])
- 
+  }, [id, dispatch]);
 
   const handleAddToCart = (item) => {
-    //  console.log("Add to Cart clicked for item:", item);
+    // console.log("Add to Cart in wishlist", item);
     dispatch(addToCart({ item }));
   };
-
 
   const handeldeletefromwhishlist = async (id) => {
     await deletefromwhishlist(id);
@@ -37,28 +34,32 @@ export default function WishList() {
 
   return (
     <>
-
-     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {wishlist.length > 0 ? (
-    wishlist
-      .filter((item) => item?.product) 
-      .map((item, index) => (
-        <div key={item.product.id || index} className="space-y-1 ">
-          <div className="relative group h-[265px] bg-gray-300">
-            <img
-             src={item.product.image ? item.product.image : "/Group-1.png"}
-              alt={item.product.name || "No Name"}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute top-0 bg-black bg-opacity-0 w-full h-full opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center justify-center">
-              <button className="btn-primary text-black bg-white absolute bottom-2 left-[10%] w-[80%]" onClick={() => handleAddToCart(item)}>
-                Add to Cart
-              </button>
-              <div
-                className="flex items-center justify-center p-2 rounded-full bg-white absolute right-3 top-6"
-                onClick={() => handeldeletefromwhishlist(item.product.id)}
-              >
-                <RiDeleteBin6Line className="text-red-600 text-xl cursor-pointer" />
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {wishlist.length > 0 ? (
+          wishlist
+            .filter((item) => item?.product)
+            .map((item, index) => (
+              <div key={item.product.id || index} className="space-y-1 ">
+                <div className="relative group h-[265px] bg-gray-300">
+                  <img
+                    src={
+                      item.product.image ? item.product.image : "/Group-1.png"
+                    }
+                    alt={item.product.name || "No Name"}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-0 bg-black bg-opacity-0 w-full h-full opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center justify-center">
+                    <button
+                      className="btn-primary text-black bg-white absolute bottom-2 left-[10%] w-[80%]"
+                      onClick={() => handleAddToCart(item.product)}
+                    >
+                      Add to Cart
+                    </button>
+                    <div
+                      className="flex items-center justify-center p-2 rounded-full bg-white absolute right-3 top-6"
+                      onClick={() => handeldeletefromwhishlist(item.product.id)}
+                    >
+                      <RiDeleteBin6Line className="text-red-600 text-xl cursor-pointer" />
                     </div>
                   </div>
                 </div>
@@ -78,7 +79,6 @@ export default function WishList() {
                     )}
                   </div>
                 </div>
-
               </div>
             ))
         ) : (

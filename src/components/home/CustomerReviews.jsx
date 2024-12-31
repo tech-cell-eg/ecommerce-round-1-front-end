@@ -65,15 +65,13 @@ const CustomerReviews = () => {
   const [itemsPerPage] = useState(4);
   const [reviews, setReviews] = useState();
 
-useEffect(() => {
+  useEffect(() => {
     const getReviews = async () => {
       const allReviews = await fetchAllReviews();
       setReviews(allReviews);
     };
     getReviews();
-
-}, []);
-
+  }, []);
 
   const goToPrevSlide = () => {
     setCurrentIndex((prev) =>
@@ -90,9 +88,12 @@ useEffect(() => {
   };
 
   return (
-    <div className="w-full mx-auto m-10 relative" style={{ width: "90%" }}>
+    <div
+      className="w-full mx-auto m-10 relative py-10"
+      style={{ width: "100%" }}
+    >
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-3xl font-bold text-gray-800 text-left">
+        <h2 className="text-3xl font-bold text-gray-800 text-left ml-10">
           Our Customers say
         </h2>
         {/* Navigation Arrows */}

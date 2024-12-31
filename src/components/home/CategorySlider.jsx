@@ -7,7 +7,6 @@ const CategorySlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage] = useState(4);
 
-
   const goToPrevSlide = () => {
     setCurrentIndex((prev) =>
       prev - itemsPerPage < 0

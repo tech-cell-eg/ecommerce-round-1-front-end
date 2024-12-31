@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "../../redux/actions/userActions";
 import { clearCart } from "../../redux/cartSlice";
 import { setActiveStep } from "../../redux/actions/checkoutActions";
+import toast from "react-hot-toast";
 
 const Drawer = ({ isOpen, toggleDrawer, navlist }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -49,13 +50,25 @@ const Drawer = ({ isOpen, toggleDrawer, navlist }) => {
 
         <ul className="flex flex-col p-4">
           <li className="py-2 border-b">
-            <Link
-              to="/profile"
-              onClick={toggleDrawer}
-              className="text-lg hover:text-gray-800 block w-full flex items-center justify-between"
-            >
-              <span className="flex items-center gap-2">Profile</span>
-            </Link>
+            {token ? (
+              <Link
+                to="/profile"
+                onClick={toggleDrawer}
+                className="text-lg hover:text-gray-800 block w-full"
+              >
+                Profile
+              </Link>
+            ) : (
+              <button
+                onClick={() => {
+                  toast.error("Please Login First");
+                  toggleDrawer();
+                }}
+                className="text-lg hover:text-gray-800 block w-full text-left"
+              >
+                Profile
+              </button>
+            )}
           </li>
           {navlist.map((item, index) => (
             <li key={index} className="py-2 border-b">

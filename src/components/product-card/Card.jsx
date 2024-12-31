@@ -19,14 +19,16 @@ function Card({ item }) {
     (cartItem) => cartItem.data.product_id === item.id
   );
 
-  const isInWishlist = wishlistItems?.some((wishlistItem) => wishlistItem.id === item.id);
+  const isInWishlist = wishlistItems?.some(
+    (wishlistItem) => wishlistItem.id === item.id
+  );
 
   const handleAddToWishlist = (productId) => {
     dispatch(addtoWishlist(productId));
     toast.success("product added to wishlist");
   };
   const handleAddToCart = () => {
-    // console.log("Add to Cart clicked for item:", item);
+    // console.log("Add to Cart in card", item);
     dispatch(addToCart({ item }));
   };
 
