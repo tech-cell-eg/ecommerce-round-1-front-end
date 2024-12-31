@@ -19,10 +19,7 @@ export default function WishList() {
     }
   }, [id, dispatch])
   
-const handleAddToCart = () => {
-    // console.log("Add to Cart clicked for item:", item);
-    dispatch(addToCart({ item }));
-  };
+
 
   const handeldeletefromwhishlist = async (id) => {
     await deletefromwhishlist(id);
@@ -37,14 +34,14 @@ const handleAddToCart = () => {
       .filter((item) => item?.product) 
       .map((item, index) => (
         <div key={item.product.id || index} className="space-y-1 ">
-          <div className="relative group min-h-[75%]">
+          <div className="relative group h-[265px] bg-gray-300">
             <img
-              src={item.product.image || "/Group-1.png"}
+             src={item.product.image ? item.product.image : "/Group-1.png"}
               alt={item.product.name || "No Name"}
-              className="w-full h-full"
+              className="w-full h-full object-cover"
             />
             <div className="absolute top-0 bg-black bg-opacity-0 w-full h-full opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center justify-center">
-              <button className="btn-primary text-black bg-white absolute bottom-2 left-[10%] w-[80%]" onClick={handleAddToCart}>
+              <button className="btn-primary text-black bg-white absolute bottom-2 left-[10%] w-[80%]" onClick={() => dispatch(addToCart(item.product))}>
                 Move to Cart
               </button>
               <div

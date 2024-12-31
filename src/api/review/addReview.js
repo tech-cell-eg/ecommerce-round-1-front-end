@@ -7,7 +7,9 @@ const addReview = async (values) => {
     const response = await api.post("reviews", {
         msg: values.msg,
         stars: values.stars,
-        product_id: values.productId,
+        product_id: values.product_id,
+        name: values.name,
+        email: values.email,
         user_id: values.userId,
         user_role: 1
     },
