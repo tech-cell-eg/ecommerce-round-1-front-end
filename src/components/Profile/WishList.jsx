@@ -9,10 +9,10 @@ export default function WishList() {
   const wishlist = useSelector((state) => state.wishlist.wishlist);
   const id = useSelector((state) => state.user.id);
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
-  const isItemInCart = cartItems.some(
-    (cartItem) => cartItem.data.product_id === wishlist.product.id
-  );
+  // const cartItems = useSelector((state) => state.cart.items);
+  // const isItemInCart = cartItems.some(
+  //   (cartItem) => cartItem.data.product_id === wishlist.product.id
+  // );
 
   console.log(wishlist);
 
@@ -50,9 +50,8 @@ export default function WishList() {
                     <button
                       className="btn-primary text-black bg-white absolute bottom-2 left-[10%] w-[80%]"
                       onClick={() => handleAddToCart(item)}
-                      disabled={isItemInCart}
                     >
-                      {isItemInCart ? "Added to Cart" : "Add to Cart"}
+                      Add to Cart
                     </button>
                     <div
                       className="flex items-center justify-center p-2 rounded-full bg-white absolute right-3 top-6"

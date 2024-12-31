@@ -58,7 +58,7 @@ const MiniCart = () => {
   const handleDelete = async (id) => {
     setLoading(true);
     try {
-     dispatch(removeFromCart(id));
+      await dispatch(removeFromCart(id));
     } catch (error) {
       console.error("Error removing item:", error);
     } finally {

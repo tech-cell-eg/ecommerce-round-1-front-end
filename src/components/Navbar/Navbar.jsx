@@ -24,9 +24,10 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setToken(localStorage.removeItem("token"));
-    dispatch(setActiveStep(1));
+    
     dispatch(clearCart());
+    dispatch(setActiveStep(1));
+    setToken(localStorage.removeItem("token"));
     dispatch(signOut());
     navigate("/login");
   };
@@ -79,7 +80,10 @@ export default function Navbar() {
               }}
             >
               {item.name === "Shop" ? (
-                <button className="flex items-center text-lg hover:text-gray-800" onClick={()=> navigate("/shop")}>
+                <button
+                  className="flex items-center text-lg hover:text-gray-800"
+                  onClick={() => navigate("/shop")}
+                >
                   {item.name}
                   <HiChevronDown className="ml-2" />
                 </button>
@@ -98,13 +102,20 @@ export default function Navbar() {
             <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
           </Link>
 
-          {token ?(
-            <Link to="/profile" >
-            <RxPerson className="cursor-pointer text-2xl" />
-          </Link>
-          ): <button>
-          <RxPerson className="cursor-pointer text-2xl" onClick={()=>{toast.error("Please Login First")}}/>
-        </button>}
+          {token ? (
+            <Link to="/profile">
+              <RxPerson className="cursor-pointer text-2xl" />
+            </Link>
+          ) : (
+            <button>
+              <RxPerson
+                className="cursor-pointer text-2xl"
+                onClick={() => {
+                  toast.error("Please Login First");
+                }}
+              />
+            </button>
+          )}
           <div className="relative">
             <FiInbox
               className="cursor-pointer text-2xl hover:text-gray-700"
