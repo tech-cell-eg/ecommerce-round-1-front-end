@@ -10,19 +10,19 @@ export default function Mega() {
             <h3 className="font-bold mb-2 text-lg">Men</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="#">T-Shirts</Link>
+                <Link to="/shop">T-Shirts</Link>
               </li>
               <li>
-                <Link to="#">Casual Shirts</Link>
+                <Link to="/shop">Casual Shirts</Link>
               </li>
               <li>
-                <Link to="#">Formal Shirts</Link>
+                <Link to="/shop">Formal Shirts</Link>
               </li>
               <li>
-                <Link to="#">Jackets</Link>
+                <Link to="/shop">Jackets</Link>
               </li>
               <li>
-                <Link to="#">Blazers & Coats</Link>
+                <Link to="/shop">Blazers & Coats</Link>
               </li>
             </ul>
           </div>
@@ -32,10 +32,10 @@ export default function Mega() {
             <h3 className="font-bold mb-2 text-lg">Indian & Festive Wear</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="#">Kurtas & Kurta Sets</Link>
+                <Link to="/shop">Kurtas & Kurta Sets</Link>
               </li>
               <li>
-                <Link to="#">Sherwanis</Link>
+                <Link to="/shop">Sherwanis</Link>
               </li>
             </ul>
           </div>
@@ -47,19 +47,19 @@ export default function Mega() {
             <h3 className="font-bold mb-2 text-lg">Women</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="#">Kurtas & Suits</Link>
+                <Link to="/shop">Kurtas & Suits</Link>
               </li>
               <li>
-                <Link to="#">Sarees</Link>
+                <Link to="/shop">Sarees</Link>
               </li>
               <li>
-                <Link to="#">Ethnic Wear</Link>
+                <Link to="/shop">Ethnic Wear</Link>
               </li>
               <li>
-                <Link to="#">Lehenga Cholis</Link>
+                <Link to="/shop">Lehenga Cholis</Link>
               </li>
               <li>
-                <Link to="#">Jackets</Link>
+                <Link to="/shop">Jackets</Link>
               </li>
             </ul>
           </div>
@@ -69,10 +69,10 @@ export default function Mega() {
             <h3 className="font-bold mb-2 text-lg">Western Wear</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="#">Dresses</Link>
+                <Link to="/shop">Dresses</Link>
               </li>
               <li>
-                <Link to="#">Jumpsuits</Link>
+                <Link to="/shop">Jumpsuits</Link>
               </li>
             </ul>
           </div>
@@ -84,16 +84,16 @@ export default function Mega() {
             <h3 className="font-bold mb-2 text-lg">Footwear</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="#">Flats</Link>
+                <Link to="/shop">Flats</Link>
               </li>
               <li>
-                <Link to="#">Heels</Link>
+                <Link to="/shop">Heels</Link>
               </li>
               <li>
-                <Link to="#">Boots</Link>
+                <Link to="/shop">Boots</Link>
               </li>
               <li>
-                <Link to="#">Sports Shoes & Floaters</Link>
+                <Link to="/shop">Sports Shoes & Floaters</Link>
               </li>
             </ul>
           </div>
@@ -103,10 +103,10 @@ export default function Mega() {
             <h3 className="font-bold mb-2 text-lg">Product Features</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="#">360 Product Viewer</Link>
+                <Link to="/shop">360 Product Viewer</Link>
               </li>
               <li>
-                <Link to="#">Product with video</Link>
+                <Link to="/shop">Product with video</Link>
               </li>
             </ul>
           </div>
@@ -117,28 +117,28 @@ export default function Mega() {
           <h3 className="font-bold mb-2 text-lg">Kids</h3>
           <ul className="space-y-2">
             <li>
-              <Link to="#">T-Shirts</Link>
+              <Link to="/shop">T-Shirts</Link>
             </li>
             <li>
-              <Link to="#">Shirts</Link>
+              <Link to="/shop">Shirts</Link>
             </li>
             <li>
-              <Link to="#">Jeans</Link>
+              <Link to="/shop">Jeans</Link>
             </li>
             <li>
-              <Link to="#">Trousers</Link>
+              <Link to="/shop">Trousers</Link>
             </li>
             <li>
-              <Link to="#">Party Wear</Link>
+              <Link to="/shop">Party Wear</Link>
             </li>
             <li>
-              <Link to="#">Innerwear & Thermal</Link>
+              <Link to="/shop">Innerwear & Thermal</Link>
             </li>
             <li>
-              <Link to="#">Track Pants</Link>
+              <Link to="/shop">Track Pants</Link>
             </li>
             <li>
-              <Link to="#">Value Pack</Link>
+              <Link to="/shop">Value Pack</Link>
             </li>
           </ul>
         </div>

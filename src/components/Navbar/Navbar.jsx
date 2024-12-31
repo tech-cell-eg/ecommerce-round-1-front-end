@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { CiHeart } from "react-icons/ci";
 import { FaBars } from "react-icons/fa";
 import { FiInbox } from "react-icons/fi";
@@ -22,9 +22,28 @@ export default function Navbar() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const minicartRef = useRef(null);
+  const megaMenuRef = useRef(null);
 
+  const toggleMinicart = () => {
+    setShowMinicart((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (minicartRef.current && !minicartRef.current.contains(event.target)) {
+        setShowMinicart(false);
+      }
+      if (megaMenuRef.current && !megaMenuRef.current.contains(event.target)) {
+        setShowMegaMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   const handleLogout = () => {
-    
     dispatch(clearCart());
     dispatch(setActiveStep(1));
     setToken(localStorage.removeItem("token"));
@@ -34,10 +53,6 @@ export default function Navbar() {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
-  };
-
-  const toggleMinicart = () => {
-    setShowMinicart(!showMinicart);
   };
 
   const navlist = [
@@ -116,7 +131,7 @@ export default function Navbar() {
               />
             </button>
           )}
-          <div className="relative">
+          <div className="relative" ref={minicartRef}>
             <FiInbox
               className="cursor-pointer text-2xl hover:text-gray-700"
               onClick={toggleMinicart}
@@ -150,7 +165,12 @@ export default function Navbar() {
 
       {/* Mega Menu */}
       {showMegaMenu && (
-        <div className="absolute left-40 right-0 top-full z-50">
+        <div
+          ref={megaMenuRef}
+          className={`absolute left-40 right-0 top-full z-50 ${
+            showMegaMenu ? "block" : "hidden"
+          }`}
+        >
           <Mega />
         </div>
       )}
