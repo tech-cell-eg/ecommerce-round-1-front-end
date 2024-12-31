@@ -11,7 +11,7 @@ export default function WishList() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const isItemInCart = cartItems.some(
-    (cartItem) => cartItem.data.product_id === wishlist.item.id
+    (cartItem) => cartItem.data.product_id === wishlist.product.id
   );
 
   console.log(wishlist);
