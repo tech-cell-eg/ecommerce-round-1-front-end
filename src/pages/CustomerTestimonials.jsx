@@ -1,23 +1,45 @@
 "use client";
 
-import { Card } from "flowbite-react";
+import { Card, Rating } from "flowbite-react";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { fetchAllTestimonials } from "../api/testimonials/testimonials";
+import { fetchAllReviews } from "../api/reviews/reviews";
+import { fetchAllinstgramstories } from "../api/instgramStory/getAllinstgramstories";
+import { Link } from "react-router-dom";
+import { FaInstagram } from "react-icons/fa";
 
 function CustomerTestimonials() {
   const [testimonials, setTestimonials] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [instaStory, setInstaStory] = useState([]); 
+
+ 
+useEffect(() => {
+    const getReviews = async () => {
+      const allReviews = await fetchAllReviews();
+      setReviews(allReviews);
+    };
+    getReviews();
+  }, []);
+
 
   useEffect(() => {
-    const getTestimonials = async () => {
-      const response = await fetchAllTestimonials();
-      const allTestimonials = await response.data;
-      console.log(allTestimonials);
-      setTestimonials(allTestimonials);
+    const getinstastory = async () => {
+      const allinstastory = await fetchAllinstgramstories();
+      setInstaStory(allinstastory)
     };
-
-    getTestimonials();
+    getinstastory()
   }, []);
+
+  const goToPrevSlide = () => {
+    setCurrentIndex((prev) =>
+      prev - itemsPerPage < 0
+        ? reviews.length - itemsPerPage
+        : prev - itemsPerPage
+    );
+  };
+  
 
   return (
     <div className="container-main mt-16 px-4 sm:px-8 mb-16">
@@ -33,26 +55,31 @@ function CustomerTestimonials() {
 
       {/* Testimonial Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-        {testimonials.map((testimonial) => (
+        {reviews.map((review) => (
           <Card
-            key={testimonial.id}
+            key={review.id}
             className="flex flex-col bg-white shadow-md rounded-lg overflow-hidden"
           >
             {/* Full-width Image */}
-            {testimonial.image && (
-              <img
-                className="w-full h-52 object-cover"
-                src={testimonial.image}  alt={testimonial.user.first_name}/>
-            )}
+            <div className="flex items-center gap-4 mb-4">
+           <div className="w-20 h-20 rounded-full overflow-hidden">
+           <img   src={review.image || "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-Clip-Art-Transparent-PNG.png"} alt={review.name} />
+           </div>
             {/* Card Content */}
-            <div className="p-2">
-              <h5 className="text-lg font-bold text-gray-900">
-                {testimonial.user.first_name} {testimonial.user.last_name}
-              </h5>
-              <p className="text-sm text-gray-700 italic">
-                "{testimonial.text}"
-              </p>
+           <div>
+           <h2 className="text-lg font-semibold">{review.name}</h2>
+           
+           </div>
             </div>
+            
+            <div className="flex  justify-start mb-4">
+                    <Rating size="lg">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <Rating.Star key={i} filled={i < review.stars} />
+                      ))}
+                    </Rating>
+                  </div>
+            <p className="">{review.msg}</p>
           </Card>
         ))}
       </div>
@@ -62,23 +89,18 @@ function CustomerTestimonials() {
         <h3 className="text-center text-2xl font-semibold text-gray-800 mb-8">
           Watch Their Stories
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials
-            .filter((testimonial) => testimonial.video)
-            .map((testimonial) => (
-              <div key={testimonial.id} className="flex flex-col items-center">
-                <ReactPlayer
-                  url={testimonial.video}
-                  className="react-player mb-4"
-                  controls={true}
-                  width="100%"
-                  height="200px"
-                />
-                <h5 className="text-lg font-bold text-gray-900">
-                  {testimonial.user.first_name} {testimonial.user.last_name}
-                </h5>
-              </div>
-            ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {instaStory.map((story) => (
+            <div className="flex flex-col gap-4 justify-center" key={story.id}>
+              <div key={story.id} className="h-[330px] relative" >
+              <img src={story.image_link} alt="" className="w-full h-full object-cover"/>
+              <div className="w-full h-full bg-black/0 hover:bg-black/5 opacity-0 hover:opacity-100 transition-all duration-300  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  flex justify-center items-center ">
+            <Link to={story.insta_link} className=" text-lg text-center bg-white p-2 w-fit h-fit  rounded-full"><FaInstagram className="text-black" /></Link>
+            </div>
+            </div>
+           
+            </div>
+          ))}
         </div>
       </div>
     </div>
