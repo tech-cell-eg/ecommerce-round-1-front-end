@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Card from "../product-card/Card";
 import { fetchAllProducts } from "../../api/products/products";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+
 
 const BestSeller = () => {
   const [products, setProducts] = useState([]);
@@ -33,7 +35,12 @@ const BestSeller = () => {
         {products?.map((item) => (
           <Card key={item.id} item={item} />
         ))}
+       
       </div>
+      <div className="flex justify-end gap-4  my-4 mx-auto">
+<button className="text-2xl p-2 rounded shadow-md border-2 border-gray-300"><IoIosArrowBack /></button>
+<button className="text-2xl p-2 rounded shadow-md border-2 border-gray-300" ><IoIosArrowForward /></button>
+</div>
     </div>
   );
 };

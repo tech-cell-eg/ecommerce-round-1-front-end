@@ -34,6 +34,7 @@ export default function App() {
       children: [
         { index: true, element: <Home /> },
         { path: "shop", element: <ProductListing /> },
+        { path:"shop/:id", element:<ProductListing />},
         { path: "/product/:productId", element: <ProductDetails /> },
         { path: "about", element: <h1>About</h1> },
         { path: "checkout", element: <Checkout /> },
