@@ -77,8 +77,8 @@ export default function OurStory() {
   storysdetails.map((item) => (
     <SwiperSlide key={item.id}>
       <div className="flex flex-col justify-center p-4 border border-gray-300 rounded-xl">
-        <div className="rounded-xl overflow-hidden">
-          <img src={item.image} alt={item.title} className="line-clamp-1" />
+        <div className="rounded-xl overflow-hidden h-[350px]">
+          <img src={item.image} alt={item.title} className="line-clamp-1  h-full w-full object-cover" />
         </div>
         <div className="py-2">
           <h3 className="text-xl font-semibold mb-2 line-clamp-1">{item.title}</h3>
