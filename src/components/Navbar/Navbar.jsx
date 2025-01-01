@@ -34,7 +34,11 @@ export default function Navbar() {
       if (minicartRef.current && !minicartRef.current.contains(event.target)) {
         setShowMinicart(false);
       }
-      if (megaMenuRef.current && !megaMenuRef.current.contains(event.target)) {
+      if (
+        megaMenuRef.current &&
+        !megaMenuRef.current.contains(event.target) &&
+        event.target.id !== "shop-button"
+      ) {
         setShowMegaMenu(false);
       }
     };
@@ -53,6 +57,14 @@ export default function Navbar() {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const  toggleMegaMenues = () => {
+    setShowMegaMenu(!showMegaMenu);
+  };
+
+  const closeMegaMenu = () => {
+    setShowMegaMenu(false);
   };
 
   const navlist = [
@@ -87,17 +99,12 @@ export default function Navbar() {
             <li
               key={index}
               className="relative"
-              onMouseEnter={() => {
-                if (item.name === "Shop") setShowMegaMenu(true);
-              }}
-              onMouseLeave={() => {
-                if (item.name === "Shop") setShowMegaMenu(false);
-              }}
             >
               {item.name === "Shop" ? (
                 <button
                   className="flex items-center text-lg hover:text-gray-800"
-                  onClick={() => navigate("/shop")}
+                  onClick={toggleMegaMenues}
+                  id="shop-button"
                 >
                   {item.name}
                   <HiChevronDown className="ml-2" />
@@ -171,7 +178,7 @@ export default function Navbar() {
             showMegaMenu ? "block" : "hidden"
           }`}
         >
-          <Mega />
+          <Mega closeMegaMenu={closeMegaMenu}/>
         </div>
       )}
     </nav>

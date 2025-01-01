@@ -9,6 +9,7 @@ import { addToCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
 import { addtoWishlist } from "../../redux/wishlistSlice";
 
+
 function Card({ item }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
@@ -35,8 +36,9 @@ function Card({ item }) {
   const fallbackImage =
     "https://img.freepik.com/premium-vector/elegant-clothes-hanger-fashion-beauty_677686-509.jpg";
 
-  return (
-    <div className={styles.card}>
+  return (<>
+
+<div className={styles.card}>
       <div className={styles.imageContainer}>
         <img
           src={item.image || fallbackImage}
@@ -104,7 +106,9 @@ function Card({ item }) {
           <p className={styles.cardPrice}>${item.price.toFixed(2)}</p>
         )}
       </div>
-    </div>
+      </div>
+  </>
+   
   );
 }
 

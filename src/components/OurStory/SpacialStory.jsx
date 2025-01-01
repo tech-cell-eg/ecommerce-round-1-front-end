@@ -12,7 +12,7 @@ export default function SpacialStory() {
     },[])
 
   return <>
-  <section   className="container-main  ">
+  <section   className="container-main">
    <div className='grid grid-cols-1 md:grid-cols-2 gap-4  py-8'>
    <div className='h-[470px]'>
         <img src={story.image} alt='' className='w-full h-full object-cover'/>

@@ -5,7 +5,7 @@ import { PiSquaresFourLight } from "react-icons/pi";
 import DropDownMenu from "../../components/product-listing/DropDownMenu";
 import { TfiMenuAlt } from "react-icons/tfi";
 import SideBar from "../../components/catgories/SideBar";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProducts as fetchAllProducts,
@@ -18,13 +18,17 @@ import {
   selectAllProducts, // Ensure this selector is properly imported
 } from "../../redux/selectors/productsSelector";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import getcategoryById from "../../api/categories/categoryById";
 
 
 function ProductListing() {
   const [searchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(true); // Sidebar visibility default is open on larger screens
   const [searchQuery, setSearchQuery] = useState(""); // Search input value
-  const [filteredItems, setFilteredItems] = useState([]); // Store filtered products
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [spacialcategory, setspacialcategory] = useState([]) // Store filtered products
+
+  const { id } = useParams();
 
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
@@ -36,6 +40,8 @@ function ProductListing() {
   const selectedMinPrice = searchParams.get("minPrice");
   const selectedMaxPrice = searchParams.get("maxPrice");
   const selectedTypes = searchParams.getAll("type");
+
+    
 
   // Fetch all products when the component mounts
   useEffect(() => {
@@ -157,10 +163,7 @@ function ProductListing() {
               ))}
               
             </div>
-            <div className="flex justify-end gap-4 w-[90%] my-4 mx-auto">
-                <button className="text-2xl p-2 rounded shadow-md border-2 border-gray-300"><IoIosArrowBack /></button>
-                <button className="text-2xl p-2 rounded shadow-md border-2 border-gray-300" ><IoIosArrowForward /></button>
-              </div>
+            
           </div>
         </div>
       </section>
