@@ -80,10 +80,10 @@ export default function Navbar() {
     <nav className="py-3 relative">
       <div className="w-[90%] m-auto flex items-center justify-between">
         {/* Logo Section */}
-        <div className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img src="/logo.svg" alt="logo" className="w-10 h-10" />
           <h1 className="text-2xl font-semibold">Kirst</h1>
-        </div>
+        </Link>
 
         {/* Hamburger Menu for Small Screens */}
         <FaBars className="md:hidden cursor-pointer" onClick={toggleDrawer} />
