@@ -25,9 +25,14 @@ export const addToCartApi = async (item) => {
 };
 
 // Remove from Cart
-export const removeFromCartApi = async (itemId) => {
+export const removeFromCartApi = async (cartId, product_id) => {
+  console.log(cartId, product_id); // 62 6
+  // console.log(typeof product_id);
   try {
-    await api.delete(`cart/${itemId}`);
+    const response = await api.delete(`cart/${cartId}`, {
+      params: { product_id },
+    });
+    return response;
   } catch (error) {
     handleError(error, "Failed to remove item from cart");
   }

@@ -47,7 +47,7 @@ const MiniCart = () => {
   const handleClearCart = async () => {
     setLoading(true);
     try {
-      await dispatch(clearCart());
+      dispatch(clearCart());
     } catch (error) {
       console.error("Error clearing cart:", error);
     } finally {
@@ -55,10 +55,11 @@ const MiniCart = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (cartId, product_id) => {
+    console.log("Deleting from cart:", { cartId, product_id });
     setLoading(true);
     try {
-      await dispatch(removeFromCart(id));
+      dispatch(removeFromCart({ cartId, product_id }));
     } catch (error) {
       console.error("Error removing item:", error);
     } finally {
@@ -114,7 +115,9 @@ const MiniCart = () => {
                 </td>
                 <td className="text-right">
                   <button
-                    onClick={() => handleDelete(item.data.id)}
+                    onClick={() =>
+                      handleDelete(item.data.id, item.data.product_id)
+                    }
                     className="text-red-500 hover:text-red-700"
                   >
                     <FaTrash />

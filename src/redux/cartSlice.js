@@ -32,9 +32,9 @@ export const addToCart = createAsyncThunk(
 
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
-  async (itemId, thunkAPI) => {
+  async ({cartId, product_id}, thunkAPI) => {
     try {
-      await removeFromCartApi(itemId);
+      await removeFromCartApi(cartId, product_id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

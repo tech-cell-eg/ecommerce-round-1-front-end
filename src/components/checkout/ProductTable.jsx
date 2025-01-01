@@ -26,10 +26,11 @@ const ProductTable = ({ cart, setCart }) => {
     }
   };
 
-  const handleDelete = (cartId) => {
-    const newCart = cart.filter((item) => item.id !== cartId);
+  const handleDelete = (product_id, cartId) => {
+    const newCart = cart.filter((item) => item.id !== product_id);
     setCart(newCart);
-    dispatch(removeFromCart(cartId));
+    console.log(cartId, product_id);
+    dispatch(removeFromCart({ cartId, product_id }));
   };
 
   const fallbackImage =
@@ -91,7 +92,7 @@ const ProductTable = ({ cart, setCart }) => {
                 ${(item.product.price * item.quantity).toFixed(2)}
               </td>
               <td className="p-4 text-center">
-                <button onClick={() => handleDelete(item.id)}>
+                <button onClick={() => handleDelete(item.product.id, item.id)}>
                   <FaTrash className="text-red-500 hover:text-red-700" />
                 </button>
               </td>
