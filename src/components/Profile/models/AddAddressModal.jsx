@@ -93,6 +93,7 @@ export default function AddAddressModal({ onClose, onSave }) {
               onChange={(e) => handleChange("mobile_number", e.target.value)}
               placeholder="Enter your mobile number"
               required
+              type="tel"
               isInvalid={!!errors.mobile_number}
             />
             {errors.mobile_number && (

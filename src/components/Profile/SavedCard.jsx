@@ -41,6 +41,28 @@ export default function SavedCard() {
   }, []);
 
   const handleAddCard = async () => {
+    // Basic validation
+    const { card_name, card_number, card_expiry_date, card_cvv } = newCard;
+    if (!card_name || !card_number || !card_expiry_date || !card_cvv) {
+      setError("All fields are required.");
+      return;
+    }
+
+    if (!/^\d{16}$/.test(card_number)) {
+      setError("Card number must be 16 digits.");
+      return;
+    }
+
+    if (!/^\d{3}$/.test(card_cvv)) {
+      setError("CVV must be 3 digits.");
+      return;
+    }
+
+    if (!/^(0[1-9]|1[0-2])-\d{2}$/.test(card_expiry_date)) {
+      setError("Expiry date must be in MM-YY format.");
+      return;
+    }
+
     try {
       const response = await addNewCard(newCard);
       setCards((prevCards) => [...prevCards, response.data]);
@@ -57,7 +79,7 @@ export default function SavedCard() {
         type: "failure",
         visible: true,
       });
-      setError(error);
+      setError(error.message || "Something went wrong. Please try again.");
     } finally {
       setNewCard({
         card_name: "",
@@ -88,7 +110,7 @@ export default function SavedCard() {
         type: "failure",
         visible: true,
       });
-      setError(error);
+      setError(error.message || "Something went wrong. Please try again.");
     } finally {
       setTimeout(() => setAlert({ ...alert, visible: false }), 3000);
     }
@@ -102,6 +124,7 @@ export default function SavedCard() {
       card_expiry_date: "",
       card_cvv: "",
     });
+    setError("");
   };
 
   const openDeleteModal = (cardId) => {
@@ -113,7 +136,6 @@ export default function SavedCard() {
     <section className="mx-auto p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Saved Cards</h2>
 
-      {/* Alert */}
       {alert.visible && (
         <Alert
           color={alert.type === "success" ? "green" : "red"}
@@ -123,7 +145,6 @@ export default function SavedCard() {
         </Alert>
       )}
 
-      {/* Add Card Button */}
       <button
         type="button"
         className="btn-primary px-8 w-fit flex items-center bg-black text-white"
@@ -214,7 +235,7 @@ export default function SavedCard() {
               }
             />
           </div>
-          {error && <p className="text-white py-2">{error.message}</p>}
+          {error && <p className="text-red-600 py-2">{error}</p>}
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -229,7 +250,6 @@ export default function SavedCard() {
         </Modal.Footer>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
         <Modal.Header>Confirm Deletion</Modal.Header>
         <Modal.Body>
