@@ -24,6 +24,18 @@ export default function Navbar() {
   const navigate = useNavigate();
   const minicartRef = useRef(null);
   const megaMenuRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 0);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const toggleMinicart = () => {
     setShowMinicart((prev) => !prev);
@@ -47,6 +59,7 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const handleLogout = () => {
     dispatch(clearCart());
     dispatch(setActiveStep(1));
@@ -59,7 +72,7 @@ export default function Navbar() {
     setIsDrawerOpen(!isDrawerOpen);
   };
 
-  const  toggleMegaMenues = () => {
+  const toggleMegaMenues = () => {
     setShowMegaMenu(!showMegaMenu);
   };
 
@@ -71,13 +84,16 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
     { name: "Our Story", path: "/#ourstory" },
-    // { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contactus" },
     { name: "Customer Reviews", path: "/customerreviews" },
   ];
 
   return (
-    <nav className="py-3 relative">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? "bg-white shadow-lg py-2" : "bg-transparent py-4"
+      }`}
+    >
       <div className="w-[90%] m-auto flex items-center justify-between">
         {/* Logo Section */}
         <Link to="/" className="flex items-center">
@@ -96,10 +112,7 @@ export default function Navbar() {
         {/* Navigation Links */}
         <ul className="hidden md:flex items-center gap-6">
           {navlist.map((item, index) => (
-            <li
-              key={index}
-              className="relative"
-            >
+            <li key={index} className="relative">
               {item.name === "Shop" ? (
                 <button
                   className="flex items-center text-lg hover:text-gray-800"
@@ -178,7 +191,7 @@ export default function Navbar() {
             showMegaMenu ? "block" : "hidden"
           }`}
         >
-          <Mega closeMegaMenu={closeMegaMenu}/>
+          <Mega closeMegaMenu={closeMegaMenu} />
         </div>
       )}
     </nav>
