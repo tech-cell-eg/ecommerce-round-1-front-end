@@ -133,9 +133,20 @@ export default function Navbar() {
 
         {/* Right Section: Icons & Authentication */}
         <div className="hidden md:flex items-center gap-4">
-          <Link to="/profile/wishlist">
-            <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
-          </Link>
+          {token ? (
+            <Link to="/profile/wishlist">
+              <CiHeart className="cursor-pointer text-2xl hover:text-red-500" />
+            </Link>
+          ) : (
+            <button>
+              <CiHeart
+                className="cursor-pointer text-2xl"
+                onClick={() => {
+                  toast.error("Please Login First");
+                }}
+              />
+            </button>
+          )}
 
           {token ? (
             <Link to="/profile">
