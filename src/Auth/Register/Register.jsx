@@ -247,6 +247,16 @@ export default function Register() {
                 {disableBtn ? <span>Waiting...</span> : <span>Signup</span>}
               </button>
             </div>
+
+            <div className="max-[766px]:text-white m-auto flex text-sm max-[280px]:flex-wrap items-center justify-center">
+              <span>Have an account?</span>{" "}
+              <Link
+                to={"/login"}
+                className="text-black font-semibold  border-black border-b-2 max-[766px]:border-white max-[766px]:text-white"
+              >
+                Log in
+              </Link>
+            </div>
           </form>
         </div>
       </section>
