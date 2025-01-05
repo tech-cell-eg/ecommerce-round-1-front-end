@@ -61,7 +61,7 @@ export default function ContactUs() {
     <title>Contact Us</title>
     <meta name="description" content="Contact us for any questions"/>
   </Helmet>
-  <section className='min-h-screen pt-4 pb-24 flex flex-col items-center justify-center bg-[#F5F5F8] relative overflow-hidden'>
+  <section className='min-h-screen flex flex-col items-center justify-center bg-[#F5F5F8] relative overflow-hidden'>
   <div className="container-main w-full space-y-4 py-12 bg-white shadow-xl rounded-lg flex flex-col items-center justify-center relative z-10  ">
   <h2 className='text-bold text-3xl py-2 border-b w-fit border-black  '>Get in touch</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10  px-4 w-full py-6 ">
