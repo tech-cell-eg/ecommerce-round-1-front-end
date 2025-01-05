@@ -18,7 +18,11 @@ export default function ContactUs() {
     email: yup
       .string()
       .required("email is required")
-      .email("write avalid email"),
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Write a valid email (e.g., example@domain.com)"
+      )
+      .email("write a valid email"),
       text: yup
       .string()
       .required("message is required"),
