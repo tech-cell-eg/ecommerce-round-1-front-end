@@ -11,9 +11,20 @@ const FooterComponent = () => {
   const [alert, setAlert] = useState({ message: "", type: "" });
 
   const handleSubscribe = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!email) {
       setAlert({
-        message: "Please enter a valid email address.",
+        message: "Please enter an email address.",
+        type: "error",
+      });
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setAlert({
+        message:
+          "Please enter a valid email address with a domain (e.g.,example@domain.com).",
         type: "error",
       });
       return;
@@ -39,8 +50,6 @@ const FooterComponent = () => {
   return (
     <Footer container className="bg-black text-white relative z-10">
       <div className="w-full py-1 px-4 ">
-
-
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-4">
           {/* Brand & Contact Section */}
           <div>
