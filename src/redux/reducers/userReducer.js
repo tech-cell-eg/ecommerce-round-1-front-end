@@ -5,6 +5,7 @@ const initialState = {
   id: null,
   name: "",
   email: "",
+  // image: null,
   token: "",
 };
 
@@ -13,7 +14,7 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(setUser, (state, action) => {
       return { ...state, ...action.payload };
     })
-    .addCase(signOut, () => initialState); 
+    .addCase(signOut, () => initialState);
 });
 
 export default userReducer;

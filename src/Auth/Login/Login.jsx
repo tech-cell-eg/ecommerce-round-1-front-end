@@ -50,6 +50,7 @@ export default function Login() {
         if (rememberMe) {
           localStorage.setItem("email", values.email);
           localStorage.setItem("password", values.password);
+          localStorage.setItem("image", values.image);
         }
         dispatch(setUser(log.data.user));
 

@@ -1,20 +1,22 @@
 import api, { handleError } from "../axiosConfig";
 
-const updateuserinfo = async (values) => {
+const updateuserinfo = async (formData) => {
   try {
-    const response = await api.patch("user", {
-      first_name: values.first_name,
-      mobile_number: values.mobile_number,
-      address: values.address,
-    },
-    {
+    formData.append("_method", "patch");
+
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
+
+    const response = await api.post("user", formData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
+        "Content-Type": "multipart/form-data",
       },
-    }
+    });
 
-);
-    return response.data;
+    // console.log(response.data.data.user);
+    return response.data.data.user;
   } catch (error) {
     handleError(error);
   }

@@ -7,9 +7,6 @@ const fetchlogin = async (values) => {
       password: values.password,
     });
     localStorage.setItem("token", response.data.data.token);
-    
-    
-    
     return response.data;
   } catch (error) {
     handleError(error);

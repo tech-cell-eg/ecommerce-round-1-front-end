@@ -1,4 +1,3 @@
-import React from 'react'
 import { Helmet } from 'react-helmet'
 import Sidbar from './Sidbar'
 import { Outlet } from 'react-router-dom'

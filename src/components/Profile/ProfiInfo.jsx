@@ -1,22 +1,24 @@
+import { useState } from "react";
 import { FaPenToSquare } from "react-icons/fa6";
 import { useSelector, useDispatch } from "react-redux";
-// import { Link } from "react-router-dom";
-import updateuserinfo from "../../api/updateuserinfo/updateuserinfo";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import toast from "react-hot-toast";
+import updateuserinfo from "../../api/updateuserinfo/updateuserinfo";
 import { setUser } from "../../redux/actions/userActions";
 
 export default function ProfiInfo() {
   const user = useSelector((state) => state.user);
+  console.log(user.image);
   const dispatch = useDispatch();
-  // const addressRegex = /^[a-zA-Z0-9\s,]+, [a-zA-Z\s]+, [a-zA-Z\s]+, [a-zA-Z\s]+, \d{5}$/;
 
-  const firstName =
-    localStorage.getItem("first_name") || user?.first_name || "Guest";
-  const lastName =
-    localStorage.getItem("last_name") || user?.last_name || "Guest";
-  const email = localStorage.getItem("email") || user?.email || "Guest";
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(
+    user?.image ? user.image : "/userProfile.jpg"
+  );
+  const firstName = user?.first_name ? user.first_name : "Guest";
+  const lastName = user?.last_name ? user.last_name : "Guest";
+  const email = user?.email ? user.email : "Guest";
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -33,14 +35,6 @@ export default function ProfiInfo() {
       .string()
       .matches(emailRegex, "Please enter a valid email address")
       .required("Email is required"),
-    // mobile_number: yup
-    //   .string()
-    //   .required('Mobile Number is required')
-    //   .min(11, 'Phone number must be exactly 11 digits'),
-    // address: yup
-    //   .string()
-    //   .matches(addressRegex, 'Please enter the address in the format(Consider the spaces): address, Area, City, State, Pin Code')
-    //   .required('Address is required'),
   });
 
   const formik = useFormik({
@@ -48,45 +42,92 @@ export default function ProfiInfo() {
       first_name: firstName,
       last_name: lastName,
       email: email,
-      // mobile_number: '',
-      // address: '',
+      image: null,
     },
     validationSchema,
     onSubmit: async (values) => {
       let id;
       try {
-        id = toast.loading("Waiting...");
-        await updateuserinfo(values);
-        localStorage.setItem("first_name", values.first_name);
-        localStorage.setItem("last_name", values.last_name);
-        localStorage.setItem("email", values.email);
-        dispatch(setUser(values));
+        id = toast.loading("Updating profile...");
+        const formData = new FormData();
+        formData.append("first_name", values.first_name);
+        formData.append("last_name", values.last_name);
+        formData.append("email", values.email);
+        if (selectedImage) {
+          formData.append("image", selectedImage);
+        }
+
+        const updatedUser = await updateuserinfo(formData);
+        localStorage.setItem("first_name", updatedUser.first_name);
+        localStorage.setItem("last_name", updatedUser.last_name);
+        localStorage.setItem("email", updatedUser.email);
+        localStorage.setItem("image", updatedUser.image);
+        setPreviewImage(updatedUser.image);
+        dispatch(setUser(updatedUser));
 
         toast.dismiss(id);
-        toast.success("Information updated successfully");
+        toast.success("Profile updated successfully");
       } catch (error) {
         toast.dismiss(id);
-        toast.error(error.message || "An error occurred during update");
+        toast.error(error.message || "An error occurred");
       }
     },
   });
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/jpg",
+        "image/gif",
+        "image/svg+xml",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(
+          "Please upload a valid image file (JPEG, PNG, JPG, GIF, SVG)."
+        );
+        return;
+      }
+
+      const maxSize = 2 * 1024 * 1024;
+      if (file.size > maxSize) {
+        toast.error("File size must be less than 2MB.");
+        return;
+      }
+
+      setSelectedImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+      formik.setFieldValue("image", file);
+    }
+  };
+  console.log(previewImage);
 
   return (
     <section>
       <div className="flex items-center justify-between relative">
         <div className="h-14 w-14 rounded-full relative overflow-hidden">
-          <img src="/image.png" alt="" />
+          <img
+            src={previewImage}
+            alt="Profile"
+            className="h-full w-full"
+          />
         </div>
-        <div>
-          <button
-            type="submit"
-            className="btn-primary w-fit flex items-center"
-            onClick={formik.handleSubmit}
-          >
-            <FaPenToSquare className="inline-block mr-1" />{" "}
-            <span>Update Profile</span>
-          </button>
-        </div>
+        <input
+          type="file"
+          accept="image/*"
+          className="absolute opacity-0 cursor-pointer"
+          style={{ height: "56px", width: "56px" }}
+          onChange={handleImageChange}
+        />
+        <button
+          type="submit"
+          className="btn-primary w-fit flex items-center"
+          onClick={formik.handleSubmit}
+        >
+          <FaPenToSquare className="inline-block mr-1" /> Update Profile
+        </button>
       </div>
 
       <form className="w-full my-6 space-y-3" onSubmit={formik.handleSubmit}>
@@ -126,66 +167,23 @@ export default function ProfiInfo() {
             )}
           </div>
         </div>
-
-        <div className="md:flex gap-4 w-full">
-          <div className="flex flex-col md:w-1/2 space-y-1">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              className="form-control w-full"
-              placeholder="Email"
-            />
-            {formik.touched.email && formik.errors.email && (
-              <div className="text-red-600 font-semibold text-sm">
-                {formik.errors.email}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Phone Number (commented out) */}
-        {/* <div className="md:flex gap-4 w-full">
-          <div className="flex flex-col md:w-1/2 space-y-1">
-            <label htmlFor="mobile_number">Phone Number</label>
-            <input
-              type="text"
-              id="mobile_number"
-              name="mobile_number"
-              value={formik.values.mobile_number}
-              onChange={formik.handleChange}
-              className="form-control w-full"
-              placeholder="Phone"
-            />
-            {formik.touched.mobile_number && formik.errors.mobile_number && (
-              <div className="text-red-600 font-semibold text-sm">
-                {formik.errors.mobile_number}
-              </div>
-            )}
-          </div>
-        </div> */}
-
-        {/* Address (commented out) */}
-        {/* <div className="flex flex-col space-y-1">
-          <label htmlFor="address">Address</label>
+        <div className="flex flex-col md:w-1/2 space-y-1">
+          <label htmlFor="email">Email Address</label>
           <input
-            type="text"
-            id="address"
-            name="address"
-            value={formik.values.address}
+            type="email"
+            id="email"
+            name="email"
+            value={formik.values.email}
             onChange={formik.handleChange}
             className="form-control w-full"
-            placeholder="Address"
+            placeholder="Email"
           />
-          {formik.touched.address && formik.errors.address && (
+          {formik.touched.email && formik.errors.email && (
             <div className="text-red-600 font-semibold text-sm">
-              {formik.errors.address}
+              {formik.errors.email}
             </div>
           )}
-        </div> */}
+        </div>
       </form>
     </section>
   );
